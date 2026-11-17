@@ -3,6 +3,9 @@
  * Control de pesajes de entrada, metal recuperado, rebabas y actas internas de fundición.
  */
 window.MartelaFoundry = (function() {
+  let currentPage = 1;
+  let pageSize = 20;
+
   async function render(container) {
     container.innerHTML = `
       <div class="flex items-center justify-center p-12">
@@ -13,6 +16,7 @@ window.MartelaFoundry = (function() {
     const logs = await window.apiFacade.getFoundryLogs();
     const db = window.apiFacade._getDB();
     const { money, grams, esc, badge } = window.MartelaUI;
+    const fPag = window.MartelaUI.paginate(logs, currentPage, pageSize);
 
     const piezasEnFundicion = db.inventory_pieces.filter(p => p.almacen_id === 'TALLER_FUNDICION' || p.estatus === 'EN_FUNDICION');
     const pesoPendienteFundir = piezasEnFundicion.reduce((s, p) => s + p.peso_neto_g, 0);
@@ -95,7 +99,7 @@ window.MartelaFoundry = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${logs.map(log => `
+              ${fPag.items.map(log => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                   <td class="p-3.5 font-mono font-bold text-purple-600 dark:text-purple-400">${esc(log.id)}</td>
                   <td class="p-3.5 font-mono text-slate-500">${esc(log.fecha)}</td>
@@ -115,6 +119,17 @@ window.MartelaFoundry = (function() {
             </tbody>
           </table>
         </div>
+
+        ${window.MartelaUI.renderPaginationControls({
+          currentPage: fPag.currentPage,
+          totalPages: fPag.totalPages,
+          pageSize: fPag.pageSize,
+          totalItems: fPag.totalItems,
+          startIndex: fPag.startIndex,
+          endIndex: fPag.endIndex,
+          onPageChange: 'MartelaFoundry.goToPage',
+          onPageSizeChange: 'MartelaFoundry.setPageSize'
+        })}
       </div>
     `;
   }
@@ -206,15 +221,30 @@ window.MartelaFoundry = (function() {
       notas: f.get('notas')
     };
 
-    try {
-      const batch = await window.apiFacade.createFoundryBatch(batchData);
-      window.MartelaUI.closeModal();
-      window.MartelaUI.toast(`Lote ${batch.id} registrado con éxito`, 'success');
-      render(document.getElementById('contentContainer'));
-      verActa(batch.id);
-    } catch (err) {
-      window.MartelaUI.toast(err.message, 'error');
-    }
+    await window.MartelaUI.withLoading('Registrando lote de fundición y conciliación de mermas...', async () => {
+      try {
+        const batch = await window.apiFacade.createFoundryBatch(batchData);
+        window.MartelaUI.closeModal();
+        window.MartelaUI.toast(`Lote ${batch.id} registrado con éxito`, 'success');
+        render(document.getElementById('contentContainer'));
+        verActa(batch.id);
+      } catch (err) {
+        window.MartelaUI.toast(err.message, 'error');
+      }
+    });
+  }
+
+  function goToPage(page) {
+    currentPage = page;
+    window.MartelaUI.flashLoading('Cargando registros...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function setPageSize(size) {
+    pageSize = parseInt(size, 10);
+    currentPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
   }
 
   function verActa(batchId) {
@@ -279,6 +309,8 @@ window.MartelaFoundry = (function() {
     openModalNuevoLote,
     calcularPreviewLote,
     saveNuevoLote,
-    verActa
+    verActa,
+    goToPage,
+    setPageSize
   };
 })();

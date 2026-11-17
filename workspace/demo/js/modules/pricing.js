@@ -7,6 +7,8 @@
  * 4. Plata .925 (Cancún/Santa Fe): Costo base Martela + Margen Comercial (70%) + IVA (16%).
  */
 window.MartelaPricing = (function() {
+  let compPage = 1;
+  let compPageSize = 20;
   async function render(container) {
     const rates = await window.apiFacade.getMetalRates();
     const db = window.apiFacade._getDB();
@@ -153,30 +155,46 @@ window.MartelaPricing = (function() {
             </div>
 
             <div class="text-xs font-bold uppercase text-slate-400 mb-2">Bitácora de Movimientos de Oro Fino</div>
-            <div class="overflow-x-auto max-h-60 overflow-y-auto">
-              <table class="w-full text-xs text-left font-mono">
-                <thead class="bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">
-                  <tr>
-                    <th class="p-2">Folio</th>
-                    <th class="p-2">Movimiento</th>
-                    <th class="p-2 text-right">Gramos 24K</th>
-                    <th class="p-2 text-right">Saldo</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                  ${compensations.map(c => `
-                    <tr>
-                      <td class="p-2 font-bold">${esc(c.id)}</td>
-                      <td class="p-2 text-[11px]">${esc(c.tipo_movimiento)}</td>
-                      <td class="p-2 text-right font-bold ${c.tipo_movimiento === 'DEBITO_LIQUIDACION' ? 'text-rose-500' : 'text-emerald-500'}">
-                        ${c.tipo_movimiento === 'DEBITO_LIQUIDACION' ? '-' : '+'}${Number(c.gramos_oro_fino).toFixed(5)} g
-                      </td>
-                      <td class="p-2 text-right font-bold text-amber-500">${Number(c.saldo_restante_g || saldoOroFino).toFixed(5)} g</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
+            ${(() => {
+              const cPag = window.MartelaUI.paginate(compensations, compPage, compPageSize);
+              return `
+                <div class="overflow-x-auto">
+                  <table class="w-full text-xs text-left font-mono">
+                    <thead class="bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">
+                      <tr>
+                        <th class="p-2">Folio</th>
+                        <th class="p-2">Movimiento</th>
+                        <th class="p-2 text-right">Gramos 24K</th>
+                        <th class="p-2 text-right">Saldo</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                      ${cPag.items.map(c => `
+                        <tr>
+                          <td class="p-2 font-bold">${esc(c.id)}</td>
+                          <td class="p-2 text-[11px]">${esc(c.tipo_movimiento)}</td>
+                          <td class="p-2 text-right font-bold ${c.tipo_movimiento === 'DEBITO_LIQUIDACION' ? 'text-rose-500' : 'text-emerald-500'}">
+                            ${c.tipo_movimiento === 'DEBITO_LIQUIDACION' ? '-' : '+'}${Number(c.gramos_oro_fino).toFixed(5)} g
+                          </td>
+                          <td class="p-2 text-right font-bold text-amber-500">${Number(c.saldo_restante_g || saldoOroFino).toFixed(5)} g</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+                ${window.MartelaUI.renderPaginationControls({
+                  totalItems: cPag.totalItems,
+                  currentPage: cPag.currentPage,
+                  pageSize: cPag.pageSize,
+                  totalPages: cPag.totalPages,
+                  startIdx: cPag.startIdx,
+                  endIdx: cPag.endIdx,
+                  onPageChange: 'MartelaPricing.goToCompPage',
+                  onPageSizeChange: 'MartelaPricing.setCompPageSize',
+                  itemName: 'movimientos 24K'
+                })}
+              `;
+            })()}
           </div>
 
           <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end">
@@ -407,6 +425,19 @@ window.MartelaPricing = (function() {
     }
   }
 
+  async function goToCompPage(page) {
+    compPage = page;
+    await window.MartelaUI.flashLoading('Cargando bitácora de Oro Fino...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setCompPageSize(size) {
+    compPageSize = size;
+    compPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' movimientos por página...', 220);
+    render(document.getElementById('contentContainer'));
+  }
+
   return {
     render,
     onSelectPhysicalPiece,
@@ -415,6 +446,8 @@ window.MartelaPricing = (function() {
     openModalEditarRates,
     saveRates,
     openModalMaquila,
-    saveMaquilaModal
+    saveMaquilaModal,
+    goToCompPage,
+    setCompPageSize
   };
 })();

@@ -14,6 +14,14 @@ window.MartelaBilling = (function() {
   let filterSearch = '';
   let filterEstatusSat = '';
   let filterEstatusPago = '';
+  let currentPage = 1;
+  let pageSize = 20;
+  let repPage = 1;
+  let repPageSize = 20;
+  let ncPage = 1;
+  let ncPageSize = 20;
+  let clientsPage = 1;
+  let clientsPageSize = 20;
 
   // Estado temporal para asistente de nueva factura
   let newInvMode = 'order'; // 'order' | 'direct'
@@ -237,13 +245,18 @@ window.MartelaBilling = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${filtered.length === 0 ? `
-                <tr>
-                  <td colspan="9" class="p-8 text-center text-slate-400">
-                    No se encontraron comprobantes fiscales con los criterios seleccionados.
-                  </td>
-                </tr>
-              ` : filtered.map(inv => {
+              ${(() => {
+                const bPag = window.MartelaUI.paginate(filtered, currentPage, pageSize);
+                if (filtered.length === 0) {
+                  return `
+                    <tr>
+                      <td colspan="9" class="p-8 text-center text-slate-400">
+                        No se encontraron comprobantes fiscales con los criterios seleccionados.
+                      </td>
+                    </tr>
+                  `;
+                }
+                return bPag.items.map(inv => {
                 const isCancel = inv.estatus_sat === 'CANCELADA';
                 const isPaid = inv.estatus_pago === 'PAGADA';
                 const isOverdue = inv.estatus_pago === 'VENCIDA';
@@ -329,12 +342,79 @@ window.MartelaBilling = (function() {
                     </td>
                   </tr>
                 `;
-              }).join('')}
+              }).join('');
+            })()}
             </tbody>
           </table>
         </div>
+        ${(() => {
+          const bPag = window.MartelaUI.paginate(filtered, currentPage, pageSize);
+          return window.MartelaUI.renderPaginationControls({
+            totalItems: bPag.totalItems,
+            currentPage: bPag.currentPage,
+            pageSize: bPag.pageSize,
+            totalPages: bPag.totalPages,
+            startIdx: bPag.startIdx,
+            endIdx: bPag.endIdx,
+            onPageChange: 'MartelaBilling.goToPage',
+            onPageSizeChange: 'MartelaBilling.setPageSize',
+            itemName: 'facturas CFDI 4.0'
+          });
+        })()}
       </div>
     `;
+  }
+
+  async function goToPage(page) {
+    currentPage = page;
+    await window.MartelaUI.flashLoading('Cargando facturas...', 180);
+    renderTabInvoices(document.getElementById('billingTabContent'), window.apiFacade._getDB().invoices, []);
+  }
+
+  async function setPageSize(size) {
+    pageSize = size;
+    currentPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' facturas por página...', 220);
+    renderTabInvoices(document.getElementById('billingTabContent'), window.apiFacade._getDB().invoices, []);
+  }
+
+  function goToRepPage(page) {
+    repPage = page;
+    window.MartelaUI.flashLoading('Cargando recibos REP...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function setRepPageSize(size) {
+    repPageSize = parseInt(size, 10);
+    repPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function goToNcPage(page) {
+    ncPage = page;
+    window.MartelaUI.flashLoading('Cargando notas de crédito...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function setNcPageSize(size) {
+    ncPageSize = parseInt(size, 10);
+    ncPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function goToClientsPage(page) {
+    clientsPage = page;
+    window.MartelaUI.flashLoading('Cargando clientes fiscales...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function setClientsPageSize(size) {
+    clientsPageSize = parseInt(size, 10);
+    clientsPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
   }
 
   function handleFilterSearch(val) {
@@ -682,34 +762,38 @@ window.MartelaBilling = (function() {
     const metodoPago = document.getElementById('directMetodoPago').value;
     const formaPago = document.getElementById('directFormaPago').value;
 
-    try {
-      const inv = await window.apiFacade.createInvoiceDirect({
-        cliente_id: clienteId,
-        metodo_pago: metodoPago,
-        forma_pago: formaPago,
-        partidas: directItems
-      });
+    await window.MartelaUI.withLoading('Timbrando factura CFDI 4.0 ante el PAC...', async () => {
+      try {
+        const inv = await window.apiFacade.createInvoiceDirect({
+          cliente_id: clienteId,
+          metodo_pago: metodoPago,
+          forma_pago: formaPago,
+          partidas: directItems
+        });
 
-      directItems = [];
-      window.MartelaUI.toast(`¡Factura ${inv.id} timbrada exitosamente con UUID ${inv.uuid.slice(0, 8)}...!`, 'success');
-      activeTab = 'invoices';
-      render(document.getElementById('contentContainer'));
-      verFactura(inv.id);
-    } catch (e) {
-      window.MartelaUI.toast(e.message, 'error');
-    }
+        directItems = [];
+        window.MartelaUI.toast(`¡Factura ${inv.id} timbrada exitosamente con UUID ${inv.uuid.slice(0, 8)}...!`, 'success');
+        activeTab = 'invoices';
+        render(document.getElementById('contentContainer'));
+        verFactura(inv.id);
+      } catch (e) {
+        window.MartelaUI.toast(e.message, 'error');
+      }
+    });
   }
 
   async function generateInvoiceFromOrder(orderId) {
-    try {
-      const inv = await window.apiFacade.generateInvoiceForOrder(orderId);
-      window.MartelaUI.toast(`Factura CFDI 4.0 ${inv.id} emitida exitosamente para pedido ${orderId}`, 'success');
-      activeTab = 'invoices';
-      render(document.getElementById('contentContainer'));
-      verFactura(inv.id);
-    } catch (err) {
-      window.MartelaUI.toast(err.message, 'error');
-    }
+    await window.MartelaUI.withLoading(`Emitiendo factura CFDI 4.0 para orden ${orderId}...`, async () => {
+      try {
+        const inv = await window.apiFacade.generateInvoiceForOrder(orderId);
+        window.MartelaUI.toast(`Factura CFDI 4.0 ${inv.id} emitida exitosamente para pedido ${orderId}`, 'success');
+        activeTab = 'invoices';
+        render(document.getElementById('contentContainer'));
+        verFactura(inv.id);
+      } catch (err) {
+        window.MartelaUI.toast(err.message, 'error');
+      }
+    });
   }
 
   // ==========================================
@@ -717,6 +801,7 @@ window.MartelaBilling = (function() {
   // ==========================================
   function renderTabCxC(content, cxcSummary, payments) {
     const { money, esc } = window.MartelaUI;
+    const repPag = window.MartelaUI.paginate(payments, repPage, repPageSize);
 
     content.innerHTML = `
       <div class="space-y-6">
@@ -823,7 +908,7 @@ window.MartelaBilling = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                ${payments.map(p => `
+                ${repPag.items.map(p => `
                   <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                     <td class="p-3.5 font-mono">
                       <div class="font-bold text-purple-600 dark:text-purple-400">${esc(p.id)}</div>
@@ -858,6 +943,17 @@ window.MartelaBilling = (function() {
               </tbody>
             </table>
           </div>
+
+          ${window.MartelaUI.renderPaginationControls({
+            currentPage: repPag.currentPage,
+            totalPages: repPag.totalPages,
+            pageSize: repPag.pageSize,
+            totalItems: repPag.totalItems,
+            startIndex: repPag.startIndex,
+            endIndex: repPag.endIndex,
+            onPageChange: 'MartelaBilling.goToRepPage',
+            onPageSizeChange: 'MartelaBilling.setRepPageSize'
+          })}
         </div>
       </div>
     `;
@@ -943,20 +1039,22 @@ window.MartelaBilling = (function() {
     const forma = document.getElementById('pagoFormaSelect').value;
     const ref = document.getElementById('pagoRefInput').value;
 
-    try {
-      const pag = await window.apiFacade.registerPayment({
-        factura_id: invoiceId,
-        monto: monto,
-        forma_pago: forma,
-        numero_operacion: ref
-      });
+    await window.MartelaUI.withLoading('Aplicando cobranza y timbrando Complemento de Pago (REP)...', async () => {
+      try {
+        const pag = await window.apiFacade.registerPayment({
+          factura_id: invoiceId,
+          monto: monto,
+          forma_pago: forma,
+          numero_operacion: ref
+        });
 
-      window.MartelaUI.closeModal();
-      window.MartelaUI.toast(`¡Pago registrado exitosamente! Se emitió el Complemento de Pago ${pag.id}`, 'success');
-      render(document.getElementById('contentContainer'));
-    } catch (e) {
-      window.MartelaUI.toast(e.message, 'error');
-    }
+        window.MartelaUI.closeModal();
+        window.MartelaUI.toast(`¡Pago registrado exitosamente! Se emitió el Complemento de Pago ${pag.id}`, 'success');
+        render(document.getElementById('contentContainer'));
+      } catch (e) {
+        window.MartelaUI.toast(e.message, 'error');
+      }
+    });
   }
 
   // ==========================================
@@ -964,6 +1062,7 @@ window.MartelaBilling = (function() {
   // ==========================================
   function renderTabCreditNotes(content, creditNotes, invoices) {
     const { money, esc } = window.MartelaUI;
+    const ncPag = window.MartelaUI.paginate(creditNotes, ncPage, ncPageSize);
 
     content.innerHTML = `
       <div class="space-y-6">
@@ -994,13 +1093,13 @@ window.MartelaBilling = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                ${creditNotes.length === 0 ? `
+                ${ncPag.items.length === 0 ? `
                   <tr>
                     <td colspan="9" class="p-8 text-center text-slate-400">
                       No se han emitido notas de crédito aún.
                     </td>
                   </tr>
-                ` : creditNotes.map(nc => `
+                ` : ncPag.items.map(nc => `
                   <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                     <td class="p-3.5 font-mono">
                       <div class="font-bold text-amber-600 dark:text-amber-400">${esc(nc.id)}</div>
@@ -1023,6 +1122,17 @@ window.MartelaBilling = (function() {
               </tbody>
             </table>
           </div>
+
+          ${window.MartelaUI.renderPaginationControls({
+            currentPage: ncPag.currentPage,
+            totalPages: ncPag.totalPages,
+            pageSize: ncPag.pageSize,
+            totalItems: ncPag.totalItems,
+            startIndex: ncPag.startIndex,
+            endIndex: ncPag.endIndex,
+            onPageChange: 'MartelaBilling.goToNcPage',
+            onPageSizeChange: 'MartelaBilling.setNcPageSize'
+          })}
         </div>
       </div>
     `;
@@ -1091,21 +1201,23 @@ window.MartelaBilling = (function() {
     const canalizar = document.getElementById('ncCanalizarFundicion').checked;
     const peso = document.getElementById('ncPesoFundicion').value;
 
-    try {
-      const nc = await window.apiFacade.createCreditNote({
-        factura_id: facturaId,
-        subtotal: subtotal,
-        motivo: motivo,
-        canalizar_a_fundicion: canalizar,
-        peso_g: peso
-      });
+    await window.MartelaUI.withLoading('Timbrando Nota de Crédito ante el SAT...', async () => {
+      try {
+        const nc = await window.apiFacade.createCreditNote({
+          factura_id: facturaId,
+          subtotal: subtotal,
+          motivo: motivo,
+          canalizar_a_fundicion: canalizar,
+          peso_g: peso
+        });
 
-      window.MartelaUI.closeModal();
-      window.MartelaUI.toast(`Nota de crédito ${nc.id} emitida con éxito`, 'success');
-      render(document.getElementById('contentContainer'));
-    } catch (e) {
-      window.MartelaUI.toast(e.message, 'error');
-    }
+        window.MartelaUI.closeModal();
+        window.MartelaUI.toast(`Nota de crédito ${nc.id} emitida con éxito`, 'success');
+        render(document.getElementById('contentContainer'));
+      } catch (e) {
+        window.MartelaUI.toast(e.message, 'error');
+      }
+    });
   }
 
   // ==========================================
@@ -1113,6 +1225,7 @@ window.MartelaBilling = (function() {
   // ==========================================
   function renderTabClients(content, clients) {
     const { money, esc } = window.MartelaUI;
+    const cliPag = window.MartelaUI.paginate(clients, clientsPage, clientsPageSize);
 
     content.innerHTML = `
       <div class="space-y-6">
@@ -1143,7 +1256,7 @@ window.MartelaBilling = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                ${clients.map(c => `
+                ${cliPag.items.map(c => `
                   <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                     <td class="p-3.5 font-mono">
                       <div class="font-bold text-amber-600 dark:text-amber-400">${esc(c.id)}</div>
@@ -1171,6 +1284,17 @@ window.MartelaBilling = (function() {
               </tbody>
             </table>
           </div>
+
+          ${window.MartelaUI.renderPaginationControls({
+            currentPage: cliPag.currentPage,
+            totalPages: cliPag.totalPages,
+            pageSize: cliPag.pageSize,
+            totalItems: cliPag.totalItems,
+            startIndex: cliPag.startIndex,
+            endIndex: cliPag.endIndex,
+            onPageChange: 'MartelaBilling.goToClientsPage',
+            onPageSizeChange: 'MartelaBilling.setClientsPageSize'
+          })}
         </div>
       </div>
     `;
@@ -1279,28 +1403,30 @@ window.MartelaBilling = (function() {
       return;
     }
 
-    try {
-      await window.apiFacade.saveClient({
-        id: id || undefined,
-        nombre: nombre,
-        razon_social: razon || nombre,
-        rfc: rfc.toUpperCase(),
-        regimen_fiscal: regimen,
-        cp_fiscal: cp,
-        uso_cfdi: uso,
-        correo_facturacion: correo,
-        dias_credito: dias,
-        limite_credito: limite,
-        metodo_pago_defecto: dias > 0 ? 'PPD' : 'PUE',
-        forma_pago_defecto: dias > 0 ? '99' : '03'
-      });
+    await window.MartelaUI.withLoading('Guardando cliente fiscal y sincronizando datos SAT...', async () => {
+      try {
+        await window.apiFacade.saveClient({
+          id: id || undefined,
+          nombre: nombre,
+          razon_social: razon || nombre,
+          rfc: rfc.toUpperCase(),
+          regimen_fiscal: regimen,
+          cp_fiscal: cp,
+          uso_cfdi: uso,
+          correo_facturacion: correo,
+          dias_credito: dias,
+          limite_credito: limite,
+          metodo_pago_defecto: dias > 0 ? 'PPD' : 'PUE',
+          forma_pago_defecto: dias > 0 ? '99' : '03'
+        });
 
-      window.MartelaUI.closeModal();
-      window.MartelaUI.toast("Cliente fiscal actualizado correctamente", "success");
-      render(document.getElementById('contentContainer'));
-    } catch (e) {
-      window.MartelaUI.toast(e.message, 'error');
-    }
+        window.MartelaUI.closeModal();
+        window.MartelaUI.toast("Cliente fiscal actualizado correctamente", "success");
+        render(document.getElementById('contentContainer'));
+      } catch (e) {
+        window.MartelaUI.toast(e.message, 'error');
+      }
+    });
   }
 
   // ==========================================
@@ -1577,45 +1703,57 @@ window.MartelaBilling = (function() {
 
   async function confirmCancel(invoiceId) {
     const motivo = document.getElementById('cancelMotivoSelect').value;
-    try {
-      await window.apiFacade.cancelInvoice(invoiceId, motivo);
-      window.MartelaUI.closeModal();
-      window.MartelaUI.toast(`Factura ${invoiceId} cancelada exitosamente ante el SAT (Motivo ${motivo})`, 'info');
-      render(document.getElementById('contentContainer'));
-    } catch (e) {
-      window.MartelaUI.toast(e.message, 'error');
-    }
+    await window.MartelaUI.withLoading(`Cancelando factura fiscal ${invoiceId} ante el SAT...`, async () => {
+      try {
+        await window.apiFacade.cancelInvoice(invoiceId, motivo);
+        window.MartelaUI.closeModal();
+        window.MartelaUI.toast(`Factura ${invoiceId} cancelada exitosamente ante el SAT (Motivo ${motivo})`, 'info');
+        render(document.getElementById('contentContainer'));
+      } catch (e) {
+        window.MartelaUI.toast(e.message, 'error');
+      }
+    });
   }
 
-  function exportInvoicesExcel() {
-    const db = window.apiFacade._getDB();
-    const rows = db.invoices.map(i => ({
-      'Folio': i.id,
-      'UUID Fiscal': i.uuid,
-      'Cliente': i.cliente,
-      'RFC': i.rfc,
-      'Fecha Emisión': i.fecha,
-      'Fecha Vence': i.fecha_vencimiento,
-      'Tipo': i.tipo_comprobante,
-      'Método Pago': i.metodo_pago,
-      'Forma Pago': i.forma_pago_desc,
-      'Piezas': i.piezas_count,
-      'Gramos': i.gramos_totales,
-      'Subtotal (MXN)': i.subtotal,
-      'IVA 16% (MXN)': i.impuesto_iva,
-      'Total (MXN)': i.total,
-      'Saldo Pendiente (MXN)': i.saldo_pendiente,
-      'Estatus Cobro': i.estatus_pago,
-      'Estatus SAT': i.estatus_sat,
-      'Folio PLD': i.vinculo_pld
-    }));
+  async function exportInvoicesExcel() {
+    await window.MartelaUI.withLoading('Exportando facturas CFDI 4.0 a Excel...', async () => {
+      const db = window.apiFacade._getDB();
+      const rows = db.invoices.map(i => ({
+        'Folio': i.id,
+        'UUID Fiscal': i.uuid,
+        'Cliente': i.cliente,
+        'RFC': i.rfc,
+        'Fecha Emisión': i.fecha,
+        'Fecha Vence': i.fecha_vencimiento,
+        'Tipo': i.tipo_comprobante,
+        'Método Pago': i.metodo_pago,
+        'Forma Pago': i.forma_pago_desc,
+        'Piezas': i.piezas_count,
+        'Gramos': i.gramos_totales,
+        'Subtotal (MXN)': i.subtotal,
+        'IVA 16% (MXN)': i.impuesto_iva,
+        'Total (MXN)': i.total,
+        'Saldo Pendiente (MXN)': i.saldo_pendiente,
+        'Estatus Cobro': i.estatus_pago,
+        'Estatus SAT': i.estatus_sat,
+        'Folio PLD': i.vinculo_pld
+      }));
 
-    window.MartelaUI.exportToExcel(rows, `martela-cfdi-facturacion-${new Date().toISOString().slice(0, 10)}.xlsx`, 'Facturas');
+      window.MartelaUI.exportToExcel(rows, `martela-cfdi-facturacion-${new Date().toISOString().slice(0, 10)}.xlsx`, 'Facturas');
+    });
   }
 
   return {
     render,
     switchTab,
+    goToPage,
+    setPageSize,
+    goToRepPage,
+    setRepPageSize,
+    goToNcPage,
+    setNcPageSize,
+    goToClientsPage,
+    setClientsPageSize,
     handleFilterSearch,
     handleFilterSat,
     handleFilterPago,

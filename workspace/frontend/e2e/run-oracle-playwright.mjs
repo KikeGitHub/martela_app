@@ -248,6 +248,11 @@ async function runOracle() {
 
     fs.writeFileSync(reportPath, reportMd, 'utf8');
     console.log(reportMd);
+  } catch (err) {
+    console.error('ERROR EN ORÁCULO PLAYWRIGHT:', err);
+    console.error('PAGE ERRORS:', pageErrors);
+    console.error('CONSOLE ERRORS:', consoleErrors);
+    throw err;
   } finally {
     await browser.close();
   }

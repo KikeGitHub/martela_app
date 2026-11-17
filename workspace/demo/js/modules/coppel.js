@@ -8,6 +8,14 @@
 window.MartelaCoppel = (function() {
   let currentClientTab = 'coppel'; // 'coppel' | 'montepio' | 'mayoristas'
   const expandedBranches = new Set();
+  let coppelPage = 1;
+  let coppelPageSize = 20;
+  let mlsPiecesPage = 1;
+  let mlsPiecesPageSize = 20;
+  let mlsRemisionesPage = 1;
+  let mlsRemisionesPageSize = 20;
+  let wsCartPage = 1;
+  let wsCartPageSize = 20;
 
   // Estado reactivo para Montepío Luz Saviñón
   let mlsConfig = {
@@ -359,143 +367,160 @@ window.MartelaCoppel = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${activeOrder.sucursales.map(s => {
-                const isExpanded = expandedBranches.has(s.tienda_id);
-                const assignedCount = (s.piezas_asignadas_ids || []).length;
-                const isBranchFull = assignedCount === s.piezas_solicitadas;
-                const branchPieces = (db.inventory_pieces || []).filter(p => (s.piezas_asignadas_ids || []).includes(p.piece_id));
+              ${(() => {
+                const copPag = window.MartelaUI.paginate(activeOrder.sucursales, coppelPage, coppelPageSize);
+                return copPag.items.map(s => {
+                  const isExpanded = expandedBranches.has(s.tienda_id);
+                  const assignedCount = (s.piezas_asignadas_ids || []).length;
+                  const isBranchFull = assignedCount === s.piezas_solicitadas;
+                  const branchPieces = (db.inventory_pieces || []).filter(p => (s.piezas_asignadas_ids || []).includes(p.piece_id));
 
-                return `
-                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                    <td class="p-3 font-mono font-bold text-amber-600 dark:text-amber-400">${esc(s.numero_sucursal || s.tienda_id)}</td>
-                    <td class="p-3">
-                      <div class="font-semibold text-slate-900 dark:text-white">${esc(s.nombre)}</div>
-                      <div class="text-[10px] text-slate-400">CEDIS: ${esc(s.cedis)} · Zona: ${esc(s.zona)}</div>
-                    </td>
-                    <td class="p-3 text-center">
-                      <span class="font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300">
-                        Caja #${s.caja_sugerida}
-                      </span>
-                    </td>
-                    <td class="p-3 text-center">
-                      <span class="font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
-                        FOLIO: ${esc(s.sello_seguridad_bolsa || 'Z008340')}
-                      </span>
-                    </td>
-                    <td class="p-3 text-center font-mono text-slate-600 dark:text-slate-300">
-                      ${esc(s.factura_sae || 'SAE-F-90812')}
-                    </td>
-                    <td class="p-3 text-center font-bold">
-                      <span class="${isBranchFull ? 'text-emerald-500' : 'text-amber-500'}">
-                        ${assignedCount}
-                      </span> / ${s.piezas_solicitadas}
-                    </td>
-                    <td class="p-3 text-center">
-                      ${isDispatched ? badge('DESPACHADO') : isBranchFull ? badge('LISTO_EMPAQUE') : badge('PENDIENTE')}
-                    </td>
-                    <td class="p-3 text-center">
-                      <button 
-                        onclick="MartelaCoppel.toggleBranchAccordion('${s.tienda_id}')"
-                        class="btn btn-soft text-[11px] py-1 px-2.5 font-mono"
-                        title="Ver detalle de piezas físicas individuales"
-                      >
-                        ${isExpanded ? '▲ Ocultar' : '▼ Ver Piezas'} (${assignedCount})
-                      </button>
-                    </td>
-                    <td class="p-3 text-center">
-                      <div class="flex flex-wrap items-center justify-center gap-2">
-                        <button
-                          onclick="MartelaCoppel.openRemisionPdfModal('${activeOrder.order_id}', '${s.tienda_id}')"
-                          class="text-amber-600 dark:text-amber-400 font-bold hover:underline"
-                          title="Ver e Imprimir Hoja de Remisión con Sello"
+                  return `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td class="p-3 font-mono font-bold text-amber-600 dark:text-amber-400">${esc(s.numero_sucursal || s.tienda_id)}</td>
+                      <td class="p-3">
+                        <div class="font-semibold text-slate-900 dark:text-white">${esc(s.nombre)}</div>
+                        <div class="text-[10px] text-slate-400">CEDIS: ${esc(s.cedis)} · Zona: ${esc(s.zona)}</div>
+                      </td>
+                      <td class="p-3 text-center">
+                        <span class="font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300">
+                          Caja #${s.caja_sugerida}
+                        </span>
+                      </td>
+                      <td class="p-3 text-center">
+                        <span class="font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                          FOLIO: ${esc(s.sello_seguridad_bolsa || 'Z008340')}
+                        </span>
+                      </td>
+                      <td class="p-3 text-center font-mono text-slate-600 dark:text-slate-300">
+                        ${esc(s.factura_sae || 'SAE-F-90812')}
+                      </td>
+                      <td class="p-3 text-center font-bold">
+                        <span class="${isBranchFull ? 'text-emerald-500' : 'text-amber-500'}">
+                          ${assignedCount}
+                        </span> / ${s.piezas_solicitadas}
+                      </td>
+                      <td class="p-3 text-center">
+                        ${isDispatched ? badge('DESPACHADO') : isBranchFull ? badge('LISTO_EMPAQUE') : badge('PENDIENTE')}
+                      </td>
+                      <td class="p-3 text-center">
+                        <button 
+                          onclick="MartelaCoppel.toggleBranchAccordion('${s.tienda_id}')"
+                          class="btn btn-soft text-[11px] py-1 px-2.5 font-mono"
+                          title="Ver detalle de piezas físicas individuales"
                         >
-                          📄 Remisión PDF
+                          ${isExpanded ? '▲ Ocultar' : '▼ Ver Piezas'} (${assignedCount})
                         </button>
-                        <button
-                          onclick="MartelaCoppel.exportLayoutExcel16Cols('${activeOrder.order_id}', '${s.tienda_id}')"
-                          class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline"
-                          title="Descargar Layout Excel 16 Columnas de esta sucursal"
-                        >
-                          📊 .xlsx
-                        </button>
-                        <button
-                          onclick="MartelaCoppel.openEditSealModal('${activeOrder.order_id}', '${s.tienda_id}')"
-                          class="text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                          title="Configurar Sello de Bolsa y Peso Verificado"
-                        >
-                          🔒 Sello
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  ${isExpanded ? `
-                    <tr class="bg-slate-50 dark:bg-slate-900/70 border-b-2 border-amber-500/40">
-                      <td colspan="9" class="p-4">
-                        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-inner">
-                          <div class="flex justify-between items-center mb-3">
-                            <div>
-                              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">
-                                Despiece Físico Asignado — ${esc(s.numero_sucursal || s.tienda_id)} (${esc(s.nombre)})
-                              </span>
-                              <span class="text-[11px] text-slate-400 block">
-                                Caja #${s.caja_sugerida} · Folio de Sello Plástico: <b class="text-emerald-600 font-mono">${esc(s.sello_seguridad_bolsa || 'Z008340')}</b>
-                              </span>
-                            </div>
-                            <span class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">
-                              ${branchPieces.length} piezas físicas asignadas
-                            </span>
-                          </div>
-
-                          ${branchPieces.length > 0 ? `
-                            <div class="overflow-x-auto max-h-48 overflow-y-auto">
-                              <table class="w-full text-left text-[11px] font-mono">
-                                <thead class="bg-slate-100 dark:bg-slate-700 text-slate-500 uppercase sticky top-0">
-                                  <tr>
-                                    <th class="p-1.5">ID Pieza</th>
-                                    <th class="p-1.5">SKU 14</th>
-                                    <th class="p-1.5">Modelo</th>
-                                    <th class="p-1.5 text-right">Bruto (g)</th>
-                                    <th class="p-1.5 text-right">CZ (g)</th>
-                                    <th class="p-1.5 text-right font-bold text-amber-600">Neto (g)</th>
-                                    <th class="p-1.5 text-center">Gaveta Origen</th>
-                                    <th class="p-1.5 text-center">Estatus</th>
-                                  </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                                  ${branchPieces.map(p => `
-                                    <tr>
-                                      <td class="p-1.5 font-bold text-amber-600 dark:text-amber-400">${esc(p.piece_id)}</td>
-                                      <td class="p-1.5">${esc(p.sku_ref)}</td>
-                                      <td class="p-1.5">${esc(p.modelo || 'MRT-AN-1042')}</td>
-                                      <td class="p-1.5 text-right">${Number(p.peso_bruto_g || 2.38).toFixed(4)}g</td>
-                                      <td class="p-1.5 text-right text-slate-400">${Number(p.peso_piedra_g || 0.18).toFixed(4)}g</td>
-                                      <td class="p-1.5 text-right font-bold text-slate-900 dark:text-white">${Number(p.peso_neto_g || 2.20).toFixed(4)}g</td>
-                                      <td class="p-1.5 text-center text-slate-400">${esc(p.drawer_id || 'BOVEDA-R1-N2-G05')}</td>
-                                      <td class="p-1.5 text-center">
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] ${p.estatus === 'DESPACHADO_COPPEL' ? 'bg-blue-500/20 text-blue-600' : 'bg-emerald-500/20 text-emerald-600 font-bold'}">
-                                          ${esc(p.estatus)}
-                                        </span>
-                                      </td>
-                                    </tr>
-                                  `).join('')}
-                                </tbody>
-                              </table>
-                            </div>
-                          ` : `
-                            <div class="py-4 text-center text-slate-400 text-xs">
-                              Esta sucursal aún no tiene piezas físicas asignadas. Haz clic en <b>"⚡ Asignar 438 Sub-piezas Automáticamente"</b> para ejecutar el surtido FIFO desde bóveda.
-                            </div>
-                          `}
+                      </td>
+                      <td class="p-3 text-center">
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                          <button
+                            onclick="MartelaCoppel.openRemisionPdfModal('${activeOrder.order_id}', '${s.tienda_id}')"
+                            class="text-amber-600 dark:text-amber-400 font-bold hover:underline"
+                            title="Ver e Imprimir Hoja de Remisión con Sello"
+                          >
+                            📄 Remisión PDF
+                          </button>
+                          <button
+                            onclick="MartelaCoppel.exportLayoutExcel16Cols('${activeOrder.order_id}', '${s.tienda_id}')"
+                            class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline"
+                            title="Descargar Layout Excel 16 Columnas de esta sucursal"
+                          >
+                            📊 .xlsx
+                          </button>
+                          <button
+                            onclick="MartelaCoppel.openEditSealModal('${activeOrder.order_id}', '${s.tienda_id}')"
+                            class="text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                            title="Configurar Sello de Bolsa y Peso Verificado"
+                          >
+                            🔒 Sello
+                          </button>
                         </div>
                       </td>
                     </tr>
-                  ` : ''}
-                `;
-              }).join('')}
+
+                    ${isExpanded ? `
+                      <tr class="bg-slate-50 dark:bg-slate-900/70 border-b-2 border-amber-500/40">
+                        <td colspan="9" class="p-4">
+                          <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-inner">
+                            <div class="flex justify-between items-center mb-3">
+                              <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                  Despiece Físico Asignado — ${esc(s.numero_sucursal || s.tienda_id)} (${esc(s.nombre)})
+                                </span>
+                                <span class="text-[11px] text-slate-400 block">
+                                  Caja #${s.caja_sugerida} · Folio de Sello Plástico: <b class="text-emerald-600 font-mono">${esc(s.sello_seguridad_bolsa || 'Z008340')}</b>
+                                </span>
+                              </div>
+                              <span class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">
+                                ${branchPieces.length} piezas físicas asignadas
+                              </span>
+                            </div>
+
+                            ${branchPieces.length > 0 ? `
+                              <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                                <table class="w-full text-left text-[11px] font-mono">
+                                  <thead class="bg-slate-100 dark:bg-slate-700 text-slate-500 uppercase sticky top-0">
+                                    <tr>
+                                      <th class="p-1.5">ID Pieza</th>
+                                      <th class="p-1.5">SKU 14</th>
+                                      <th class="p-1.5">Modelo</th>
+                                      <th class="p-1.5 text-right">Bruto (g)</th>
+                                      <th class="p-1.5 text-right">CZ (g)</th>
+                                      <th class="p-1.5 text-right font-bold text-amber-600">Neto (g)</th>
+                                      <th class="p-1.5 text-center">Gaveta Origen</th>
+                                      <th class="p-1.5 text-center">Estatus</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                    ${branchPieces.map(p => `
+                                      <tr>
+                                        <td class="p-1.5 font-bold text-amber-600 dark:text-amber-400">${esc(p.piece_id)}</td>
+                                        <td class="p-1.5">${esc(p.sku_ref)}</td>
+                                        <td class="p-1.5">${esc(p.modelo || 'MRT-AN-1042')}</td>
+                                        <td class="p-1.5 text-right">${Number(p.peso_bruto_g || 2.38).toFixed(4)}g</td>
+                                        <td class="p-1.5 text-right text-slate-400">${Number(p.peso_piedra_g || 0.18).toFixed(4)}g</td>
+                                        <td class="p-1.5 text-right font-bold text-slate-900 dark:text-white">${Number(p.peso_neto_g || 2.20).toFixed(4)}g</td>
+                                        <td class="p-1.5 text-center text-slate-400">${esc(p.drawer_id || 'BOVEDA-R1-N2-G05')}</td>
+                                        <td class="p-1.5 text-center">
+                                          <span class="px-1.5 py-0.5 rounded text-[10px] ${p.estatus === 'DESPACHADO_COPPEL' ? 'bg-blue-500/20 text-blue-600' : 'bg-emerald-500/20 text-emerald-600 font-bold'}">
+                                            ${esc(p.estatus)}
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    `).join('')}
+                                  </tbody>
+                                </table>
+                              </div>
+                            ` : `
+                              <div class="py-4 text-center text-slate-400 text-xs">
+                                Esta sucursal aún no tiene piezas físicas asignadas. Haz clic en <b>"⚡ Asignar 438 Sub-piezas Automáticamente"</b> para ejecutar el surtido FIFO desde bóveda.
+                              </div>
+                            `}
+                          </div>
+                        </td>
+                      </tr>
+                    ` : ''}
+                  `;
+                }).join('');
+              })()}
             </tbody>
           </table>
         </div>
+        ${(() => {
+          const copPag = window.MartelaUI.paginate(activeOrder.sucursales, coppelPage, coppelPageSize);
+          return window.MartelaUI.renderPaginationControls({
+            totalItems: copPag.totalItems,
+            currentPage: copPag.currentPage,
+            pageSize: copPag.pageSize,
+            totalPages: copPag.totalPages,
+            startIdx: copPag.startIdx,
+            endIdx: copPag.endIdx,
+            onPageChange: 'MartelaCoppel.goToCoppelPage',
+            onPageSizeChange: 'MartelaCoppel.setCoppelPageSize',
+            itemName: 'sucursales / CEDIS Coppel'
+          });
+        })()}
       </div>
     `;
   }
@@ -762,37 +787,54 @@ window.MartelaCoppel = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono text-[11px]">
-                ${availablePieces.slice(0, 30).map(p => {
-                  const isChecked = mlsConfig.selectedPieceIds.has(p.piece_id);
-                  const prod = db.products_sku.find(x => x.sku === p.sku_ref) || {};
-                  const neto = Number(p.peso_neto_g || 1.8);
-                  const oroFino = isPlata ? 0 : +(neto * factorOroFino).toFixed(5);
+                ${(() => {
+                  const mPag = window.MartelaUI.paginate(availablePieces, mlsPiecesPage, mlsPiecesPageSize);
+                  return mPag.items.map(p => {
+                    const isChecked = mlsConfig.selectedPieceIds.has(p.piece_id);
+                    const prod = db.products_sku.find(x => x.sku === p.sku_ref) || {};
+                    const neto = Number(p.peso_neto_g || 1.8);
+                    const oroFino = isPlata ? 0 : +(neto * factorOroFino).toFixed(5);
 
-                  return `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 ${isChecked ? 'bg-amber-500/5' : ''}">
-                      <td class="p-2.5 text-center">
-                        <input 
-                          type="checkbox" 
-                          ${isChecked ? 'checked' : ''} 
-                          onchange="MartelaCoppel.toggleMlsPiece('${p.piece_id}')"
-                          class="rounded text-amber-600 focus:ring-amber-500 cursor-pointer"
-                        />
-                      </td>
-                      <td class="p-2.5 font-bold text-amber-600 dark:text-amber-400">${esc(p.piece_id)}</td>
-                      <td class="p-2.5">${esc(p.sku_ref)}</td>
-                      <td class="p-2.5 font-sans font-semibold">${esc(p.modelo || prod.modelo_martela || 'MRT-AN-1042')}</td>
-                      <td class="p-2.5 font-sans">${esc(prod.quilataje || '10K')}</td>
-                      <td class="p-2.5 text-right">${Number(p.peso_bruto_g || 2.0).toFixed(4)}g</td>
-                      <td class="p-2.5 text-right text-slate-400">${Number(p.peso_piedra_g || 0.18).toFixed(4)}g</td>
-                      <td class="p-2.5 text-right font-bold text-slate-900 dark:text-white">${neto.toFixed(4)}g</td>
-                      <td class="p-2.5 text-right text-amber-600 font-bold">${oroFino.toFixed(5)}g</td>
-                      <td class="p-2.5 text-center text-slate-400">${esc(p.drawer_id || 'BOVEDA-R1-N2-G05')}</td>
-                    </tr>
-                  `;
-                }).join('')}
+                    return `
+                      <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 ${isChecked ? 'bg-amber-500/5' : ''}">
+                        <td class="p-2.5 text-center">
+                          <input 
+                            type="checkbox" 
+                            ${isChecked ? 'checked' : ''} 
+                            onchange="MartelaCoppel.toggleMlsPiece('${p.piece_id}')"
+                            class="rounded text-amber-600 focus:ring-amber-500 cursor-pointer"
+                          />
+                        </td>
+                        <td class="p-2.5 font-bold text-amber-600 dark:text-amber-400">${esc(p.piece_id)}</td>
+                        <td class="p-2.5">${esc(p.sku_ref)}</td>
+                        <td class="p-2.5 font-sans font-semibold">${esc(p.modelo || prod.modelo_martela || 'MRT-AN-1042')}</td>
+                        <td class="p-2.5 font-sans">${esc(prod.quilataje || '10K')}</td>
+                        <td class="p-2.5 text-right">${Number(p.peso_bruto_g || 2.0).toFixed(4)}g</td>
+                        <td class="p-2.5 text-right text-slate-400">${Number(p.peso_piedra_g || 0.18).toFixed(4)}g</td>
+                        <td class="p-2.5 text-right font-bold text-slate-900 dark:text-white">${neto.toFixed(4)}g</td>
+                        <td class="p-2.5 text-right text-amber-600 font-bold">${oroFino.toFixed(5)}g</td>
+                        <td class="p-2.5 text-center text-slate-400">${esc(p.drawer_id || 'BOVEDA-R1-N2-G05')}</td>
+                      </tr>
+                    `;
+                  }).join('');
+                })()}
               </tbody>
             </table>
           </div>
+          ${(() => {
+            const mPag = window.MartelaUI.paginate(availablePieces, mlsPiecesPage, mlsPiecesPageSize);
+            return window.MartelaUI.renderPaginationControls({
+              totalItems: mPag.totalItems,
+              currentPage: mPag.currentPage,
+              pageSize: mPag.pageSize,
+              totalPages: mPag.totalPages,
+              startIdx: mPag.startIdx,
+              endIdx: mPag.endIdx,
+              onPageChange: 'MartelaCoppel.goToMlsPiecesPage',
+              onPageSizeChange: 'MartelaCoppel.setMlsPiecesPageSize',
+              itemName: 'piezas físicas en bóveda'
+            });
+          })()}
         </div>
 
         <!-- Historial de Remisiones Emitidas para MLS -->
@@ -824,38 +866,56 @@ window.MartelaCoppel = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono text-[11px]">
-                ${remisionesMls.map(r => `
-                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                    <td class="p-3 font-bold text-amber-600 dark:text-amber-400">${esc(r.folio_remision)}</td>
-                    <td class="p-3 font-sans font-semibold">${esc(r.centro_nombre || r.centro_logistico_id)}</td>
-                    <td class="p-3 font-sans">${esc(r.tipo_metal)}</td>
-                    <td class="p-3 text-center">
-                      <span class="px-2 py-0.5 rounded font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
-                        ${esc(r.folio_sello_seguridad)}
-                      </span>
-                    </td>
-                    <td class="p-3 text-center">${Number(r.peso_bruto_con_bolsa_g).toFixed(2)} g</td>
-                    <td class="p-3 text-center font-bold font-sans">${r.total_piezas}</td>
-                    <td class="p-3 text-right text-amber-600 font-bold">${Number(r.total_oro_fino_g || 0).toFixed(5)}g</td>
-                    <td class="p-3 text-right font-sans font-bold">${money(r.total_publico_con_iva)}</td>
-                    <td class="p-3 text-center font-sans">
-                      <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estatus === 'EN_RUTA' ? 'bg-blue-500/20 text-blue-600' : 'bg-amber-500/20 text-amber-700'}">
-                        ${esc(r.estatus)}
-                      </span>
-                    </td>
-                    <td class="p-3 text-center font-sans">
-                      <button onclick="MartelaCoppel.exportLayoutExcel16Cols('COP-2026-W42', '${r.centro_logistico_id}')" class="text-emerald-600 font-bold hover:underline mr-2">
-                        📊 .xlsx
-                      </button>
-                      <button onclick="MartelaCoppel.openRemisionPdfModal('COP-2026-W42', '${r.centro_logistico_id}')" class="text-amber-600 font-bold hover:underline">
-                        📄 PDF
-                      </button>
-                    </td>
-                  </tr>
-                `).join('')}
+                ${(() => {
+                  const rPag = window.MartelaUI.paginate(remisionesMls, mlsRemisionesPage, mlsRemisionesPageSize);
+                  return rPag.items.map(r => `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td class="p-3 font-bold text-amber-600 dark:text-amber-400">${esc(r.folio_remision)}</td>
+                      <td class="p-3 font-sans font-semibold">${esc(r.centro_nombre || r.centro_logistico_id)}</td>
+                      <td class="p-3 font-sans">${esc(r.tipo_metal)}</td>
+                      <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 rounded font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                          ${esc(r.folio_sello_seguridad)}
+                        </span>
+                      </td>
+                      <td class="p-3 text-center">${Number(r.peso_bruto_con_bolsa_g).toFixed(2)} g</td>
+                      <td class="p-3 text-center font-bold font-sans">${r.total_piezas}</td>
+                      <td class="p-3 text-right text-amber-600 font-bold">${Number(r.total_oro_fino_g || 0).toFixed(5)}g</td>
+                      <td class="p-3 text-right font-sans font-bold">${money(r.total_publico_con_iva)}</td>
+                      <td class="p-3 text-center font-sans">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estatus === 'EN_RUTA' ? 'bg-blue-500/20 text-blue-600' : 'bg-amber-500/20 text-amber-700'}">
+                          ${esc(r.estatus)}
+                        </span>
+                      </td>
+                      <td class="p-3 text-center font-sans">
+                        <button onclick="MartelaCoppel.exportLayoutExcel16Cols('COP-2026-W42', '${r.centro_logistico_id}')" class="text-emerald-600 font-bold hover:underline mr-2">
+                          📊 .xlsx
+                        </button>
+                        <button onclick="MartelaCoppel.openRemisionPdfModal('COP-2026-W42', '${r.centro_logistico_id}')" class="text-amber-600 font-bold hover:underline">
+                          📄 PDF
+                        </button>
+                      </td>
+                    </tr>
+                  `).join('');
+                })()}
               </tbody>
             </table>
           </div>
+          ${(() => {
+            const rPag = window.MartelaUI.paginate(remisionesMls, mlsRemisionesPage, mlsRemisionesPageSize);
+            return window.MartelaUI.renderPaginationControls({
+              totalItems: rPag.totalItems,
+              currentPage: rPag.currentPage,
+              pageSize: rPag.pageSize,
+              totalPages: rPag.totalPages,
+              startIdx: rPag.startIdx,
+              endIdx: rPag.endIdx,
+              onPageChange: 'MartelaCoppel.goToMlsRemisionesPage',
+              onPageSizeChange: 'MartelaCoppel.setMlsRemisionesPageSize',
+              itemName: 'remisiones MLS'
+            });
+          })()}
+        </div>
         </div>
       </div>
     `;
@@ -875,6 +935,7 @@ window.MartelaCoppel = (function() {
     const iva16 = +(subtotal * 0.16).toFixed(2);
     const totalFinal = +(subtotal + iva16).toFixed(2);
     const totalPzs = wholesaleConfig.cartItems.reduce((acc, i) => acc + i.cantidad, 0);
+    const wsPag = window.MartelaUI.paginate(wholesaleConfig.cartItems, wsCartPage, wsCartPageSize);
 
     return `
       <div class="space-y-6">
@@ -1014,7 +1075,7 @@ window.MartelaCoppel = (function() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-[11px]">
-                ${wholesaleConfig.cartItems.map((item, idx) => `
+                ${wsPag.items.map((item, idx) => `
                   <tr>
                     <td class="p-2.5 font-bold text-amber-600 dark:text-amber-400">${esc(item.sku)}</td>
                     <td class="p-2.5">${esc(item.modelo)}</td>
@@ -1026,7 +1087,7 @@ window.MartelaCoppel = (function() {
                     <td class="p-2.5 text-right font-sans font-bold">${money(item.precio_unit)}</td>
                     <td class="p-2.5 text-right font-sans font-black text-slate-900 dark:text-white">${money(item.subtotal)}</td>
                     <td class="p-2.5 text-center font-sans">
-                      <button onclick="MartelaCoppel.removeWholesaleCartItem(${idx})" class="text-rose-500 hover:underline">
+                      <button onclick="MartelaCoppel.removeWholesaleCartItem(${wsPag.startIndex + idx})" class="text-rose-500 hover:underline">
                         ✕
                       </button>
                     </td>
@@ -1035,6 +1096,17 @@ window.MartelaCoppel = (function() {
               </tbody>
             </table>
           </div>
+
+          ${window.MartelaUI.renderPaginationControls({
+            currentPage: wsPag.currentPage,
+            totalPages: wsPag.totalPages,
+            pageSize: wsPag.pageSize,
+            totalItems: wsPag.totalItems,
+            startIndex: wsPag.startIndex,
+            endIndex: wsPag.endIndex,
+            onPageChange: 'MartelaCoppel.goToWsCartPage',
+            onPageSizeChange: 'MartelaCoppel.setWsCartPageSize'
+          })}
 
           <div class="p-4 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex justify-end">
             <div class="w-72 space-y-1 text-xs text-right">
@@ -1160,6 +1232,19 @@ window.MartelaCoppel = (function() {
 
   function removeWholesaleCartItem(index) {
     wholesaleConfig.cartItems.splice(index, 1);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function goToWsCartPage(page) {
+    wsCartPage = page;
+    window.MartelaUI.flashLoading('Cargando partidas del pedido...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  function setWsCartPageSize(size) {
+    wsCartPageSize = parseInt(size, 10);
+    wsCartPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
     render(document.getElementById('contentContainer'));
   }
 
@@ -1716,10 +1801,55 @@ window.MartelaCoppel = (function() {
     window.MartelaUI.openModal(`Hoja de Salida / Remisión Oficial · ${suc.nombre}`, html, 'max-w-4xl');
   }
 
+  async function goToCoppelPage(page) {
+    coppelPage = page;
+    await window.MartelaUI.flashLoading('Cargando CEDIS de Coppel...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setCoppelPageSize(size) {
+    coppelPageSize = size;
+    coppelPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' CEDIS por página...', 220);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function goToMlsPiecesPage(page) {
+    mlsPiecesPage = page;
+    await window.MartelaUI.flashLoading('Cargando piezas de Bóveda para MLS...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setMlsPiecesPageSize(size) {
+    mlsPiecesPageSize = size;
+    mlsPiecesPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' piezas por página...', 220);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function goToMlsRemisionesPage(page) {
+    mlsRemisionesPage = page;
+    await window.MartelaUI.flashLoading('Cargando remisiones de Montepío...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setMlsRemisionesPageSize(size) {
+    mlsRemisionesPageSize = size;
+    mlsRemisionesPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' remisiones por página...', 220);
+    render(document.getElementById('contentContainer'));
+  }
+
   return {
     render,
     switchClientTab,
     toggleBranchAccordion,
+    goToCoppelPage,
+    setCoppelPageSize,
+    goToMlsPiecesPage,
+    setMlsPiecesPageSize,
+    goToMlsRemisionesPage,
+    setMlsRemisionesPageSize,
     handleFileSelect,
     handleDemoFileLoad,
     confirmOrderRegistration,
@@ -1744,6 +1874,8 @@ window.MartelaCoppel = (function() {
     handleWholesaleSkuChange,
     addWholesaleItemToCart,
     removeWholesaleCartItem,
+    goToWsCartPage,
+    setWsCartPageSize,
     confirmWholesaleOrderDispatch,
     openWholesaleRemisionPdfModal
   };

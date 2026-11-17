@@ -283,19 +283,23 @@ window.MartelaApp = (function() {
   }
 
   async function exportBackup() {
-    const json = await window.apiFacade.exportBackupJSON();
-    const filename = `martela-db-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
-    window.MartelaUI.downloadBlob(json, filename, 'application/json');
-    window.MartelaUI.toast('Respaldo JSON preparado y descargado', 'success');
+    await window.MartelaUI.withLoading('Generando respaldo JSON de la base de datos...', async () => {
+      const json = await window.apiFacade.exportBackupJSON();
+      const filename = `martela-db-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+      window.MartelaUI.downloadBlob(json, filename, 'application/json');
+      window.MartelaUI.toast('Respaldo JSON preparado y descargado', 'success');
+    });
   }
 
   async function resetDemo() {
     if (!confirm('¿Restablecer toda la base de datos a los valores iniciales de demostración?')) {
       return;
     }
-    await window.apiFacade.resetDemo();
-    window.MartelaUI.toast('Base de datos restablecida a valores iniciales', 'info');
-    init();
+    await window.MartelaUI.withLoading('Restableciendo base de datos a valores iniciales...', async () => {
+      await window.apiFacade.resetDemo();
+      window.MartelaUI.toast('Base de datos restablecida a valores iniciales', 'info');
+      init();
+    });
   }
 
   return {

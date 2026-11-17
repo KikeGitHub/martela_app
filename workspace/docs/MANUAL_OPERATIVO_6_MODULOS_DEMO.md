@@ -166,3 +166,21 @@ El Módulo 5 cuenta con un selector superior con 3 pestañas dinámicas que tran
    - Descarga un archivo `.sql` generado en vivo por [db-tables-facade.js](file:///c:/Users/kike2/OneDrive/Escritorio/FullStack%20Pojects/Martela/martela-app/workspace/demo/js/db-tables-facade.js) con las sentencias `CREATE TABLE` e `INSERT INTO` de las **13 tablas del modelo de datos**.
 2. **Restauración Rápida (`↻`):**
    - El botón **`↻`** en la barra superior limpia y restaura la base de datos a su estado inicial en 1 segundo.
+
+---
+
+## ⚡ 6. Paginación Universal & Feedback Visual de Transacciones (Loading)
+
+Para garantizar un rendimiento óptimo de grado industrial con catálogos masivos (+2,200 SKUs y miles de piezas en bóveda):
+
+1. **Paginador Universal Estandarizado:**
+   - **Tamaño predeterminado:** **20 registros por página**.
+   - **Selector de densidad:** Menú desplegable interactivo con opciones de **20**, **50** y **100** registros por página.
+   - **Controles de navegación:** Botones de salto inicial (`⇤`), página anterior (`◀`), indicador numérico de página actual (`Página X de Y`), siguiente página (`▶`) y salto final (`⇥`).
+   - **Leyenda de cobertura:** Conteo dinámico exacto (`Mostrando X - Y de Z registros`).
+   - **Presencia universal:** Activo en todas las tablas del sistema: Catálogo de SKUs, Concentrado de Proveedores, Semáforo de Recepción, Bóveda General, Log de Maquila 24K, Órdenes Coppel, Selección Montepío MLS, Remisiones Oficiales MLS, Partidas de Mayoreo, Expedientes PLD, Facturas CFDI 4.0, Recibos REP, Notas de Crédito, Clientes Fiscales, Lotes de Fundición, Stock de Campeones y Auditoría General.
+
+2. **Feedback Visual de Carga (Loading):**
+   - **Transacciones Críticas (`withLoading`):** Muestra el overlay modal con spinner dorado institucional y mensaje contextual (ej. *'Timbrando factura ante el PAC...'*, *'Conciliando lote de fundición...'*, *'Exportando existencias...'*), garantizando una visibilidad mínima táctil de ~300ms para evitar parpadeos y dar certeza al usuario de que la operación concluyó.
+   - **Transiciones Instantáneas (`flashLoading`):** Micro-feedback no invasivo para cambios de página, filtros predictivos y alternancia de densidad (20/50/100).
+   - **Seguridad en Fallos:** Implementado bajo bloques `try / finally` para garantizar que la interfaz jamás quede bloqueada ante excepciones de red o validación.

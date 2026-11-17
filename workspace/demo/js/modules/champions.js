@@ -3,6 +3,9 @@
  * Proyecciones de reposición, lead time de importación (60-90 días) y prevención de desabasto.
  */
 window.MartelaChampions = (function() {
+  let currentPage = 1;
+  let pageSize = 20;
+
   async function render(container) {
     container.innerHTML = `
       <div class="flex items-center justify-center p-12">
@@ -12,6 +15,7 @@ window.MartelaChampions = (function() {
 
     const report = await window.apiFacade.getStockIntelligenceReport();
     const { esc, badge } = window.MartelaUI;
+    const cPag = window.MartelaUI.paginate(report, currentPage, pageSize);
 
     const campeones = report.filter(r => r.es_campeon);
     const enRiesgo = report.filter(r => r.riesgo_desabasto);
@@ -71,7 +75,7 @@ window.MartelaChampions = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${report.map(r => `
+              ${cPag.items.map(r => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                   <td class="p-3.5 font-bold text-slate-900 dark:text-white">
                     <div>${esc(r.sku)}</div>
@@ -105,13 +109,39 @@ window.MartelaChampions = (function() {
             </tbody>
           </table>
         </div>
+
+        ${window.MartelaUI.renderPaginationControls({
+          currentPage: cPag.currentPage,
+          totalPages: cPag.totalPages,
+          pageSize: cPag.pageSize,
+          totalItems: cPag.totalItems,
+          startIndex: cPag.startIndex,
+          endIndex: cPag.endIndex,
+          onPageChange: 'MartelaChampions.goToPage',
+          onPageSizeChange: 'MartelaChampions.setPageSize'
+        })}
       </div>
     `;
   }
 
-  function generarOrdenSugerida(sku, qty) {
-    window.MartelaUI.toast(`Sugerencia de orden de compra creada para ${qty} piezas de ${sku}`, 'success');
+  function goToPage(page) {
+    currentPage = page;
+    window.MartelaUI.flashLoading('Cargando modelos...', 250);
+    render(document.getElementById('contentContainer'));
   }
 
-  return { render, generarOrdenSugerida };
+  function setPageSize(size) {
+    pageSize = parseInt(size, 10);
+    currentPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function generarOrdenSugerida(sku, qty) {
+    await window.MartelaUI.withLoading(`Generando orden de reposición sugerida para ${sku}...`, async () => {
+      window.MartelaUI.toast(`Sugerencia de orden de compra creada para ${qty} piezas de ${sku}`, 'success');
+    });
+  }
+
+  return { render, generarOrdenSugerida, goToPage, setPageSize };
 })();

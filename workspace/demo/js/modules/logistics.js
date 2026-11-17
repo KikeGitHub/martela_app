@@ -6,6 +6,8 @@
 window.MartelaLogistics = (function() {
   let isMobileFrameActive = false;
   let isOfflineSimulated = false;
+  let pldPage = 1;
+  let pldPageSize = 20;
 
   async function render(container) {
     const routes = await window.apiFacade.getRoutes();
@@ -156,7 +158,7 @@ window.MartelaLogistics = (function() {
           `).join('')}
         </div>
 
-        <!-- Bitácora de Expedientes Digitales PLD (Auditoría Adriana) -->
+        <!-- Bitácora de Expedientes Digitales PLD (Auditoría Adriana) con Paginación -->
         ${pldDossiers.length > 0 ? `
           <div class="panel p-5">
             <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-3">
@@ -175,19 +177,36 @@ window.MartelaLogistics = (function() {
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                  ${pldDossiers.map(d => `
-                    <tr>
-                      <td class="p-2 font-bold text-amber-500">${esc(d.folio_expediente)}</td>
-                      <td class="p-2">${esc(d.sucursal)}</td>
-                      <td class="p-2 font-bold text-emerald-500">${esc(d.sello_seguridad_bolsa)}</td>
-                      <td class="p-2">${esc(d.receptor_nombre)}</td>
-                      <td class="p-2">${Number(d.latitud).toFixed(4)}, ${Number(d.longitud).toFixed(4)}</td>
-                      <td class="p-2">${badge(d.estatus_auditoria)}</td>
-                    </tr>
-                  `).join('')}
+                  ${(() => {
+                    const pPag = window.MartelaUI.paginate(pldDossiers, pldPage, pldPageSize);
+                    return pPag.items.map(d => `
+                      <tr>
+                        <td class="p-2 font-bold text-amber-500">${esc(d.folio_expediente)}</td>
+                        <td class="p-2">${esc(d.sucursal)}</td>
+                        <td class="p-2 font-bold text-emerald-500">${esc(d.sello_seguridad_bolsa)}</td>
+                        <td class="p-2">${esc(d.receptor_nombre)}</td>
+                        <td class="p-2">${Number(d.latitud).toFixed(4)}, ${Number(d.longitud).toFixed(4)}</td>
+                        <td class="p-2">${badge(d.estatus_auditoria)}</td>
+                      </tr>
+                    `).join('');
+                  })()}
                 </tbody>
               </table>
             </div>
+            ${(() => {
+              const pPag = window.MartelaUI.paginate(pldDossiers, pldPage, pldPageSize);
+              return window.MartelaUI.renderPaginationControls({
+                totalItems: pPag.totalItems,
+                currentPage: pPag.currentPage,
+                pageSize: pPag.pageSize,
+                totalPages: pPag.totalPages,
+                startIdx: pPag.startIdx,
+                endIdx: pPag.endIdx,
+                onPageChange: 'MartelaLogistics.goToPldPage',
+                onPageSizeChange: 'MartelaLogistics.setPldPageSize',
+                itemName: 'expedientes PLD'
+              });
+            })()}
           </div>
         ` : ''}
       </div>
@@ -211,9 +230,24 @@ window.MartelaLogistics = (function() {
   }
 
   async function syncOffline() {
-    const count = await window.apiFacade.syncOfflinePwaQueue();
-    isOfflineSimulated = false;
-    window.MartelaUI.toast(`${count} expedientes PLD sincronizados con éxito`, 'success');
+    await window.MartelaUI.withLoading('Sincronizando expedientes offline con servidor central...', async () => {
+      const count = await window.apiFacade.syncOfflinePwaQueue();
+      isOfflineSimulated = false;
+      window.MartelaUI.toast(`${count} expedientes PLD sincronizados con éxito`, 'success');
+      render(document.getElementById('contentContainer'));
+    });
+  }
+
+  async function goToPldPage(page) {
+    pldPage = page;
+    await window.MartelaUI.flashLoading('Cargando expedientes PLD...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setPldPageSize(size) {
+    pldPageSize = size;
+    pldPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' expedientes por página...', 220);
     render(document.getElementById('contentContainer'));
   }
 
@@ -388,6 +422,8 @@ window.MartelaLogistics = (function() {
     togglePhoneFrame,
     toggleOfflineMode,
     syncOffline,
+    goToPldPage,
+    setPldPageSize,
     captureBrowserGPS,
     abrirModalEntregaPld,
     confirmarEntregaPld,

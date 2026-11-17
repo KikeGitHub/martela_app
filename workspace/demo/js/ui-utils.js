@@ -120,6 +120,120 @@ window.MartelaUI = (function() {
     }
   }
 
+  async function withLoading(message, asyncFn) {
+    showLoading(message);
+    try {
+      const [res] = await Promise.all([
+        Promise.resolve().then(asyncFn),
+        new Promise(r => setTimeout(r, 320))
+      ]);
+      return res;
+    } finally {
+      hideLoading();
+    }
+  }
+
+  function flashLoading(message = 'Actualizando vista...', ms = 280) {
+    showLoading(message);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        hideLoading();
+        resolve();
+      }, ms);
+    });
+  }
+
+  function paginate(items, page = 1, pageSize = 20) {
+    const list = Array.isArray(items) ? items : [];
+    const totalItems = list.length;
+    const validPageSize = [20, 50, 100].includes(Number(pageSize)) ? Number(pageSize) : 20;
+    const totalPages = Math.max(1, Math.ceil(totalItems / validPageSize));
+    const currentPage = Math.min(Math.max(1, Number(page) || 1), totalPages);
+    const startIdx = (currentPage - 1) * validPageSize;
+    const endIdx = Math.min(startIdx + validPageSize, totalItems);
+    const pageItems = list.slice(startIdx, endIdx);
+    return {
+      items: pageItems,
+      totalItems,
+      totalPages,
+      currentPage,
+      pageSize: validPageSize,
+      startIdx,
+      endIdx
+    };
+  }
+
+  function renderPaginationControls({
+    totalItems,
+    currentPage = 1,
+    pageSize = 20,
+    totalPages = 1,
+    startIdx = 0,
+    endIdx = 0,
+    onPageChange,
+    onPageSizeChange,
+    itemName = 'registros'
+  }) {
+    if (!totalItems || totalItems === 0) return '';
+    const safeStart = totalItems === 0 ? 0 : startIdx + 1;
+    const safeEnd = endIdx;
+
+    return `
+      <div class="px-4 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+        <div class="text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-3">
+          <span>Mostrando <b>${safeStart} - ${safeEnd}</b> de <b>${totalItems}</b> ${esc(itemName)}</span>
+          <div class="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-3">
+            <span class="text-[11px] text-slate-400">Mostrar:</span>
+            <select
+              onchange="${onPageSizeChange}(Number(this.value))"
+              class="text-xs py-1 px-2 border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 cursor-pointer outline-none focus:border-amber-500"
+            >
+              <option value="20" ${pageSize === 20 ? 'selected' : ''}>20 por pág.</option>
+              <option value="50" ${pageSize === 50 ? 'selected' : ''}>50 por pág.</option>
+              <option value="100" ${pageSize === 100 ? 'selected' : ''}>100 por pág.</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            onclick="${onPageChange}(1)"
+            ${currentPage === 1 ? 'disabled class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed text-[11px]"' : 'class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px]"'}
+            title="Primera página"
+          >
+            ⇤
+          </button>
+          <button
+            type="button"
+            onclick="${onPageChange}(${currentPage - 1})"
+            ${currentPage === 1 ? 'disabled class="px-2.5 py-1 rounded border border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"'}
+          >
+            ◀ Anterior
+          </button>
+          <span class="px-2.5 py-1 font-bold font-mono text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs shadow-sm">
+            ${currentPage} / ${totalPages}
+          </span>
+          <button
+            type="button"
+            onclick="${onPageChange}(${currentPage + 1})"
+            ${currentPage >= totalPages ? 'disabled class="px-2.5 py-1 rounded border border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"'}
+          >
+            Siguiente ▶
+          </button>
+          <button
+            type="button"
+            onclick="${onPageChange}(${totalPages})"
+            ${currentPage >= totalPages ? 'disabled class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed text-[11px]"' : 'class="px-2 py-1 rounded border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px]"'}
+            title="Última página"
+          >
+            ⇥
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   function openModal(title, htmlContent, widthClass = 'max-w-2xl', onOpen = null) {
     const root = document.getElementById('modalRoot');
     if (!root) return;
@@ -423,6 +537,10 @@ window.MartelaUI = (function() {
     setButtonLoading,
     showLoading,
     hideLoading,
+    withLoading,
+    flashLoading,
+    paginate,
+    renderPaginationControls,
     openModal,
     closeModal,
     confirmModal,

@@ -16,6 +16,8 @@ window.MartelaInventory = (function() {
     estatus: ''
   };
   let sessionWeighedPieces = [];
+  let currentPage = 1;
+  let pageSize = 20;
 
   async function render(container) {
     const masterList = await window.apiFacade.getInventoryMasterTable(currentFilters);
@@ -146,7 +148,9 @@ window.MartelaInventory = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${masterList.map(item => `
+              ${(() => {
+                const invPag = window.MartelaUI.paginate(masterList, currentPage, pageSize);
+                return invPag.items.map(item => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                   <td class="p-3.5">
                     <div class="font-mono font-bold text-slate-900 dark:text-white text-sm">${esc(item.sku_14 || item.sku)}</div>
@@ -190,7 +194,7 @@ window.MartelaInventory = (function() {
                     <div class="rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900 shadow-sm">
                       <div class="px-4 py-2.5 bg-slate-100/70 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs">
                         <span class="font-bold text-slate-700 dark:text-slate-200">
-                          Sub-piezas individuales de ${esc(item.modelo_martela)} en Bóveda:
+                          Sub-piezas individuales de ${esc(item.modelo_martela)} en Bóveda (${item.sub_piezas.length} piezas):
                         </span>
                         <span class="text-[11px] text-slate-500 font-mono">
                           Descuento paramétrico CZ aplicado: -${Number(item.peso_piedra_cz || 0).toFixed(4)}g
@@ -210,7 +214,7 @@ window.MartelaInventory = (function() {
                           </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                          ${item.sub_piezas.slice(0, 15).map(sp => `
+                          ${item.sub_piezas.map(sp => `
                             <tr class="hover:bg-amber-50/20 dark:hover:bg-amber-950/10">
                               <td class="p-2.5 font-bold text-amber-600 dark:text-amber-400">${esc(sp.piece_id)}</td>
                               <td class="p-2.5">${esc(sp.ubicacion_gaveta || 'BOVEDA-R1-N1-G01')}</td>
@@ -231,12 +235,41 @@ window.MartelaInventory = (function() {
                     </div>
                   </td>
                 </tr>
-              `).join('')}
+              `
+                ).join('');
+              })()}
             </tbody>
           </table>
         </div>
+        ${(() => {
+          const invPag = window.MartelaUI.paginate(masterList, currentPage, pageSize);
+          return window.MartelaUI.renderPaginationControls({
+            totalItems: invPag.totalItems,
+            currentPage: invPag.currentPage,
+            pageSize: invPag.pageSize,
+            totalPages: invPag.totalPages,
+            startIdx: invPag.startIdx,
+            endIdx: invPag.endIdx,
+            onPageChange: 'MartelaInventory.goToPage',
+            onPageSizeChange: 'MartelaInventory.setPageSize',
+            itemName: 'modelos en bóveda'
+          });
+        })()}
       </div>
     `;
+  }
+
+  async function goToPage(page) {
+    currentPage = page;
+    await window.MartelaUI.flashLoading('Cargando existencias de Bóveda...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setPageSize(size) {
+    pageSize = size;
+    currentPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' modelos por página...', 220);
+    render(document.getElementById('contentContainer'));
   }
 
   /**
@@ -514,20 +547,22 @@ window.MartelaInventory = (function() {
     render(document.getElementById('contentContainer'));
   }
 
-  function exportExcel() {
-    const db = window.apiFacade._getDB();
-    const rows = db.inventory_pieces.slice(0, 150).map(p => ({
-      Serial_Subpieza: p.piece_id,
-      SKU_14_Digitos: p.sku_14 || p.sku_ref,
-      Modelo_Martela: p.modelo_martela || p.sku_ref,
-      Gaveta_Fisica: p.ubicacion_gaveta || 'BOVEDA-R1-N1-G01',
-      Peso_Bruto_g: Number(p.peso_bruto_g).toFixed(4),
-      Descuento_Piedra_CZ_g: Number(p.peso_piedra_g || 0).toFixed(4),
-      Peso_Neto_Metal_g: Number(p.peso_neto_metal_g ?? p.peso_neto_g).toFixed(4),
-      Gramos_Oro_Fino_24K: Number(p.gramos_oro_fino || 0).toFixed(5),
-      Estatus: p.estatus
-    }));
-    window.MartelaUI.exportToExcel(rows, 'martela-inventario-subpiezas-gavetas.xlsx', 'Subpiezas_Boveda');
+  async function exportExcel() {
+    await window.MartelaUI.withLoading('Exportando existencias de Bóveda y sub-piezas a Excel...', async () => {
+      const db = window.apiFacade._getDB();
+      const rows = db.inventory_pieces.map(p => ({
+        Serial_Subpieza: p.piece_id,
+        SKU_14_Digitos: p.sku_14 || p.sku_ref,
+        Modelo_Martela: p.modelo_martela || p.sku_ref,
+        Gaveta_Fisica: p.ubicacion_gaveta || 'BOVEDA-R1-N1-G01',
+        Peso_Bruto_g: Number(p.peso_bruto_g).toFixed(4),
+        Descuento_Piedra_CZ_g: Number(p.peso_piedra_g || 0).toFixed(4),
+        Peso_Neto_Metal_g: Number(p.peso_neto_metal_g ?? p.peso_neto_g).toFixed(4),
+        Gramos_Oro_Fino_24K: Number(p.gramos_oro_fino || 0).toFixed(5),
+        Estatus: p.estatus
+      }));
+      window.MartelaUI.exportToExcel(rows, 'martela-inventario-subpiezas-gavetas.xlsx', 'Subpiezas_Boveda');
+    });
   }
 
   return {
@@ -538,6 +573,8 @@ window.MartelaInventory = (function() {
     handleFastWeighSubmit,
     openThermalLabelModal,
     toggleSubTable,
+    goToPage,
+    setPageSize,
     onSearch,
     exportExcel
   };

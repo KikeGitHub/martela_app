@@ -10,7 +10,9 @@ window.MartelaCatalog = (function() {
   let debounceTimer = null;
   let currentSubTab = 'productos'; // 'productos' | 'proveedores'
   let currentPage = 1;
-  const pageSize = 50;
+  let pageSize = 20;
+  let supplierPage = 1;
+  let supplierPageSize = 20;
 
   let state = {
     query: '',
@@ -223,7 +225,7 @@ window.MartelaCatalog = (function() {
           </div>
         </div>
 
-        <!-- Tabla de Proveedores y Talleres -->
+        <!-- Tabla de Proveedores y Talleres con Paginación -->
         <div class="panel overflow-hidden mb-8 shadow-sm">
           <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
             <div>
@@ -233,68 +235,84 @@ window.MartelaCatalog = (function() {
             <span class="text-xs font-bold text-amber-500">${suppliers.length} talleres registrados</span>
           </div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono">
-                <tr>
-                  <th class="p-3.5">Código / Taller</th>
-                  <th class="p-3.5">País y Ciudad de Origen</th>
-                  <th class="p-3.5 text-center">Tipo</th>
-                  <th class="p-3.5 text-center">Modelos Suministrados</th>
-                  <th class="p-3.5">Metales y Quilatajes</th>
-                  <th class="p-3.5 text-center">Moneda / Lead Time</th>
-                  <th class="p-3.5 text-center">Acciones</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                ${suppliers.map(s => `
-                  <tr class="hover:bg-amber-500/5 transition">
-                    <td class="p-3.5">
-                      <div class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs">${esc(s.codigo_interno)}</div>
-                      <div class="font-bold text-slate-900 dark:text-white text-sm mt-0.5">${esc(s.razon_social)}</div>
-                      <div class="text-[10px] text-slate-400 font-mono mt-0.5">ID: ${s.id}</div>
-                    </td>
-                    <td class="p-3.5">
-                      <div class="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200">
-                        <span class="text-base">${getFlagEmoji(s.pais_origen)}</span>
-                        <span>${esc(s.pais_origen)}</span>
-                      </div>
-                      <div class="text-[11px] text-slate-400">${esc(s.ciudad || 'N/A')}</div>
-                    </td>
-                    <td class="p-3.5 text-center">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${s.tipo === 'INTERNACIONAL' ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-400/30' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/30'}">
-                        ${esc(s.tipo || 'NACIONAL')}
-                      </span>
-                    </td>
-                    <td class="p-3.5 text-center font-mono font-black text-slate-900 dark:text-white text-sm">
-                      ${s.total_modelos || 0} SKUs
-                    </td>
-                    <td class="p-3.5">
-                      <div class="flex flex-wrap gap-1">
-                        ${(s.quilatajes || ['Oro 10K', 'Oro 14K']).map(q => `
-                          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                            ${esc(q)}
+          ${(() => {
+            const suppPag = window.MartelaUI.paginate(suppliers, supplierPage, supplierPageSize);
+            return `
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono">
+                    <tr>
+                      <th class="p-3.5">Código / Taller</th>
+                      <th class="p-3.5">País y Ciudad de Origen</th>
+                      <th class="p-3.5 text-center">Tipo</th>
+                      <th class="p-3.5 text-center">Modelos Suministrados</th>
+                      <th class="p-3.5">Metales y Quilatajes</th>
+                      <th class="p-3.5 text-center">Moneda / Lead Time</th>
+                      <th class="p-3.5 text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    ${suppPag.items.map(s => `
+                      <tr class="hover:bg-amber-500/5 transition">
+                        <td class="p-3.5">
+                          <div class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs">${esc(s.codigo_interno)}</div>
+                          <div class="font-bold text-slate-900 dark:text-white text-sm mt-0.5">${esc(s.razon_social)}</div>
+                          <div class="text-[10px] text-slate-400 font-mono mt-0.5">ID: ${s.id}</div>
+                        </td>
+                        <td class="p-3.5">
+                          <div class="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200">
+                            <span class="text-base">${getFlagEmoji(s.pais_origen)}</span>
+                            <span>${esc(s.pais_origen)}</span>
+                          </div>
+                          <div class="text-[11px] text-slate-400">${esc(s.ciudad || 'N/A')}</div>
+                        </td>
+                        <td class="p-3.5 text-center">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${s.tipo === 'INTERNACIONAL' ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-400/30' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/30'}">
+                            ${esc(s.tipo || 'NACIONAL')}
                           </span>
-                        `).join('')}
-                      </div>
-                    </td>
-                    <td class="p-3.5 text-center font-mono">
-                      <span class="font-bold text-slate-700 dark:text-slate-300">${esc(s.moneda_compra || 'USD')}</span>
-                      <div class="text-[10px] text-slate-400">${s.lead_time_dias || 30} días promedio</div>
-                    </td>
-                    <td class="p-3.5 text-center">
-                      <button
-                        onclick="MartelaCatalog.filterBySupplierFromTab('${s.id}')"
-                        class="btn btn-soft text-xs py-1 px-3 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-500/10 transition"
-                      >
-                        🔍 Ver Modelos (${s.total_modelos || 0})
-                      </button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
+                        </td>
+                        <td class="p-3.5 text-center font-mono font-black text-slate-900 dark:text-white text-sm">
+                          ${s.total_modelos || 0} SKUs
+                        </td>
+                        <td class="p-3.5">
+                          <div class="flex flex-wrap gap-1">
+                            ${(s.quilatajes || ['Oro 10K', 'Oro 14K']).map(q => `
+                              <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                ${esc(q)}
+                              </span>
+                            `).join('')}
+                          </div>
+                        </td>
+                        <td class="p-3.5 text-center font-mono">
+                          <span class="font-bold text-slate-700 dark:text-slate-300">${esc(s.moneda_compra || 'USD')}</span>
+                          <div class="text-[10px] text-slate-400">${s.lead_time_dias || 30} días promedio</div>
+                        </td>
+                        <td class="p-3.5 text-center">
+                          <button
+                            onclick="MartelaCatalog.filterBySupplierFromTab('${s.id}')"
+                            class="btn btn-soft text-xs py-1 px-3 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-500/10 transition"
+                          >
+                            🔍 Ver Modelos (${s.total_modelos || 0})
+                          </button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+              ${window.MartelaUI.renderPaginationControls({
+                totalItems: suppPag.totalItems,
+                currentPage: suppPag.currentPage,
+                pageSize: suppPag.pageSize,
+                totalPages: suppPag.totalPages,
+                startIdx: suppPag.startIdx,
+                endIdx: suppPag.endIdx,
+                onPageChange: 'MartelaCatalog.goToSupplierPage',
+                onPageSizeChange: 'MartelaCatalog.setSupplierPageSize',
+                itemName: 'proveedores y talleres'
+              })}
+            `;
+          })()}
         </div>
       </div>
     `;
@@ -325,11 +343,8 @@ window.MartelaCatalog = (function() {
       `;
     }
 
-    const totalPages = Math.ceil(items.length / pageSize);
-    if (currentPage > totalPages) currentPage = 1;
-    const startIdx = (currentPage - 1) * pageSize;
-    const endIdx = Math.min(startIdx + pageSize, items.length);
-    const paginatedItems = items.slice(startIdx, endIdx);
+    const prodPag = window.MartelaUI.paginate(items, currentPage, pageSize);
+    currentPage = prodPag.currentPage;
 
     return `
       <table class="w-full text-left text-xs">
@@ -346,7 +361,7 @@ window.MartelaCatalog = (function() {
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-          ${paginatedItems.map(item => `
+          ${prodPag.items.map(item => `
             <tr class="hover:bg-amber-500/5 transition cursor-pointer group" onclick="MartelaCatalog.openProductModal('${esc(item.sku)}')">
               <td class="p-3.5">
                 <div class="font-mono font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
@@ -414,44 +429,59 @@ window.MartelaCatalog = (function() {
         </tbody>
       </table>
 
-      <!-- Barra de Paginación Ágil -->
-      ${totalPages > 1 ? `
-        <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
-          <div class="text-slate-500">
-            Mostrando <b>${startIdx + 1} - ${endIdx}</b> de <b>${items.length}</b> modelos en catálogo (Página ${currentPage} de ${totalPages})
-          </div>
-          <div class="flex items-center gap-1">
-            <button
-              onclick="MartelaCatalog.goToPage(${currentPage - 1})"
-              ${currentPage === 1 ? 'disabled class="px-2.5 py-1 rounded border border-slate-200 text-slate-400 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded border border-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"'}
-            >
-              ◀ Anterior
-            </button>
-            <span class="px-2 font-bold font-mono text-slate-700 dark:text-slate-300">${currentPage} / ${totalPages}</span>
-            <button
-              onclick="MartelaCatalog.goToPage(${currentPage + 1})"
-              ${currentPage === totalPages ? 'disabled class="px-2.5 py-1 rounded border border-slate-200 text-slate-400 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded border border-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"'}
-            >
-              Siguiente ▶
-            </button>
-          </div>
-        </div>
-      ` : ''}
+      ${window.MartelaUI.renderPaginationControls({
+        totalItems: prodPag.totalItems,
+        currentPage: prodPag.currentPage,
+        pageSize: prodPag.pageSize,
+        totalPages: prodPag.totalPages,
+        startIdx: prodPag.startIdx,
+        endIdx: prodPag.endIdx,
+        onPageChange: 'MartelaCatalog.goToPage',
+        onPageSizeChange: 'MartelaCatalog.setPageSize',
+        itemName: 'modelos en catálogo'
+      })}
     `;
   }
 
-  function goToPage(page) {
+  async function goToPage(page) {
     currentPage = page;
+    await window.MartelaUI.flashLoading('Cargando registros de página ' + page + '...', 180);
     const wrapper = document.getElementById('catalogTableWrapper');
     if (wrapper) {
-      window.apiFacade.searchProductsCatalog(state.query, {
+      const items = await window.apiFacade.searchProductsCatalog(state.query, {
         metal_tipo: state.metal_tipo,
         id_proveedor: state.id_proveedor
-      }).then(items => {
-        wrapper.innerHTML = renderTableHTML(items);
-        wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
+      wrapper.innerHTML = renderTableHTML(items);
+      wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+  }
+
+  async function setPageSize(size) {
+    pageSize = size;
+    currentPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' registros por página...', 220);
+    const wrapper = document.getElementById('catalogTableWrapper');
+    if (wrapper) {
+      const items = await window.apiFacade.searchProductsCatalog(state.query, {
+        metal_tipo: state.metal_tipo,
+        id_proveedor: state.id_proveedor
+      });
+      wrapper.innerHTML = renderTableHTML(items);
+    }
+  }
+
+  async function goToSupplierPage(page) {
+    supplierPage = page;
+    await window.MartelaUI.flashLoading('Cargando página de talleres...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setSupplierPageSize(size) {
+    supplierPageSize = size;
+    supplierPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' proveedores por página...', 220);
+    render(document.getElementById('contentContainer'));
   }
 
   function onPredictiveSearch(val) {
@@ -863,25 +893,27 @@ window.MartelaCatalog = (function() {
   }
 
   async function exportCatalogExcel() {
-    const db = window.apiFacade._getDB();
-    const rows = (db.products_sku || []).map((p, idx) => ({
-      No: idx + 1,
-      SKU_14_Digitos: p.sku_14 || p.sku,
-      Modelo_Martela: p.modelo_martela,
-      Modelo_Proveedor: p.modelo_proveedor || '',
-      Proveedor_Taller: p.proveedor_nombre || '',
-      Pais_Origen: p.pais_origen || '',
-      Descripcion: p.descripcion,
-      Metal_Ley: p.quilataje,
-      Tipo_Alhaja: p.categoria || p.tipo_alhaja,
-      Medida: p.medida || '',
-      Descuento_Circonia_CZ_g: Number(p.peso_piedra_cz || 0).toFixed(4),
-      Factor_Oro_Fino: Number(p.factor_oro_fino || 0).toFixed(5),
-      Costo_Hechura_MO_MXN: Number(p.costo_mo_base || p.costo_hechura_base || 0).toFixed(2),
-      Hoja_Origen_Excel: p.hoja_origen || ''
-    }));
+    await window.MartelaUI.withLoading('Generando archivo Excel del catálogo con 2,231+ SKUs...', async () => {
+      const db = window.apiFacade._getDB();
+      const rows = (db.products_sku || []).map((p, idx) => ({
+        No: idx + 1,
+        SKU_14_Digitos: p.sku_14 || p.sku,
+        Modelo_Martela: p.modelo_martela,
+        Modelo_Proveedor: p.modelo_proveedor || '',
+        Proveedor_Taller: p.proveedor_nombre || '',
+        Pais_Origen: p.pais_origen || '',
+        Descripcion: p.descripcion,
+        Metal_Ley: p.quilataje,
+        Tipo_Alhaja: p.categoria || p.tipo_alhaja,
+        Medida: p.medida || '',
+        Descuento_Circonia_CZ_g: Number(p.peso_piedra_cz || 0).toFixed(4),
+        Factor_Oro_Fino: Number(p.factor_oro_fino || 0).toFixed(5),
+        Costo_Hechura_MO_MXN: Number(p.costo_mo_base || p.costo_hechura_base || 0).toFixed(2),
+        Hoja_Origen_Excel: p.hoja_origen || ''
+      }));
 
-    window.MartelaUI.exportToExcel(rows, `martela-catalogo-maestro-2231-skus.xlsx`, 'Catalogo_Maestro');
+      window.MartelaUI.exportToExcel(rows, `martela-catalogo-maestro-2231-skus.xlsx`, 'Catalogo_Maestro');
+    });
   }
 
   return {
@@ -889,6 +921,9 @@ window.MartelaCatalog = (function() {
     switchSubTab,
     filterBySupplierFromTab,
     goToPage,
+    setPageSize,
+    goToSupplierPage,
+    setSupplierPageSize,
     onPredictiveSearch,
     onFilterMetal,
     onFilterSupplier,

@@ -7,6 +7,8 @@
 window.MartelaReception = (function() {
   let activeReceptionId = 101;
   let wizardStep = 2; // Mostramos ambos pasos con conmutación rápida
+  let currentPage = 1;
+  let pageSize = 20;
 
   async function render(container) {
     const receptions = await window.apiFacade.getReceptions();
@@ -211,78 +213,95 @@ window.MartelaReception = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${rows.map(r => {
-                const clasif = r.piezas_aprobadas + r.piezas_reparacion_interna + r.piezas_merma_fundicion;
-                const completo = clasif === r.piezas_recibidas;
-                return `
-                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                    <td class="p-4">
-                      <div class="font-mono font-bold text-slate-900 dark:text-white">${esc(r.sku_14 || r.sku)}</div>
-                      <div class="text-xs font-bold text-amber-600 dark:text-amber-400">${esc(r.modelo_martela || r.sku)}</div>
-                      <div class="text-[11px] text-slate-400">${esc(r.descripcion)}</div>
-                    </td>
-                    <td class="p-4 text-center">
-                      <span class="text-sm font-black text-slate-900 dark:text-white">${r.piezas_recibidas}</span>
-                      <div class="text-[10px] ${completo ? 'text-emerald-500 font-bold' : 'text-amber-500'}">
-                        ${clasif}/${r.piezas_recibidas} revisadas
-                      </div>
-                    </td>
-                    <td class="p-4 text-center">
-                      <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300">
-                        ${r.piezas_aprobadas}
-                      </span>
-                    </td>
-                    <td class="p-4 text-center">
-                      <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300">
-                        ${r.piezas_reparacion_interna}
-                      </span>
-                    </td>
-                    <td class="p-4 text-center">
-                      <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300">
-                        ${r.piezas_merma_fundicion}
-                      </span>
-                    </td>
-                    <td class="p-4">
-                      <div class="flex flex-wrap items-center justify-center gap-1.5">
-                        <button
-                          onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'APROBADA', 1)"
-                          class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm transition"
-                          title="Enviar a Báscula Digital"
-                        >
-                          +1 Aprobado
-                        </button>
-                        <button
-                          onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'REPARACION', 1)"
-                          class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-sm transition"
-                          title="Enviar a Taller de Reparación Interna"
-                        >
-                          +1 Reparación
-                        </button>
-                        <button
-                          onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'MERMA', 1)"
-                          class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition"
-                          title="Enviar a Charola de Pedacería para Fundición"
-                        >
-                          +1 Merma
-                        </button>
-                        <button
-                          onclick="MartelaReception.resetRowForDemo(${r.id_inspeccion})"
-                          class="px-2 py-1.5 rounded-lg text-[11px] bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"
-                          title="Reiniciar conteo de esta fila para probar el semáforo"
-                        >
-                          ↺
-                        </button>
-                      </div>
-                    </td>
-                    <td class="p-4 text-slate-500 dark:text-slate-400 max-w-xs">
-                      ${esc(r.observaciones_tecnicas)}
-                    </td>
-                  </tr>
-                `;
-              }).join('')}
+              ${(() => {
+                const recPag = window.MartelaUI.paginate(rows, currentPage, pageSize);
+                return recPag.items.map(r => {
+                  const clasif = r.piezas_aprobadas + r.piezas_reparacion_interna + r.piezas_merma_fundicion;
+                  const completo = clasif === r.piezas_recibidas;
+                  return `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td class="p-4">
+                        <div class="font-mono font-bold text-slate-900 dark:text-white">${esc(r.sku_14 || r.sku)}</div>
+                        <div class="text-xs font-bold text-amber-600 dark:text-amber-400">${esc(r.modelo_martela || r.sku)}</div>
+                        <div class="text-[11px] text-slate-400">${esc(r.descripcion)}</div>
+                      </td>
+                      <td class="p-4 text-center">
+                        <span class="text-sm font-black text-slate-900 dark:text-white">${r.piezas_recibidas}</span>
+                        <div class="text-[10px] ${completo ? 'text-emerald-500 font-bold' : 'text-amber-500'}">
+                          ${clasif}/${r.piezas_recibidas} revisadas
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300">
+                          ${r.piezas_aprobadas}
+                        </span>
+                      </td>
+                      <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300">
+                          ${r.piezas_reparacion_interna}
+                        </span>
+                      </td>
+                      <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300">
+                          ${r.piezas_merma_fundicion}
+                        </span>
+                      </td>
+                      <td class="p-4">
+                        <div class="flex flex-wrap items-center justify-center gap-1.5">
+                          <button
+                            onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'APROBADA', 1)"
+                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm transition"
+                            title="Enviar a Báscula Digital"
+                          >
+                            +1 Aprobado
+                          </button>
+                          <button
+                            onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'REPARACION', 1)"
+                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-sm transition"
+                            title="Enviar a Taller de Reparación Interna"
+                          >
+                            +1 Reparación
+                          </button>
+                          <button
+                            onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'MERMA', 1)"
+                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition"
+                            title="Enviar a Charola de Pedacería para Fundición"
+                          >
+                            +1 Merma
+                          </button>
+                          <button
+                            onclick="MartelaReception.resetRowForDemo(${r.id_inspeccion})"
+                            class="px-2 py-1.5 rounded-lg text-[11px] bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                            title="Reiniciar conteo de esta fila para probar el semáforo"
+                          >
+                            ↺
+                          </button>
+                        </div>
+                      </td>
+                      <td class="p-4 text-slate-500 dark:text-slate-400 max-w-xs">
+                        ${esc(r.observaciones_tecnicas)}
+                      </td>
+                    </tr>
+                  `;
+                }).join('');
+              })()}
             </tbody>
           </table>
         </div>
+        ${(() => {
+          const recPag = window.MartelaUI.paginate(rows, currentPage, pageSize);
+          return window.MartelaUI.renderPaginationControls({
+            totalItems: recPag.totalItems,
+            currentPage: recPag.currentPage,
+            pageSize: recPag.pageSize,
+            totalPages: recPag.totalPages,
+            startIdx: recPag.startIdx,
+            endIdx: recPag.endIdx,
+            onPageChange: 'MartelaReception.goToPage',
+            onPageSizeChange: 'MartelaReception.setPageSize',
+            itemName: 'modelos en inspección'
+          });
+        })()}
       </div>
     `;
   }
@@ -403,14 +422,29 @@ window.MartelaReception = (function() {
     }
   }
 
+  async function goToPage(page) {
+    currentPage = page;
+    await window.MartelaUI.flashLoading('Cargando modelos de inspección...', 180);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function setPageSize(size) {
+    pageSize = size;
+    currentPage = 1;
+    await window.MartelaUI.flashLoading('Ajustando a ' + size + ' modelos por página...', 220);
+    render(document.getElementById('contentContainer'));
+  }
+
   async function finalizeConciliation(idRecepcion) {
-    try {
-      const rec = await window.apiFacade.completeQualityInspection(idRecepcion);
-      window.MartelaUI.toast(`Dictamen registrado (${rec.estatus}). Piezas aprobadas listas en Báscula Digital.`, 'success');
-      render(document.getElementById('contentContainer'));
-    } catch (err) {
-      window.MartelaUI.toast(err.message, 'error');
-    }
+    await window.MartelaUI.withLoading('Cerrando acta de inspección y transfiriendo piezas aprobadas a Báscula Digital...', async () => {
+      try {
+        const rec = await window.apiFacade.completeQualityInspection(idRecepcion);
+        window.MartelaUI.toast(`Dictamen registrado (${rec.estatus}). Piezas aprobadas listas en Báscula Digital.`, 'success');
+        render(document.getElementById('contentContainer'));
+      } catch (err) {
+        window.MartelaUI.toast(err.message, 'error');
+      }
+    });
   }
 
   function openVideoModal(guia, url, proveedor) {
@@ -447,6 +481,8 @@ window.MartelaReception = (function() {
     render,
     setStep,
     selectReception,
+    goToPage,
+    setPageSize,
     handleCreateReception,
     openNewReceptionModal,
     bumpSemaphore,

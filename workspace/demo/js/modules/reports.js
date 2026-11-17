@@ -2,6 +2,9 @@
  * MARTELA — Módulo: Reportes Operativos, Auditoría Integral & Respaldo JSON
  */
 window.MartelaReports = (function() {
+  let currentPage = 1;
+  let pageSize = 20;
+
   async function render(container) {
     container.innerHTML = `
       <div class="flex items-center justify-center p-12">
@@ -12,6 +15,7 @@ window.MartelaReports = (function() {
     const auditLogs = await window.apiFacade.getAuditLogs();
     const db = window.apiFacade._getDB();
     const { grams, esc } = window.MartelaUI;
+    const rPag = window.MartelaUI.paginate(auditLogs, currentPage, pageSize);
 
     // Resumen por almacén
     const resumenAlmacenes = db.warehouses.map(w => {
@@ -88,7 +92,7 @@ window.MartelaReports = (function() {
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-              ${auditLogs.map(a => `
+              ${rPag.items.map(a => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                   <td class="p-3 font-mono text-slate-400">${esc(a.id)}</td>
                   <td class="p-3 font-mono text-slate-500">${esc(a.fecha)}</td>
@@ -107,25 +111,51 @@ window.MartelaReports = (function() {
             </tbody>
           </table>
         </div>
+
+        ${window.MartelaUI.renderPaginationControls({
+          currentPage: rPag.currentPage,
+          totalPages: rPag.totalPages,
+          pageSize: rPag.pageSize,
+          totalItems: rPag.totalItems,
+          startIndex: rPag.startIndex,
+          endIndex: rPag.endIndex,
+          onPageChange: 'MartelaReports.goToPage',
+          onPageSizeChange: 'MartelaReports.setPageSize'
+        })}
       </div>
     `;
   }
 
-  async function exportAuditCSV() {
-    const logs = await window.apiFacade.getAuditLogs();
-    const rows = logs.map(l => ({
-      'ID Auditoria': l.id,
-      'Fecha': l.fecha,
-      'Usuario': l.usuario,
-      'Rol': l.rol,
-      'Accion': l.accion,
-      'Entidad': l.entidad,
-      'Registro ID': l.registro_id,
-      'Resultado': l.resultado
-    }));
-
-    window.MartelaUI.exportToExcel(rows, `martela-auditoria-${new Date().toISOString().slice(0, 10)}.xlsx`, 'Auditoria');
+  function goToPage(page) {
+    currentPage = page;
+    window.MartelaUI.flashLoading('Cargando bitácora de auditoría...', 250);
+    render(document.getElementById('contentContainer'));
   }
 
-  return { render, exportAuditCSV };
+  function setPageSize(size) {
+    pageSize = parseInt(size, 10);
+    currentPage = 1;
+    window.MartelaUI.flashLoading('Actualizando vista...', 250);
+    render(document.getElementById('contentContainer'));
+  }
+
+  async function exportAuditCSV() {
+    await window.MartelaUI.withLoading('Exportando bitácora completa de auditoría...', async () => {
+      const logs = await window.apiFacade.getAuditLogs();
+      const rows = logs.map(l => ({
+        'ID Auditoria': l.id,
+        'Fecha': l.fecha,
+        'Usuario': l.usuario,
+        'Rol': l.rol,
+        'Accion': l.accion,
+        'Entidad': l.entidad,
+        'Registro ID': l.registro_id,
+        'Resultado': l.resultado
+      }));
+
+      window.MartelaUI.exportToExcel(rows, `martela-auditoria-${new Date().toISOString().slice(0, 10)}.xlsx`, 'Auditoria');
+    });
+  }
+
+  return { render, exportAuditCSV, goToPage, setPageSize };
 })();
