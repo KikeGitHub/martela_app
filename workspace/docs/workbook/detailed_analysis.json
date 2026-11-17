@@ -1,0 +1,2061 @@
+[
+  {
+    "sheet": "BROQUELES 10 K ",
+    "header_row": 1,
+    "valid_rows": 31,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": null,
+      "desc": "DESCRIPCION",
+      "peso": "PESO ORO PROVEEDOR",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299942618",
+        "modelo_martela": "BRAR10000010",
+        "modelo_prov": "",
+        "desc": "BROQUEL #0 BOLA CH 10K",
+        "peso": "0.139",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299942625",
+        "modelo_martela": "BRAR10100010",
+        "modelo_prov": "",
+        "desc": "BROQUEL BOLA MEDIANA 10K",
+        "peso": "0.179",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299942588",
+        "modelo_martela": "BRAR10200010",
+        "modelo_prov": "",
+        "desc": "BROQUEL #2 BOLA GRANDE 10K",
+        "peso": "0.214",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "BROQUELES 14K",
+    "header_row": 1,
+    "valid_rows": 69,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": null,
+      "desc": "DESCRIPCION",
+      "peso": "PESO ORO PROVEEDOR",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299942014",
+        "modelo_martela": "BROAR10800014",
+        "modelo_prov": "",
+        "desc": "BROQUEL PERLA #4 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299942021",
+        "modelo_martela": "BROAR10900014",
+        "modelo_prov": "",
+        "desc": "BROQUEL PERLA #5 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299942069",
+        "modelo_martela": "BROAR11300014",
+        "modelo_prov": "",
+        "desc": "BROQUEL CIRCONIA CORAZON BISEL #6 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "MEDALLAS",
+    "header_row": 2,
+    "valid_rows": 28,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503040570951",
+        "modelo_martela": "MR3348CLL00010",
+        "modelo_prov": "",
+        "desc": "MEDALLA DIVINO NIÑO REDONDA CH 10K AB",
+        "peso": "0.736",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503040570968",
+        "modelo_martela": "MR3349CLL00010",
+        "modelo_prov": "",
+        "desc": "MEDALLA ESPIRITU SANTO REDONDA CH 10K AB",
+        "peso": "0.7510204081632652",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503040570975",
+        "modelo_martela": "MR3350CLL00010",
+        "modelo_prov": "",
+        "desc": "MEDALLA DIVINO NIÑO OVAL CH 10K AB",
+        "peso": "0.63",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ALPHA 14K ",
+    "header_row": 1,
+    "valid_rows": 8,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940676",
+        "modelo_martela": "DN0015AN01014",
+        "modelo_prov": "",
+        "desc": "ANILLO #10 TIPO ROLEX 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299940683",
+        "modelo_martela": "DN0016AN01114",
+        "modelo_prov": "",
+        "desc": "ANILLO #11 TIPO ROLEX 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299940690",
+        "modelo_martela": "DN0017AN01214",
+        "modelo_prov": "",
+        "desc": "ANILLO #12 TIPO ROLEX 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "GEOVANNI 14K",
+    "header_row": 1,
+    "valid_rows": 28,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940201",
+        "modelo_martela": "DN0024CLL01814",
+        "modelo_prov": "",
+        "desc": "COLLAR CON DIJE CORAZON CON PIEDRAS 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502278206793",
+        "modelo_martela": "LT302200014",
+        "modelo_prov": "",
+        "desc": "CADENA CRUZ Y PALOMA BICOLOR 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299944025",
+        "modelo_martela": "DN0215CLL01814",
+        "modelo_prov": "",
+        "desc": "DIJE CRUZ CON CIRCONIAS AE 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ORO BOLEADO 10K ",
+    "header_row": 2,
+    "valid_rows": 15,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940355",
+        "modelo_martela": "DN0031AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA LISA 10K",
+        "peso": "0.64",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299940362",
+        "modelo_martela": "DN0032AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA 15MM LISA 10K",
+        "peso": "0.723",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299940379",
+        "modelo_martela": "DN0033AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA LISA 20MM 10K OB",
+        "peso": "0.9899",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ORO BOLEADO 14K ",
+    "header_row": 1,
+    "valid_rows": 10,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502278209961",
+        "modelo_martela": "DN0026AR00014",
+        "modelo_prov": "",
+        "desc": "ARETES CORAZON DIAMANTADOS 14K",
+        "peso": "1.3578",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502278209978",
+        "modelo_martela": "DN0027AR00014",
+        "modelo_prov": "",
+        "desc": "ARETE MINI TUBO DIAMANTADA 14K",
+        "peso": "0.7223",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502278209985",
+        "modelo_martela": "DN2028AR00014",
+        "modelo_prov": "",
+        "desc": "ARETES CH TUBO DIAMANTADO 14K",
+        "peso": "1.0147",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "FUENTES",
+    "header_row": 5,
+    "valid_rows": 2,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503059681655",
+        "modelo_martela": "MR2127PL000925",
+        "modelo_prov": "",
+        "desc": "PULSERA CABALLERO ROLEX 20 CM MF PLATA 925",
+        "peso": "",
+        "kilataje": ""
+      },
+      {
+        "sku": "07503059681662",
+        "modelo_martela": "MR2128PL000925",
+        "modelo_prov": "",
+        "desc": "PULSERA DAMA ROLEX 18 CM MF PLATA 925",
+        "peso": "",
+        "kilataje": ""
+      }
+    ]
+  },
+  {
+    "sheet": "EDUARDO 10K ",
+    "header_row": 5,
+    "valid_rows": 22,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940546",
+        "modelo_martela": "DM0030PL00710",
+        "modelo_prov": "NO APLICA",
+        "desc": "PULSERA ESLABONES CORAZONES 10K",
+        "peso": "1.4804",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299947101",
+        "modelo_martela": "MR104PL007010",
+        "modelo_prov": "NO APLICA",
+        "desc": "PL  CON CIRCULITOS CON CADENA 10K",
+        "peso": "0.89",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502278204867",
+        "modelo_martela": "LT400200010",
+        "modelo_prov": "NO APLICA",
+        "desc": "PULSERA CIRCULO ESLABON ORO JD 10K",
+        "peso": "1.07",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "JOSE LUIS 10K",
+    "header_row": 5,
+    "valid_rows": 15,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940508",
+        "modelo_martela": "DN0045AR00010",
+        "modelo_prov": "",
+        "desc": "ARETE CIRCULO 10k",
+        "peso": "1.03",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299940515",
+        "modelo_martela": "DN0046AR00010",
+        "modelo_prov": "",
+        "desc": "ARETE CORAZON  10K",
+        "peso": "1.07",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299940959",
+        "modelo_martela": "DN0044CLL01810",
+        "modelo_prov": "",
+        "desc": "COLLAR CORAZON 10K",
+        "peso": "0.49",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "GUZMAN PO1 10K",
+    "header_row": 5,
+    "valid_rows": 17,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299944117",
+        "modelo_martela": "DN405ARR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA 15MM FACETADA ORO AMARILLO GZ 10K",
+        "peso": "1.7407",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299944124",
+        "modelo_martela": "DN406ARR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA HUGGIES ORO AMARILLO GZ 10K",
+        "peso": "1.2238",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299944131",
+        "modelo_martela": "DN407ARR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA HUGGIES CON CIRCONIAS ORO AMARILLO GZ 10K",
+        "peso": "2.9138",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "GUZMAN PO2 10K",
+    "header_row": 5,
+    "valid_rows": 17,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299944162",
+        "modelo_martela": "DN410ARR00010",
+        "modelo_prov": "",
+        "desc": "ARETE V DIAMANTADO ORO AMARILLO GZ 10K",
+        "peso": "1.0411",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299944179",
+        "modelo_martela": "DN411ARR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA 10MM COQUETA ORO AMARILLO GZ 10K",
+        "peso": "0.8355",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299944186",
+        "modelo_martela": "DN412ARR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA 20MM FACETADA ORO AMARILLO GZ 10K",
+        "peso": "2.1692",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "OF 10K",
+    "header_row": 1,
+    "valid_rows": 12,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503047972840",
+        "modelo_martela": "MR3150AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA FACETADA OF 10k",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502317864519",
+        "modelo_martela": "MR3178AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA DIAMANTADO ESTRELLA 35 MM O.F 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502317864564",
+        "modelo_martela": "MR3278PL00010",
+        "modelo_prov": "",
+        "desc": "PULSERA ESLABON OVAL S 3 COLORES O.F 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "OF 14K",
+    "header_row": 1,
+    "valid_rows": 96,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940676",
+        "modelo_martela": "DN0015AN01014",
+        "modelo_prov": "15-6",
+        "desc": "ANILLO #10 TIPO ROLEX 14K",
+        "peso": "2.8",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299940683",
+        "modelo_martela": "DN0016AN01114",
+        "modelo_prov": "15-6",
+        "desc": "ANILLO #11 TIPO ROLEX 14K",
+        "peso": "3.1",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299940690",
+        "modelo_martela": "DN0017AN01214",
+        "modelo_prov": "15-6",
+        "desc": "ANILLO # 12 TIPO ROLEX 14K",
+        "peso": "3.4",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ITALORO 10K",
+    "header_row": 5,
+    "valid_rows": 10,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299940553",
+        "modelo_martela": "DM0031PL00710",
+        "modelo_prov": "",
+        "desc": "PULSERA TIPO ROLEX 10K",
+        "peso": "2.298",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503047972833",
+        "modelo_martela": "MR3257PL00010",
+        "modelo_prov": "",
+        "desc": "PULSERA CADENA DE CLIP 10k",
+        "peso": "3.2818",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503040570876",
+        "modelo_martela": "MR3242PL01810",
+        "modelo_prov": "",
+        "desc": "PULSERA TIPO ROLEX CON ELEFANTES EN 3 COLORES 10K",
+        "peso": "3.2818",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ITALORO 14K",
+    "header_row": 5,
+    "valid_rows": 27,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503040570944",
+        "modelo_martela": "MR3246PL00014",
+        "modelo_prov": "",
+        "desc": "PULSERA INFINITOS CON ESLABONES EN 3 COLORES 14K",
+        "peso": "2.7212",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040975237",
+        "modelo_martela": "MR3247PL00014",
+        "modelo_prov": "",
+        "desc": "PULSERA TIPO ROLEX CON 7 ESTACIONES EN 3 TONOS 14K",
+        "peso": "2.8819",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317864601",
+        "modelo_martela": "MR3183AR00014",
+        "modelo_prov": "",
+        "desc": "MEDIA ARRACADA TIPO ROLEX IT 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "Diana Joyas 10K",
+    "header_row": 2,
+    "valid_rows": 18,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503040975558",
+        "modelo_martela": "MR3121AR00010",
+        "modelo_prov": "",
+        "desc": "Arracada oval diamantada DJSUR 10k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040975565",
+        "modelo_martela": "MR3122AR00010",
+        "modelo_prov": "",
+        "desc": "Arracada torcida DJSUR 10k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040975572",
+        "modelo_martela": "MR3123AR00010",
+        "modelo_prov": "",
+        "desc": "Arete bola pulida DJSUR 10k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "Diana Joyas 14K",
+    "header_row": 2,
+    "valid_rows": 32,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503040975732",
+        "modelo_martela": "MR3133AR00014",
+        "modelo_prov": "",
+        "desc": "Arracada ancha pulida DJFAN 14k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040975749",
+        "modelo_martela": "MR3134AR00014",
+        "modelo_prov": "",
+        "desc": "Arracada media cañaciamantada 30mm DJFAN 14k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040975756",
+        "modelo_martela": "MR3135AR00014",
+        "modelo_prov": "",
+        "desc": "Aretes corazon pulido cz DJFAN 14k",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ARGOLLAS 14K",
+    "header_row": 2,
+    "valid_rows": 16,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317860085",
+        "modelo_martela": "MR161AARG00714",
+        "modelo_prov": "",
+        "desc": "ARGOLLA AMA PULIDA MEDIA CAÑA 161-A #7 14K AF",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317860092",
+        "modelo_martela": "MR161AARG01014",
+        "modelo_prov": "",
+        "desc": "ARGOLLA AMA PULIDA MEDIA CAÑA 161-A #10 14K AF",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317860108",
+        "modelo_martela": "MR4224ARG00714",
+        "modelo_prov": "",
+        "desc": "ARGOLLA AMA FACETADA CUADROS 422.4 #7 14K AF",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "LETRAS 14K",
+    "header_row": 2,
+    "valid_rows": 13,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317860245",
+        "modelo_martela": "MR3701LE00A14",
+        "modelo_prov": "",
+        "desc": "COLLAR INICIAL A 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317860252",
+        "modelo_martela": "MR3702LE00B14",
+        "modelo_prov": "",
+        "desc": "COLLAR INICIAL B 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317860269",
+        "modelo_martela": "MR3703LE00C14",
+        "modelo_prov": "",
+        "desc": "COLLAR INICIAL C 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ARPAS 10K",
+    "header_row": 2,
+    "valid_rows": 50,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299941017",
+        "modelo_martela": "DN0002AR00010",
+        "modelo_prov": "X3E403276-TC-DC-GP",
+        "desc": "ARETE FLOR DE 3 COLORES 10K",
+        "peso": "1.035",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299941109",
+        "modelo_martela": "DN0047AR00010",
+        "modelo_prov": "XXDCNHCWSE5856",
+        "desc": "ARETE CORAZON ABOMBADO 10K",
+        "peso": "1.7021",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299941024",
+        "modelo_martela": "DN0013AR00010",
+        "modelo_prov": "NSE8456",
+        "desc": "ARETE TIPO ARRACADA DE GOTA 10K",
+        "peso": "2.5791",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "ARPAS 14K",
+    "header_row": 2,
+    "valid_rows": 136,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502278209053",
+        "modelo_martela": "DN0001AR00014",
+        "modelo_prov": "VX3E511331-YW",
+        "desc": "ARETE MARIPOSA 14K",
+        "peso": "1",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502278209077",
+        "modelo_martela": "DN0003AR00014",
+        "modelo_prov": "XXSTSE0009.5MM-DC/51",
+        "desc": "ARETE DE HONGO FACETADO 14K",
+        "peso": "1.4469",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502278209084",
+        "modelo_martela": "DN0004AR00014",
+        "modelo_prov": "XXNSE8622",
+        "desc": "ARETE BROQUEL DE CORAZON 14K",
+        "peso": "1.4574",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "lotus  10k ",
+    "header_row": 1,
+    "valid_rows": 84,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "ITEM ID",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299943530",
+        "modelo_martela": "DN00312CLL1810",
+        "modelo_prov": "19504",
+        "desc": "GARGANTILLA 3 AROS LTS 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299943547",
+        "modelo_martela": "DN00313CLL1810",
+        "modelo_prov": "61206",
+        "desc": "COLLAR CUERNO ABUNDANCIA LTS 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299943554",
+        "modelo_martela": "DN00314CLL1810",
+        "modelo_prov": "27234",
+        "desc": "COLLAR CORAZON MINI LTS 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "lotus 14k",
+    "header_row": 1,
+    "valid_rows": 244,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "ITEM ID",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299943486",
+        "modelo_martela": "DN0300AR00014",
+        "modelo_prov": "41954",
+        "desc": "ARETE DE ATRAPASUEÑO 14K",
+        "peso": "3.2",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299943493",
+        "modelo_martela": "DN0300ARR0014",
+        "modelo_prov": "55204",
+        "desc": "ARRACADA OVAL CZ-LTS 14K",
+        "peso": "2.2",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299943509",
+        "modelo_martela": "DN0301ARR0014",
+        "modelo_prov": "55200",
+        "desc": "ARRACADA CRL CZ-LTS 14K",
+        "peso": "1.8",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "goldenline 10K",
+    "header_row": 1,
+    "valid_rows": 41,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299943103",
+        "modelo_martela": "DN0322AN00610",
+        "modelo_prov": "P-YB-RDC181615-CZ-10K-1",
+        "desc": "ANILLO #6 ONDAS CZ GL 10K",
+        "peso": "0.6967",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299943110",
+        "modelo_martela": "DN0323AN00710",
+        "modelo_prov": "P-YB-RDC181615-CZ-10K-1",
+        "desc": "ANILLO #7 ONDAS CZ GL 10K",
+        "peso": "0.7539",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299943127",
+        "modelo_martela": "DN0324AN00810",
+        "modelo_prov": "P-YB-RDC181615-CZ-10K-1",
+        "desc": "ANILLO #8 ONDAS CZ GL 10K",
+        "peso": "0.7617",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "goldenline 14K",
+    "header_row": 1,
+    "valid_rows": 16,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299943059",
+        "modelo_martela": "DN0303PL07514",
+        "modelo_prov": "Y-STB5608-1-14K-7.48-V.2",
+        "desc": "PULSERA TIPO ROLEX GL 14K",
+        "peso": "7.5",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299943066",
+        "modelo_martela": "DN0304PL07514",
+        "modelo_prov": "Q-TC-X2B190739-14K-10.22",
+        "desc": "PULSERA CENTRO \"V\" AJUSTABLE GL 14K",
+        "peso": "2.43",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299943073",
+        "modelo_martela": "DN0305PL07514",
+        "modelo_prov": "Q-TC-X2B190868-14K-10.22-V.1",
+        "desc": "PULSERA CENTRO MARIPOSA AJUSTABLE GL 14K",
+        "peso": "2.23",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "PREMIER 10K ",
+    "header_row": 1,
+    "valid_rows": 10,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299949563",
+        "modelo_martela": "MR3427AN00710",
+        "modelo_prov": "P02CR-2942",
+        "desc": "ANILLO #7 PUENTE DELGADO PR 10K",
+        "peso": "2.22",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299949570",
+        "modelo_martela": "MR3427AN00810",
+        "modelo_prov": "P02CR-2942",
+        "desc": "ANILLO #8 PUENTE DELGADO PR 10K",
+        "peso": "2.22",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299949587",
+        "modelo_martela": "MR3427AN00910",
+        "modelo_prov": "P02CR-2942",
+        "desc": "ANILLO #9 PUENTE DELGADO PR 10K",
+        "peso": "2.22",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "PREMIER 14K",
+    "header_row": 1,
+    "valid_rows": 94,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299947224",
+        "modelo_martela": "MR1050AN07014",
+        "modelo_prov": "FMR-26",
+        "desc": "ANILLO #7  PULIDO Y MATE CON CZ 14K PR",
+        "peso": "3.8",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299947248",
+        "modelo_martela": "MR1051AN08014",
+        "modelo_prov": "FMR-26",
+        "desc": "ANILLO #8  PULIDO Y MATE CON CZ 14K PR",
+        "peso": "3.8",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299947262",
+        "modelo_martela": "MR1520AN09014",
+        "modelo_prov": "FMR-26",
+        "desc": "ANILLO #9  PULIDO Y MATE CON CZ 14K PR",
+        "peso": "3.8",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "GUSTO 10K",
+    "header_row": 2,
+    "valid_rows": 27,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299949761",
+        "modelo_martela": "MR3104AR00010",
+        "modelo_prov": "EPC01-4429-06",
+        "desc": "ARETE MEDIA BOLA PULIDO GST 10K",
+        "peso": "1.12",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299949778",
+        "modelo_martela": "MR3105AR00010",
+        "modelo_prov": "EPC02-4004-00",
+        "desc": "ARETE PICADO GST 10KG",
+        "peso": "1.62",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07502299949785",
+        "modelo_martela": "MR3106AR00010",
+        "modelo_prov": "EPC02-4017-00",
+        "desc": "ARETE GOTA DIAMANTADA GST 10K",
+        "peso": "2.9",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "GUSTO 14K",
+    "header_row": 2,
+    "valid_rows": 39,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299949808",
+        "modelo_martela": "MR3108AR00014",
+        "modelo_prov": "RCTE-0017-2x1-OV3-YW-R",
+        "desc": "ARRACADA TORCIDA CZ GST 14K",
+        "peso": "2",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502299949815",
+        "modelo_martela": "MR3109AR00014",
+        "modelo_prov": "TE-3-OV5-R",
+        "desc": "ARRACADA OVAL TUBO PULIDO GST 14K",
+        "peso": "2",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503040570104",
+        "modelo_martela": "MR3215PL00014",
+        "modelo_prov": "BDC04-2820-00",
+        "desc": "PULSERA BARRAS CON TORNILLO CAB 21 CMTS GST 14K",
+        "peso": "8.9",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "INDONESIA 10K",
+    "header_row": 2,
+    "valid_rows": 22,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503047972864",
+        "modelo_martela": "MR3151AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA TUBO 2.0 MM LISO 30.0 MM IND 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503047972871",
+        "modelo_martela": "MR3152AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA TUBO 2.0 MM LISO 35.0 MM IND 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      },
+      {
+        "sku": "07503047972888",
+        "modelo_martela": "MR3153AR00010",
+        "modelo_prov": "",
+        "desc": "ARRACADA TUBO 2.0 MM LISO 40.0 MM IND 10K",
+        "peso": "",
+        "kilataje": "10K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "Soul Pearl 14K",
+    "header_row": 1,
+    "valid_rows": 38,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "Modelo Martela",
+      "mod_prov": "Modelo Proveedor",
+      "desc": "Descripción",
+      "peso": "Peso",
+      "kilataje": "Kilataje"
+    },
+    "sample": [
+      {
+        "sku": "07502317865073",
+        "modelo_martela": "MR3215AR00014",
+        "modelo_prov": "",
+        "desc": "ARETES GANCHO C/PERLA NATURAL 14K SOPR",
+        "peso": "",
+        "kilataje": "14k"
+      },
+      {
+        "sku": "07502317865080",
+        "modelo_martela": "MR3204AR00014",
+        "modelo_prov": "",
+        "desc": "ARETES PERLA NATURAL C/CADENA 14K SOPR",
+        "peso": "",
+        "kilataje": "14k"
+      },
+      {
+        "sku": "07502317865097",
+        "modelo_martela": "MR3205AR00014",
+        "modelo_prov": "",
+        "desc": "ARETES PASANTES C/3 PERLAS NATURALES 14K SOPR",
+        "peso": "",
+        "kilataje": "14k"
+      }
+    ]
+  },
+  {
+    "sheet": "Gordillo 14K",
+    "header_row": 2,
+    "valid_rows": 31,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317866315",
+        "modelo_martela": "MR3218AR00014",
+        "modelo_prov": "13120-PRE",
+        "desc": "PAR PTES GOTA 14K GOR",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317866322",
+        "modelo_martela": "MR3219AR00014",
+        "modelo_prov": "6770-TRICOLOR",
+        "desc": "PEND BOLAS TRICOLOR PRESION 14K GOR",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07502317866339",
+        "modelo_martela": "MR3220AR00014",
+        "modelo_prov": "9201-MALAQUITA",
+        "desc": "PP MALAQUITA 14K GOR",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "Yogesh",
+    "header_row": 2,
+    "valid_rows": 9,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503059681761",
+        "modelo_martela": "",
+        "modelo_prov": "ET27331/1",
+        "desc": "ARETES CORAZON 14K CON DIAMANTES 22 p YG",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503059681778",
+        "modelo_martela": "",
+        "modelo_prov": "ET27260",
+        "desc": "ARETES GOTA EN ORO BLANCO 14K CON DIAMANTES 22 p YG",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503059681785",
+        "modelo_martela": "",
+        "modelo_prov": "PD26812",
+        "desc": "DIJE CIRCULOS ENTRELAZADOS EN ORO BICOLOR 14K CON DIAMANTES 7 p YG",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "Brillantería (Lalo)",
+    "header_row": 2,
+    "valid_rows": 11,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "",
+        "modelo_martela": "MR0001CLLB00014",
+        "modelo_prov": "",
+        "desc": "DIJE MARQUIZ 6x3 Y CZ 1.25 MM 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR0002CLLB00014",
+        "modelo_prov": "",
+        "desc": "DIJE MARQUIZ 8x4 Y CZ 1.5 MM 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR0001ARB00014",
+        "modelo_prov": "",
+        "desc": "ARETES MARQUIZ 6x3 Y CZ 1.25 MM 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  },
+  {
+    "sheet": "PIEL CON ACERO",
+    "header_row": 2,
+    "valid_rows": 21,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502299948726",
+        "modelo_martela": "MRAC1017PL00055",
+        "modelo_prov": "MP-8324",
+        "desc": "PL PIEL NATURAL CAFE CON BROCHE DE ACERO",
+        "peso": "9.33",
+        "kilataje": "PIEL Y ACERO"
+      },
+      {
+        "sku": "07502299948733",
+        "modelo_martela": "MRAC1018PL00055",
+        "modelo_prov": "MP-8325",
+        "desc": "PL PIEL NATURAL NEGRA CON BROCHE DE ACERO",
+        "peso": "10.21",
+        "kilataje": "PIEL Y ACERO"
+      },
+      {
+        "sku": "07502299948740",
+        "modelo_martela": "MRAC1019PL00055",
+        "modelo_prov": "MP-8328",
+        "desc": "PL PIEL NATURAL NEGRA  Y GOMAS DE CAUCHO",
+        "peso": "9.01",
+        "kilataje": "PIEL Y ACERO"
+      }
+    ]
+  },
+  {
+    "sheet": "Eduardo Acevedo 925",
+    "header_row": 2,
+    "valid_rows": 28,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503040975244",
+        "modelo_martela": "MR1028AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES FLORES CON PERLA PLATA 925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07503040975251",
+        "modelo_martela": "MR1029AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES CORAZONES CON PERLA PLATA 925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07503040975268",
+        "modelo_martela": "MR1030AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES NUDO CON PERLA PLATA 925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "PLATA",
+    "header_row": 2,
+    "valid_rows": 82,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "",
+        "modelo_martela": "MR1050AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES GANCHO OVAL SILUETA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR1051AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES GRANO DE CAFÉ CZ AZUL .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR1052AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES LARGOS BOLA PULIDA .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "PLATA (2)",
+    "header_row": 2,
+    "valid_rows": 90,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "",
+        "modelo_martela": "MR1033AR000925",
+        "modelo_prov": "",
+        "desc": "ARETE GOTA PULIDO .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR1034AR000925",
+        "modelo_prov": "",
+        "desc": "ARETE GANCHO BOLA PULIDA GRANDE",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "",
+        "modelo_martela": "MR1035AR000925",
+        "modelo_prov": "",
+        "desc": "ARETE DOBLE LINEA CZ .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "Grace Silver 925",
+    "header_row": 2,
+    "valid_rows": 19,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317861822",
+        "modelo_martela": "MR1160AR000925",
+        "modelo_prov": "GE01773A",
+        "desc": "ARETE TREPADOR 'S' CZ 925 GS",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317861839",
+        "modelo_martela": "MR1161AR000925",
+        "modelo_prov": "SE01025A",
+        "desc": "ARETE GANCHO CZ AZUL Y BCO 925 GS",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317861846",
+        "modelo_martela": "MR1162AR000925",
+        "modelo_prov": "SE02569A",
+        "desc": "ARETE GANCHO PULIDO 925 GS",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "Shenzhen Finefey 925",
+    "header_row": 2,
+    "valid_rows": 187,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317861747",
+        "modelo_martela": "MR1152AR000925",
+        "modelo_prov": "FF-JSC2562-E",
+        "desc": "ARETE CZ AZUL  925 SF",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317861754",
+        "modelo_martela": "MR1153AR000925",
+        "modelo_prov": "FF-JSC2702-E",
+        "desc": "ARETE DOBLE FILA CZ 925 SF",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317861761",
+        "modelo_martela": "MR1154AR000925",
+        "modelo_prov": "FF-JSC2566-E",
+        "desc": "ARETE CIRCONIA OVAL AL CENTRO 925 SF",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "JESSICA 925",
+    "header_row": 2,
+    "valid_rows": 12,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317862010",
+        "modelo_martela": "MR1167AR000925",
+        "modelo_prov": "AA-CHA652R OR/AMX",
+        "desc": "ARETES LARGO GRANO DE CAFE ROSA C/AMATISTA 925 JE",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317862027",
+        "modelo_martela": "MR1168AR000925",
+        "modelo_prov": "AA-CHA659 OR/TOP",
+        "desc": "ARETES LARGOS GRANO DE CAFE C/AGUAMARINA 925 JE",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317862034",
+        "modelo_martela": "MR2066PL000925",
+        "modelo_prov": "AA-BAGC3111 SC",
+        "desc": "BRAZALETE 2 PERLAS CULTIVADAS 925 JE",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "Joielle (Pandora)",
+    "header_row": 2,
+    "valid_rows": 83,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317864502",
+        "modelo_martela": "MR2089PL018925",
+        "modelo_prov": "65",
+        "desc": "PULSERA 18 cm JOIE 925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317862928",
+        "modelo_martela": "MR2073PL020925",
+        "modelo_prov": "66",
+        "desc": "PULSERA 20 cm JOIE 925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317862935",
+        "modelo_martela": "MR5000CH0001925",
+        "modelo_prov": "1",
+        "desc": "CHARM ROSETON JOIE 925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "ACPL",
+    "header_row": 2,
+    "valid_rows": 76,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317863741",
+        "modelo_martela": "MR1169AR000925",
+        "modelo_prov": "CRER12537SL",
+        "desc": "Aretes 3 barras .925 plata c/rodio ACPL",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317863758",
+        "modelo_martela": "MR1170AR000925",
+        "modelo_prov": "ER184991A18FG",
+        "desc": "Aretes 3 flores c/cz .925 plata c/rodio ACPL",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317863765",
+        "modelo_martela": "MR1171AR000925",
+        "modelo_prov": "SLER1054743T",
+        "desc": "Aretes abombados .925 plata c/rodio ACPL",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "VIOR 925",
+    "header_row": 2,
+    "valid_rows": 42,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317866452",
+        "modelo_martela": "MR1241AR000925",
+        "modelo_prov": "K6863",
+        "desc": "ARETES INFINITO COLGANTE PLATA VR .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317866469",
+        "modelo_martela": "MR2095PL000925",
+        "modelo_prov": "K3954",
+        "desc": "PULSERA MULTI CRUZ COLGANTES VR PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317866476",
+        "modelo_martela": "MR2096PL000925",
+        "modelo_prov": "K6147",
+        "desc": "PULSERA CANDADO CORAZON VR PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "SUNRISE 925",
+    "header_row": 2,
+    "valid_rows": 55,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317867695",
+        "modelo_martela": "MR1242AR000925",
+        "modelo_prov": "YE24934",
+        "desc": "ARRACADAS GRANDES CON CZ SR PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317867701",
+        "modelo_martela": "MR1243AR000925",
+        "modelo_prov": "YE25077",
+        "desc": "ARRACADAS TIPO CHURUMBELA CON CZ SR PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317867718",
+        "modelo_martela": "MR1244AR000925",
+        "modelo_prov": "YE25527",
+        "desc": "ARRACADAS BOLITAS CON CZ SR PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "LETRAS 925 PERLA",
+    "header_row": 2,
+    "valid_rows": 13,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317868913",
+        "modelo_martela": "MR3132CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (A) CON PERLA PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317868920",
+        "modelo_martela": "MR3133CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (B) CON PERLA PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317868937",
+        "modelo_martela": "MR3134CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (C) CON PERLA PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "LETRAS 925 CORAZON",
+    "header_row": 2,
+    "valid_rows": 13,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317869101",
+        "modelo_martela": "MR3148CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (A) SILUETA CORAZON PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317869118",
+        "modelo_martela": "MR3149CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (B) SILUETA CORAZON PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317869125",
+        "modelo_martela": "MR3150CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR LETRA (C) SILUETA CORAZON PLATA .925",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "UZMAN",
+    "header_row": 2,
+    "valid_rows": 18,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317868456",
+        "modelo_martela": "MR3258AR00014",
+        "modelo_prov": "EB0265-01",
+        "desc": "ARETES BROQUEL CIRCULO CON CZ 14K UZ",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317868463",
+        "modelo_martela": "MR3259AR00014",
+        "modelo_prov": "EB0949-01",
+        "desc": "ARETES BROQUEL SILUETA MARIPOSA CON CZ 14K UZ",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07502317868470",
+        "modelo_martela": "MR3260AR00014",
+        "modelo_prov": "EBC0002-01",
+        "desc": "ARETES BROQUEL DELFIN 14K UZ",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "NY",
+    "header_row": 2,
+    "valid_rows": 18,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07502317869255",
+        "modelo_martela": "MR3276AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADAS SOL DE MEDIA NOCHE 14K NY",
+        "peso": "",
+        "kilataje": "14K"
+      },
+      {
+        "sku": "07502317869262",
+        "modelo_martela": "MR3277AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADAS IMPERIALES 14K NY",
+        "peso": "",
+        "kilataje": "14K"
+      },
+      {
+        "sku": "07502317869279",
+        "modelo_martela": "MR3278AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADAS ESPIRAL ETERNA 14K NY",
+        "peso": "",
+        "kilataje": "14K"
+      }
+    ]
+  },
+  {
+    "sheet": "Selina",
+    "header_row": 1,
+    "valid_rows": 120,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "Modelo Martela",
+      "mod_prov": "Modelo Proveedor",
+      "desc": "Descripción",
+      "peso": "Peso",
+      "kilataje": "Kilataje"
+    },
+    "sample": [
+      {
+        "sku": "07503061337083",
+        "modelo_martela": "MR1265AR000925",
+        "modelo_prov": "",
+        "desc": "ARETES NARCISO AZUL C/CZ PLATA C/RODIO .925 SEL",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07503061337090",
+        "modelo_martela": "MR3163CLL000925",
+        "modelo_prov": "",
+        "desc": "COLLAR NARCISO AZUL C/CZ PLATA C/RODIO .925 SEL",
+        "peso": "",
+        "kilataje": "925"
+      },
+      {
+        "sku": "07503061337502",
+        "modelo_martela": "MR4094AN007925",
+        "modelo_prov": "",
+        "desc": "ANILLO #7 NARCISO AZUL C/CZ PLATA C/RODIO .925 SEL",
+        "peso": "",
+        "kilataje": "925"
+      }
+    ]
+  },
+  {
+    "sheet": "Gold Mark",
+    "header_row": 2,
+    "valid_rows": 3,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503061707701",
+        "modelo_martela": "MR3323AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADA LISA TUBO 1.5-13mm 14K GM",
+        "peso": "",
+        "kilataje": ""
+      },
+      {
+        "sku": "07503061707749",
+        "modelo_martela": "MR3325AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADA LISA TUBO 1.5-18mm 14K GM",
+        "peso": "",
+        "kilataje": ""
+      },
+      {
+        "sku": "07503061707718",
+        "modelo_martela": "MR3324AR00014",
+        "modelo_prov": "",
+        "desc": "ARRACADA LISA TUBO 1.5-23mm 14K GM",
+        "peso": "",
+        "kilataje": ""
+      }
+    ]
+  },
+  {
+    "sheet": "DIJES 14K",
+    "header_row": 2,
+    "valid_rows": 13,
+    "headers_found": {
+      "sku": "SKU",
+      "mod_martela": "MODELO MARTELA",
+      "mod_prov": "MODELO PROVEEDOR",
+      "desc": "DESCRIPCION",
+      "peso": "PESO",
+      "kilataje": "KILATAJE"
+    },
+    "sample": [
+      {
+        "sku": "07503061707886",
+        "modelo_martela": "MR3801DJ00014",
+        "modelo_prov": "",
+        "desc": "DIJE INICIAL A 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503061707893",
+        "modelo_martela": "MR3802DJ00014",
+        "modelo_prov": "",
+        "desc": "DIJE INICIAL B 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      },
+      {
+        "sku": "07503061707909",
+        "modelo_martela": "MR3803DJ00014",
+        "modelo_prov": "",
+        "desc": "DIJE INICIAL C 14K",
+        "peso": "",
+        "kilataje": "14K ORO"
+      }
+    ]
+  }
+]
