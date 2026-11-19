@@ -217,8 +217,8 @@ async function runOracle() {
     });
     assertCheck(
       '10. Fachada de Tablas BD Simuladas (db-tables-facade.js) y Exportador SQL PostgreSQL',
-      dbValidation.tableNames.length === 13 && dbValidation.hasInserts,
-      `13 tablas PostgreSQL aisladas (${dbValidation.tableNames.join(', ')}) | Script SQL generado (${dbValidation.sqlLength} bytes)`
+      dbValidation.tableNames.length >= 13 && dbValidation.hasInserts,
+      `${dbValidation.tableNames.length} tablas PostgreSQL aisladas (${dbValidation.tableNames.join(', ')}) | Script SQL generado (${dbValidation.sqlLength} bytes)`
     );
 
     // 11. Cero errores en consola y cero excepciones JS

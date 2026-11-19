@@ -13,13 +13,13 @@ window.MartelaSeed = (function() {
   // MÓDULO 1: PROVEEDORES INTERNACIONALES Y NACIONALES
   // =========================================================================
   const proveedores = [
-    { id: 1, codigo_interno: "PROV-CHN-01", razon_social: "Shenzhen Finefey Jewelry Co., Ltd.", pais_origen: "CHINA", moneda_compra: "USD", ciudad: "Shenzhen", lead_time_dias: 90 },
-    { id: 2, codigo_interno: "PROV-HKG-02", razon_social: "HK Gracey Jewel International Ltd.", pais_origen: "CHINA", moneda_compra: "USD", ciudad: "Hong Kong", lead_time_dias: 75 },
-    { id: 3, codigo_interno: "PROV-ITA-03", razon_social: "Italoro Arezzo S.p.A.", pais_origen: "ITALIA", moneda_compra: "EUR", ciudad: "Arezzo", lead_time_dias: 60 },
-    { id: 4, codigo_interno: "PROV-TUR-04", razon_social: "Lotus Gold Kuyumculuk A.S.", pais_origen: "TURQUIA", moneda_compra: "USD", ciudad: "Estambul", lead_time_dias: 65 },
-    { id: 5, codigo_interno: "PROV-TUR-05", razon_social: "Arpas Export Jewelry Istanbul", pais_origen: "TURQUIA", moneda_compra: "USD", ciudad: "Estambul", lead_time_dias: 70 },
-    { id: 6, codigo_interno: "PROV-MEX-06", razon_social: "Orfebres Finos de Guadalajara S.A.", pais_origen: "MEXICO", moneda_compra: "MXN", ciudad: "Guadalajara", lead_time_dias: 15 },
-    { id: 7, codigo_interno: "PROV-MEX-07", razon_social: "Platería Artesanal Taxco Real", pais_origen: "MEXICO", moneda_compra: "MXN", ciudad: "Taxco", lead_time_dias: 12 }
+    { id: 1, codigo_interno: "PROV-CHN-01", razon_social: "Shenzhen Finefey Jewelry Co., Ltd.", pais_origen: "CHINA", moneda_compra: "USD", moneda_defecto: "USD", factor_merma_oro: 1.50, ciudad: "Shenzhen", lead_time_dias: 90 },
+    { id: 2, codigo_interno: "PROV-HKG-02", razon_social: "HK Gracey Jewel International Ltd.", pais_origen: "CHINA", moneda_compra: "USD", moneda_defecto: "USD", factor_merma_oro: 1.50, ciudad: "Hong Kong", lead_time_dias: 75 },
+    { id: 3, codigo_interno: "PROV-ITA-03", razon_social: "Italoro Arezzo S.p.A.", pais_origen: "ITALIA", moneda_compra: "EUR", moneda_defecto: "EUR", factor_merma_oro: 1.20, ciudad: "Arezzo", lead_time_dias: 60 },
+    { id: 4, codigo_interno: "PROV-TUR-04", razon_social: "Lotus Gold Kuyumculuk A.S.", pais_origen: "TURQUIA", moneda_compra: "USD", moneda_defecto: "USD", factor_merma_oro: 1.50, ciudad: "Estambul", lead_time_dias: 65 },
+    { id: 5, codigo_interno: "PROV-TUR-05", razon_social: "Arpas Export Jewelry Istanbul", pais_origen: "TURQUIA", moneda_compra: "USD", moneda_defecto: "USD", factor_merma_oro: 1.40, ciudad: "Estambul", lead_time_dias: 70 },
+    { id: 6, codigo_interno: "PROV-MEX-06", razon_social: "Orfebres Finos de Guadalajara S.A.", pais_origen: "MEXICO", moneda_compra: "MXN", moneda_defecto: "MXN", factor_merma_oro: 2.00, ciudad: "Guadalajara", lead_time_dias: 15 },
+    { id: 7, codigo_interno: "PROV-MEX-07", razon_social: "Platería Artesanal Taxco Real", pais_origen: "MEXICO", moneda_compra: "MXN", moneda_defecto: "MXN", factor_merma_oro: 2.50, ciudad: "Taxco", lead_time_dias: 12 }
   ];
 
   // =========================================================================
@@ -1087,6 +1087,296 @@ window.MartelaSeed = (function() {
     }
   ];
 
+  // =========================================================================
+  // MÓDULO 0: COMPRAS INTERNACIONALES, ÓRDENES DE COMPRA (OC) Y PACKING LIST
+  // =========================================================================
+  const ordenes_compra = [
+    {
+      id_oc: 1,
+      folio_oc: "OC-MARTELA-2026-0041",
+      id_proveedor: 1,
+      proveedor_nombre: "Shenzhen Finefey Jewelry Co., Ltd.",
+      pais_origen: "CHINA",
+      moneda: "USD",
+      estatus: "BORRADOR",
+      peso_oro_teorico_total_g: 485.5000,
+      costo_mo_total_estimado: 2450.00,
+      fix_oro_cerrado_usd: null,
+      tipo_cambio_cerrado: null,
+      importe_metal_total: 0,
+      importe_total_liquidable: 2450.00,
+      fecha_emision: "2026-10-15 10:30:00",
+      fecha_promesa_entrega: "2026-12-15",
+      notas: "Colección Anillos Solitarios y Dijes Navideños"
+    },
+    {
+      id_oc: 2,
+      folio_oc: "OC-MARTELA-2026-0042",
+      id_proveedor: 3,
+      proveedor_nombre: "Italoro Arezzo S.p.A.",
+      pais_origen: "ITALIA",
+      moneda: "EUR",
+      estatus: "PROFORMA_PENDIENTE",
+      peso_oro_teorico_total_g: 1120.0000,
+      costo_mo_total_estimado: 4800.00,
+      fix_oro_cerrado_usd: null,
+      tipo_cambio_cerrado: null,
+      importe_metal_total: 0,
+      importe_total_liquidable: 4800.00,
+      fecha_emision: "2026-10-16 09:15:00",
+      fecha_promesa_entrega: "2026-11-30",
+      notas: "Cadenas diamantadas y esclavas tejido italiano"
+    },
+    {
+      id_oc: 3,
+      folio_oc: "OC-MARTELA-2026-0043",
+      id_proveedor: 4,
+      proveedor_nombre: "Lotus Gold Kuyumculuk A.S.",
+      pais_origen: "TURQUIA",
+      moneda: "USD",
+      estatus: "PACKING_AUDITADO",
+      peso_oro_teorico_total_g: 850.0000,
+      peso_packing_total_g: 862.0000,
+      variacion_peso_total_pct: 1.41,
+      costo_mo_total_estimado: 3200.00,
+      fix_oro_cerrado_usd: null,
+      tipo_cambio_cerrado: null,
+      importe_metal_total: 0,
+      importe_total_liquidable: 3200.00,
+      fecha_emision: "2026-10-12 11:00:00",
+      fecha_promesa_entrega: "2026-11-20",
+      notas: "Arracadas huecas 14K con packing list auditado dentro de tolerancia (+1.41%)"
+    },
+    {
+      id_oc: 4,
+      folio_oc: "OC-MARTELA-2026-0044",
+      id_proveedor: 5,
+      proveedor_nombre: "Arpas Export Jewelry Istanbul",
+      pais_origen: "TURQUIA",
+      moneda: "USD",
+      estatus: "FIX_CERRADO",
+      peso_oro_teorico_total_g: 620.0000,
+      peso_packing_total_g: 628.5000,
+      variacion_peso_total_pct: 1.37,
+      costo_mo_total_estimado: 2800.00,
+      fix_oro_cerrado_usd: 2680.00,
+      tipo_cambio_cerrado: 20.1500,
+      importe_metal_total: 31602.84,
+      importe_total_liquidable: 34402.84,
+      importe_total_liquidable_mxn: 693217.23,
+      fecha_emision: "2026-10-10 14:20:00",
+      fecha_cierre_fix: "2026-10-14 16:00:00",
+      fecha_promesa_entrega: "2026-11-10",
+      notas: "Fix congelado a $2,680.00 USD/oz. Listo para anticipo del 50%"
+    },
+    {
+      id_oc: 5,
+      folio_oc: "OC-MARTELA-2026-0045",
+      id_proveedor: 3,
+      proveedor_nombre: "Italoro Arezzo S.p.A.",
+      pais_origen: "ITALIA",
+      moneda: "USD",
+      estatus: "EN_TRANSITO",
+      peso_oro_teorico_total_g: 1350.0000,
+      peso_packing_total_g: 1362.4000,
+      variacion_peso_total_pct: 0.92,
+      costo_mo_total_estimado: 5400.00,
+      fix_oro_cerrado_usd: 2650.00,
+      tipo_cambio_cerrado: 19.8500,
+      importe_metal_total: 67608.20,
+      importe_total_liquidable: 73008.20,
+      importe_total_liquidable_mxn: 1449212.77,
+      guia_tracking: "FDX-7894512039-HK",
+      transportista: "FedEx Express",
+      agente_aduanal: "Eduardo Mendoza (Agencia Aduanal del Valle)",
+      fecha_emision: "2026-10-05 08:30:00",
+      fecha_cierre_fix: "2026-10-09 12:00:00",
+      fecha_embarque: "2026-10-15",
+      fecha_estimada_arribo: "2026-10-18",
+      notas: "Valija aérea en vuelo internacional hacia CDMX. Enlace a Módulo 2"
+    }
+  ];
+
+  const orden_compra_lineas = [
+    {
+      id_linea: 1,
+      id_oc: 1,
+      sku: "07502278209688",
+      modelo_proveedor: "FF-8821-CZ",
+      descripcion: "Anillo Solitario Imperial con Circonia Suiza Oro 10K",
+      kilataje: "10K",
+      cantidad_piezas: 150,
+      peso_teorico_unitario_g: 1.8500,
+      peso_teorico_total_g: 277.5000,
+      costo_mo_unitario: 9.50,
+      costo_mo_total: 1425.00,
+      peso_packing_unitario_g: 0.0000,
+      peso_packing_total_g: 0.0000,
+      variacion_peso_porcentaje: 0.00,
+      estatus_tolerancia: "PENDIENTE"
+    },
+    {
+      id_linea: 2,
+      id_oc: 1,
+      sku: "07502278209725",
+      modelo_proveedor: "FF-DIJE-CORAZON",
+      descripcion: "Dije Corazón Facetado Grabado Láser Oro 14K",
+      kilataje: "14K",
+      cantidad_piezas: 80,
+      peso_teorico_unitario_g: 2.6000,
+      peso_teorico_total_g: 208.0000,
+      costo_mo_unitario: 12.8125,
+      costo_mo_total: 1025.00,
+      peso_packing_unitario_g: 0.0000,
+      peso_packing_total_g: 0.0000,
+      variacion_peso_porcentaje: 0.00,
+      estatus_tolerancia: "PENDIENTE"
+    },
+    {
+      id_linea: 3,
+      id_oc: 3,
+      sku: "07502278209701",
+      modelo_proveedor: "LT-ARR-320",
+      descripcion: "Arracada Huggie Tubular Diamantada Oro 14K",
+      kilataje: "14K",
+      cantidad_piezas: 200,
+      peso_teorico_unitario_g: 2.4000,
+      peso_teorico_total_g: 480.0000,
+      costo_mo_unitario: 8.50,
+      costo_mo_total: 1700.00,
+      peso_packing_unitario_g: 2.4400,
+      peso_packing_total_g: 488.0000,
+      variacion_peso_porcentaje: 1.67,
+      estatus_tolerancia: "DENTRO_RANGO"
+    },
+    {
+      id_linea: 4,
+      id_oc: 3,
+      sku: "07502278209718",
+      modelo_proveedor: "LT-BRQ-BOLA",
+      descripcion: "Broquel Bolita Lisa Dormilona Oro 10K",
+      kilataje: "10K",
+      cantidad_piezas: 300,
+      peso_teorico_unitario_g: 1.2333,
+      peso_teorico_total_g: 370.0000,
+      costo_mo_unitario: 5.00,
+      costo_mo_total: 1500.00,
+      peso_packing_unitario_g: 1.2467,
+      peso_packing_total_g: 374.0000,
+      variacion_peso_porcentaje: 1.08,
+      estatus_tolerancia: "DENTRO_RANGO"
+    },
+    {
+      id_linea: 5,
+      id_oc: 4,
+      sku: "07502278209695",
+      modelo_proveedor: "ARP-CAD-ROLO",
+      descripcion: "Esclava Tejido Cubano Broche de Caja Oro 14K",
+      kilataje: "14K",
+      cantidad_piezas: 100,
+      peso_teorico_unitario_g: 6.2000,
+      peso_teorico_total_g: 620.0000,
+      costo_mo_unitario: 28.00,
+      costo_mo_total: 2800.00,
+      peso_packing_unitario_g: 6.2850,
+      peso_packing_total_g: 628.5000,
+      variacion_peso_porcentaje: 1.37,
+      estatus_tolerancia: "DENTRO_RANGO"
+    },
+    {
+      id_linea: 6,
+      id_oc: 5,
+      sku: "07502278209695",
+      modelo_proveedor: "ITL-ARZ-552",
+      descripcion: "Esclava Tejido Cubano Broche de Caja Oro 14K",
+      kilataje: "14K",
+      cantidad_piezas: 200,
+      peso_teorico_unitario_g: 6.7500,
+      peso_teorico_total_g: 1350.0000,
+      costo_mo_unitario: 27.00,
+      costo_mo_total: 5400.00,
+      peso_packing_unitario_g: 6.8120,
+      peso_packing_total_g: 1362.4000,
+      variacion_peso_porcentaje: 0.92,
+      estatus_tolerancia: "DENTRO_RANGO"
+    }
+  ];
+
+  const compras_logistica_importacion = [
+    {
+      id_logistica: 1,
+      id_oc: 5,
+      transportista_aerolinea: "FedEx Express",
+      guia_tracking: "FDX-7894512039-HK",
+      agente_aduanal: "Eduardo Mendoza (Agencia Aduanal del Valle)",
+      costo_flete_divisa: 485.00,
+      impuestos_aduanales_mxn: 23187.00,
+      estatus_transito: "EN_VUELO",
+      origen: "Aeropuerto de Milán Malpensa (MXP)",
+      destino: "Aeropuerto Internacional Benito Juárez CDMX (MEX)",
+      fecha_salida: "2026-10-15",
+      fecha_estimada_arribo: "2026-10-18"
+    }
+  ];
+
+  const proveedor_estado_cuenta = [
+    {
+      id_movimiento: 1,
+      id_proveedor: 3,
+      id_oc: 5,
+      tipo_movimiento: "CARGO_COMPRA",
+      folio_documento: "PI-ITL-2026-0881",
+      monto_divisa: 73008.20,
+      moneda: "USD",
+      observaciones: "Cargo total orden OC-MARTELA-2026-0045 (Metal Fix $2650 + M.O.)",
+      fecha_registro: "2026-10-09 14:00:00"
+    },
+    {
+      id_movimiento: 2,
+      id_proveedor: 3,
+      id_oc: 5,
+      tipo_movimiento: "ANTICIPO_PAGADO",
+      folio_documento: "SPEI-BBVA-908123",
+      monto_divisa: -36504.10,
+      moneda: "USD",
+      observaciones: "Anticipo del 50% de producción transferido a Milán",
+      fecha_registro: "2026-10-10 11:30:00"
+    },
+    {
+      id_movimiento: 3,
+      id_proveedor: 3,
+      id_oc: null,
+      tipo_movimiento: "NOTA_CREDITO_DEFECTOS",
+      folio_documento: "NC-PROV-2026-0012",
+      monto_divisa: -480.00,
+      moneda: "USD",
+      observaciones: "Nota de crédito por 2 esclavas porosas remitidas a fundición por David Morales",
+      fecha_registro: "2026-10-12 16:45:00"
+    },
+    {
+      id_movimiento: 4,
+      id_proveedor: 5,
+      id_oc: 4,
+      tipo_movimiento: "CARGO_COMPRA",
+      folio_documento: "PI-ARP-2026-4402",
+      monto_divisa: 34402.84,
+      moneda: "USD",
+      observaciones: "Cargo compra OC-MARTELA-2026-0044 Fix $2,680.00 USD",
+      fecha_registro: "2026-10-14 16:30:00"
+    },
+    {
+      id_movimiento: 5,
+      id_proveedor: 5,
+      id_oc: 4,
+      tipo_movimiento: "ANTICIPO_PAGADO",
+      folio_documento: "SWIFT-CITI-449102",
+      monto_divisa: -17201.42,
+      moneda: "USD",
+      observaciones: "Anticipo 50% para arranque de producción en Estambul",
+      fecha_registro: "2026-10-15 09:20:00"
+    }
+  ];
+
   return {
     getInitialData: function() {
       let finalProveedores = proveedores;
@@ -1142,6 +1432,10 @@ window.MartelaSeed = (function() {
         foundry_logs: JSON.parse(JSON.stringify(foundry_logs)),
         maquila_compensations: JSON.parse(JSON.stringify(maquila_compensations)),
         audit_logs: JSON.parse(JSON.stringify(audit_logs)),
+        ordenes_compra: JSON.parse(JSON.stringify(ordenes_compra)),
+        orden_compra_lineas: JSON.parse(JSON.stringify(orden_compra_lineas)),
+        compras_logistica_importacion: JSON.parse(JSON.stringify(compras_logistica_importacion)),
+        proveedor_estado_cuenta: JSON.parse(JSON.stringify(proveedor_estado_cuenta)),
         counter: 500
       };
     }

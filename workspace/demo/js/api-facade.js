@@ -79,6 +79,12 @@ class ApiFacade {
         if (seed.metal_rates) {
           parsed.metal_rates = { ...seed.metal_rates, ...parsed.metal_rates };
         }
+        if (!parsed.ordenes_compra) {
+          parsed.ordenes_compra = seed.ordenes_compra || [];
+          parsed.orden_compra_lineas = seed.orden_compra_lineas || [];
+          parsed.compras_logistica_importacion = seed.compras_logistica_importacion || [];
+          parsed.proveedor_estado_cuenta = seed.proveedor_estado_cuenta || [];
+        }
         this._saveDB(parsed);
       }
       return parsed;
@@ -2011,6 +2017,494 @@ class ApiFacade {
       await this.audit('SINCRONIZACION_PWA_ONLINE', 'Logística PWA', `SYNC-${count}`, `${count} expedientes PLD sincronizados con servidor central`);
     }
     return count;
+  }
+
+  // =========================================================================
+  // MÓDULO: COMPRAS INTERNACIONALES, CICLO DE OC Y AUDITORÍA DE PACKING LIST
+  // =========================================================================
+
+  async getPurchaseOrders(filterStatus = '') {
+    await this._simulateNetwork(100);
+    const db = this._getDB();
+    let orders = [...(db.ordenes_compra || [])];
+    if (filterStatus) {
+      orders = orders.filter(o => o.estatus === filterStatus);
+    }
+    return orders.map(o => {
+      const prov = (db.proveedores || []).find(p => p.id === o.id_proveedor) || {};
+      const lines = (db.orden_compra_lineas || []).filter(l => l.id_oc === o.id_oc);
+      const totalPiezas = lines.reduce((s, l) => s + (l.cantidad_piezas || 0), 0);
+      return {
+        ...o,
+        proveedor_nombre: o.proveedor_nombre || prov.razon_social || `Proveedor #${o.id_proveedor}`,
+        pais_origen: o.pais_origen || prov.pais_origen || 'INTERNACIONAL',
+        total_lineas: lines.length,
+        total_piezas: totalPiezas
+      };
+    });
+  }
+
+  async getPurchaseOrderById(idOc) {
+    await this._simulateNetwork(80);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden de Compra ${idOc} no encontrada`);
+
+    const prov = (db.proveedores || []).find(p => p.id === order.id_proveedor) || {};
+    const lines = (db.orden_compra_lineas || []).filter(l => l.id_oc === order.id_oc);
+    const logistica = (db.compras_logistica_importacion || []).find(l => l.id_oc === order.id_oc) || null;
+    const movimientos = (db.proveedor_estado_cuenta || []).filter(m => m.id_oc === order.id_oc);
+
+    return {
+      ...order,
+      proveedor: prov,
+      lineas: lines,
+      logistica: logistica,
+      movimientos: movimientos
+    };
+  }
+
+  async createPurchaseOrder(ocData) {
+    await this._simulateNetwork(200);
+    const db = this._getDB();
+    if (!db.ordenes_compra) db.ordenes_compra = [];
+    if (!db.orden_compra_lineas) db.orden_compra_lineas = [];
+
+    const prov = (db.proveedores || []).find(p => p.id === Number(ocData.id_proveedor));
+    if (!prov) throw new Error(`Proveedor ${ocData.id_proveedor} no válido`);
+
+    const nextId = db.ordenes_compra.length + 1;
+    const folio = ocData.folio_oc || `OC-MARTELA-2026-${String(nextId).padStart(4, '0')}`;
+
+    let totalGramosTeoricos = 0;
+    let totalMoEstimada = 0;
+    const processedLines = [];
+
+    const rawLines = Array.isArray(ocData.lineas) ? ocData.lineas : [];
+    if (rawLines.length === 0) {
+      throw new Error("La orden de compra debe incluir al menos una línea de producto");
+    }
+
+    rawLines.forEach((item, idx) => {
+      const cant = parseInt(item.cantidad_piezas, 10) || 1;
+      const pesoUnit = parseFloat(item.peso_teorico_unitario_g) || 1.0;
+      const moUnit = parseFloat(item.costo_mo_unitario) || 10.0;
+      const pesoTotalLinea = +(cant * pesoUnit).toFixed(4);
+      const moTotalLinea = +(cant * moUnit).toFixed(2);
+
+      totalGramosTeoricos += pesoTotalLinea;
+      totalMoEstimada += moTotalLinea;
+
+      // REGLA 3: Alta Anticipada en Catálogo Maestro si es modelo nuevo
+      let skuRef = item.sku;
+      if (!skuRef || skuRef.trim() === '') {
+        skuRef = `0750${Date.now().toString().slice(-8)}${idx}`;
+      }
+
+      const existingProd = (db.products_sku || []).find(p => (p.sku_14 === skuRef || p.sku === skuRef || p.modelo_proveedor === item.modelo_proveedor));
+      if (!existingProd) {
+        const factorLey = item.kilataje === '10K' ? 0.41667 : (item.kilataje === '14K' ? 0.58333 : 0.925);
+        db.products_sku.push({
+          sku: skuRef,
+          sku_14: skuRef,
+          modelo_martela: item.modelo_martela || `MRT-${item.modelo_proveedor || skuRef}`,
+          modelo_proveedor: item.modelo_proveedor || `MOD-${skuRef}`,
+          id_proveedor: prov.id,
+          proveedor_nombre: prov.razon_social,
+          pais_origen: prov.pais_origen,
+          descripcion: item.descripcion || `Joya ${item.kilataje || '14K'} ${item.modelo_proveedor || ''}`,
+          tipo_alhaja: item.tipo_alhaja || 'JOYERIA_FINA',
+          categoria: 'Compras Internacionales',
+          metal_tipo: item.kilataje === '10K' ? 'ORO_10K' : (item.kilataje === '14K' ? 'ORO_14K' : 'PLATA_925'),
+          tipo_metal: 'ORO_AMARILLO',
+          quilataje: item.kilataje || '14K',
+          medida: item.medida || 'Estándar',
+          costo_mo_base: moUnit,
+          costo_hechura_base: moUnit,
+          peso_teorico_g: pesoUnit,
+          peso_piedra_cz: parseFloat(item.peso_piedra_cz || 0),
+          factor_oro_fino: factorLey,
+          estatus: 'PRE_REGISTRO_COMPRA',
+          activo: true
+        });
+      }
+
+      const lineObj = {
+        id_linea: db.orden_compra_lineas.length + idx + 1,
+        id_oc: nextId,
+        sku: skuRef,
+        modelo_proveedor: item.modelo_proveedor || skuRef,
+        descripcion: item.descripcion || (existingProd ? existingProd.descripcion : `Modelo ${item.modelo_proveedor}`),
+        kilataje: item.kilataje || '14K',
+        cantidad_piezas: cant,
+        peso_teorico_unitario_g: pesoUnit,
+        peso_teorico_total_g: pesoTotalLinea,
+        costo_mo_unitario: moUnit,
+        costo_mo_total: moTotalLinea,
+        peso_packing_unitario_g: 0.0000,
+        peso_packing_total_g: 0.0000,
+        variacion_peso_porcentaje: 0.00,
+        estatus_tolerancia: 'PENDIENTE'
+      };
+      processedLines.push(lineObj);
+      db.orden_compra_lineas.push(lineObj);
+    });
+
+    const newOrder = {
+      id_oc: nextId,
+      folio_oc: folio,
+      id_proveedor: prov.id,
+      proveedor_nombre: prov.razon_social,
+      pais_origen: prov.pais_origen,
+      moneda: prov.moneda_defecto || prov.moneda_compra || 'USD',
+      estatus: ocData.estatus || 'BORRADOR',
+      peso_oro_teorico_total_g: +totalGramosTeoricos.toFixed(4),
+      costo_mo_total_estimado: +totalMoEstimada.toFixed(2),
+      fix_oro_cerrado_usd: null,
+      tipo_cambio_cerrado: null,
+      importe_metal_total: 0,
+      importe_total_liquidable: +totalMoEstimada.toFixed(2),
+      fecha_emision: new Date().toLocaleString('es-MX', { hour12: false }),
+      fecha_promesa_entrega: ocData.fecha_promesa_entrega || '',
+      notas: ocData.notas || ''
+    };
+
+    db.ordenes_compra.unshift(newOrder);
+    this._saveDB(db);
+
+    await this.audit(
+      'CREACION_ORDEN_COMPRA',
+      'Compras Internacionales',
+      folio,
+      `Emitida a ${prov.razon_social} · ${processedLines.length} líneas · ${newOrder.peso_oro_teorico_total_g}g teóricos Au · M.O. $${newOrder.costo_mo_total_estimado} ${newOrder.moneda}`
+    );
+
+    return { ...newOrder, lineas: processedLines };
+  }
+
+  async auditPackingList(idOc, packingRows) {
+    await this._simulateNetwork(180);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden ${idOc} no encontrada`);
+
+    const lines = (db.orden_compra_lineas || []).filter(l => l.id_oc === order.id_oc);
+    if (lines.length === 0) throw new Error("La orden no tiene líneas registradas para auditar");
+
+    let totalPackingGrams = 0;
+    let anyExceeded = false;
+    const packingMap = new Map();
+    (packingRows || []).forEach(r => packingMap.set(r.id_linea, r));
+
+    lines.forEach(line => {
+      const packingInfo = packingMap.get(line.id_linea);
+      if (packingInfo) {
+        const pesoPackingTotal = parseFloat(packingInfo.peso_packing_total_g) || (parseFloat(packingInfo.peso_packing_unitario_g) * line.cantidad_piezas) || line.peso_teorico_total_g;
+        const pesoPackingUnit = +(pesoPackingTotal / line.cantidad_piezas).toFixed(4);
+        line.peso_packing_unitario_g = pesoPackingUnit;
+        line.peso_packing_total_g = +pesoPackingTotal.toFixed(4);
+
+        // Variación: ((peso_packing - peso_teorico) / peso_teorico) * 100
+        const varPct = +(((pesoPackingTotal - line.peso_teorico_total_g) / line.peso_teorico_total_g) * 100).toFixed(2);
+        line.variacion_peso_porcentaje = varPct;
+
+        // Candado estricto ±5%
+        if (varPct > 5.0) {
+          line.estatus_tolerancia = 'EXCEDE_TOLERANCIA_MAX';
+          anyExceeded = true;
+        } else if (varPct < -5.0) {
+          line.estatus_tolerancia = 'BAJO_TOLERANCIA_MIN';
+          anyExceeded = true;
+        } else {
+          line.estatus_tolerancia = 'DENTRO_RANGO';
+        }
+      }
+      totalPackingGrams += (line.peso_packing_total_g || line.peso_teorico_total_g);
+    });
+
+    order.peso_packing_total_g = +totalPackingGrams.toFixed(4);
+    order.variacion_peso_total_pct = +(((totalPackingGrams - order.peso_oro_teorico_total_g) / order.peso_oro_teorico_total_g) * 100).toFixed(2);
+
+    if (anyExceeded) {
+      order.estatus = 'PACKING_RECHAZADO';
+      order.tolerancia_aprobada = false;
+    } else {
+      order.estatus = 'PACKING_AUDITADO';
+      order.tolerancia_aprobada = true;
+    }
+
+    this._saveDB(db);
+
+    await this.audit(
+      'AUDITORIA_PACKING_LIST',
+      'Compras Internacionales',
+      order.folio_oc,
+      `Resultado: ${order.estatus} · Variación Global: ${order.variacion_peso_total_pct}% · Peso Real: ${order.peso_packing_total_g}g vs Teórico: ${order.peso_oro_teorico_total_g}g`
+    );
+
+    return {
+      order,
+      lines,
+      allValid: !anyExceeded,
+      variacionGlobal: order.variacion_peso_total_pct
+    };
+  }
+
+  async closePurchaseFix(idOc, fixUsd, tipoCambio) {
+    await this._simulateNetwork(180);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden ${idOc} no encontrada`);
+
+    const fixVal = parseFloat(fixUsd);
+    const tcVal = parseFloat(tipoCambio) || 20.00;
+    if (!fixVal || fixVal <= 0) throw new Error("Debe ingresar una cotización Fix válida del oro en USD/oz");
+
+    const lines = (db.orden_compra_lineas || []).filter(l => l.id_oc === order.id_oc);
+    const gramoPuroUsd = fixVal / 31.1035;
+
+    let metalTotalUsd = 0;
+    lines.forEach(line => {
+      const pesoReal = line.peso_packing_total_g > 0 ? line.peso_packing_total_g : line.peso_teorico_total_g;
+      const factorLey = line.kilataje === '10K' ? 0.41667 : (line.kilataje === '14K' ? 0.58333 : 0.925);
+      const metalLineaUsd = pesoReal * gramoPuroUsd * factorLey;
+      metalTotalUsd += metalLineaUsd;
+    });
+
+    order.fix_oro_cerrado_usd = +fixVal.toFixed(2);
+    order.tipo_cambio_cerrado = +tcVal.toFixed(4);
+    order.importe_metal_total = +metalTotalUsd.toFixed(2);
+    order.importe_total_liquidable = +(metalTotalUsd + order.costo_mo_total_estimado).toFixed(2);
+    order.importe_total_liquidable_mxn = +(order.importe_total_liquidable * tcVal).toFixed(2);
+    order.estatus = 'FIX_CERRADO';
+    order.fecha_cierre_fix = new Date().toLocaleString('es-MX', { hour12: false });
+
+    // Registro automático de cargo en el Estado de Cuenta del Proveedor
+    if (!db.proveedor_estado_cuenta) db.proveedor_estado_cuenta = [];
+    const existingMov = db.proveedor_estado_cuenta.find(m => m.id_oc === order.id_oc && m.tipo_movimiento === 'CARGO_COMPRA');
+    if (!existingMov) {
+      db.proveedor_estado_cuenta.push({
+        id_movimiento: db.proveedor_estado_cuenta.length + 1,
+        id_proveedor: order.id_proveedor,
+        id_oc: order.id_oc,
+        tipo_movimiento: 'CARGO_COMPRA',
+        folio_documento: `PI-${order.folio_oc}`,
+        monto_divisa: order.importe_total_liquidable,
+        moneda: order.moneda || 'USD',
+        observaciones: `Cargo por compra cerrada Fix $${fixVal.toFixed(2)} USD/oz (Metal $${order.importe_metal_total} + M.O. $${order.costo_mo_total_estimado})`,
+        fecha_registro: new Date().toLocaleString('es-MX', { hour12: false })
+      });
+    }
+
+    this._saveDB(db);
+
+    await this.audit(
+      'CIERRE_FIX_COMPRA',
+      'Compras Internacionales',
+      order.folio_oc,
+      `Fix $${fixVal} USD · TC: $${tcVal} · Total Liquidable: $${order.importe_total_liquidable} ${order.moneda} ($${order.importe_total_liquidable_mxn} MXN)`
+    );
+
+    return order;
+  }
+
+  async registerPurchasePayment(idOc, paymentData) {
+    await this._simulateNetwork(150);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden ${idOc} no encontrada`);
+
+    if (!db.proveedor_estado_cuenta) db.proveedor_estado_cuenta = [];
+    const monto = Math.abs(parseFloat(paymentData.monto_divisa) || 0);
+    if (monto <= 0) throw new Error("El monto del pago debe ser mayor a 0");
+
+    const movType = paymentData.tipo_movimiento || 'ANTICIPO_PAGADO';
+    const movement = {
+      id_movimiento: db.proveedor_estado_cuenta.length + 1,
+      id_proveedor: order.id_proveedor,
+      id_oc: order.id_oc,
+      tipo_movimiento: movType,
+      folio_documento: paymentData.folio_documento || `PAG-${Date.now().toString().slice(-6)}`,
+      monto_divisa: -monto,
+      moneda: order.moneda || 'USD',
+      observaciones: paymentData.observaciones || `${movType === 'ANTICIPO_PAGADO' ? 'Anticipo' : 'Liquidación'} registrado para orden ${order.folio_oc}`,
+      fecha_registro: new Date().toLocaleString('es-MX', { hour12: false })
+    };
+
+    db.proveedor_estado_cuenta.push(movement);
+
+    if (movType === 'LIQUIDACION_PAGADA') {
+      order.estatus = 'PAGADO';
+    } else if (order.estatus === 'FIX_CERRADO' || order.estatus === 'PROFORMA_PENDIENTE') {
+      order.estatus = 'PRODUCCION_AUTORIZADA';
+    }
+
+    this._saveDB(db);
+
+    await this.audit(
+      'PAGO_PROVEEDOR_COMPRAS',
+      'Compras Internacionales',
+      order.folio_oc,
+      `${movType}: $${monto} ${order.moneda} · Ref: ${movement.folio_documento}`
+    );
+
+    return movement;
+  }
+
+  async updatePurchaseLogistics(idOc, logData) {
+    await this._simulateNetwork(150);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden ${idOc} no encontrada`);
+
+    if (!db.compras_logistica_importacion) db.compras_logistica_importacion = [];
+    let logRecord = db.compras_logistica_importacion.find(l => l.id_oc === order.id_oc);
+    if (!logRecord) {
+      logRecord = {
+        id_logistica: db.compras_logistica_importacion.length + 1,
+        id_oc: order.id_oc
+      };
+      db.compras_logistica_importacion.push(logRecord);
+    }
+
+    logRecord.transportista_aerolinea = logData.transportista_aerolinea || 'FedEx Express';
+    logRecord.guia_tracking = logData.guia_tracking || `FDX-${Date.now().toString().slice(-10)}`;
+    logRecord.agente_aduanal = logData.agente_aduanal || 'Eduardo Mendoza (Agencia Aduanal del Valle)';
+    logRecord.costo_flete_divisa = parseFloat(logData.costo_flete_divisa || 0);
+    logRecord.impuestos_aduanales_mxn = parseFloat(logData.impuestos_aduanales_mxn || 0);
+    logRecord.estatus_transito = logData.estatus_transito || 'EN_VUELO';
+    logRecord.fecha_estimada_arribo = logData.fecha_estimada_arribo || '';
+
+    order.estatus = 'EN_TRANSITO';
+    order.guia_tracking = logRecord.guia_tracking;
+    order.transportista = logRecord.transportista_aerolinea;
+    order.agente_aduanal = logRecord.agente_aduanal;
+
+    this._saveDB(db);
+
+    await this.audit(
+      'ACTUALIZACION_TRANSITO_ADUANA',
+      'Compras Internacionales',
+      order.folio_oc,
+      `Guía: ${logRecord.guia_tracking} · Transportista: ${logRecord.transportista_aerolinea} · Estatus: ${logRecord.estatus_transito}`
+    );
+
+    return logRecord;
+  }
+
+  async notifyArrivalToVault(idOc) {
+    await this._simulateNetwork(200);
+    const db = this._getDB();
+    const order = (db.ordenes_compra || []).find(o => o.id_oc === Number(idOc) || o.folio_oc === idOc);
+    if (!order) throw new Error(`Orden ${idOc} no encontrada`);
+
+    order.estatus = 'ENTREGADO_BOVEDA';
+
+    // ENLACE DIRECTO A MÓDULO 2 (Recepción y Calidad con David Morales)
+    if (!db.recepciones_paqueteria) db.recepciones_paqueteria = [];
+    const tracking = order.guia_tracking || `FDX-IMP-${order.id_oc}`;
+    let rec = db.recepciones_paqueteria.find(r => r.guia_tracking === tracking);
+    if (!rec) {
+      rec = {
+        id_recepcion: db.recepciones_paqueteria.length + 101,
+        guia_tracking: tracking,
+        id_proveedor: order.id_proveedor,
+        proveedor_nombre: order.proveedor_nombre,
+        folio_oc_origen: order.folio_oc,
+        total_bultos: 1,
+        peso_bruto_paquete_g: order.peso_packing_total_g || order.peso_oro_teorico_total_g,
+        url_video_evidencia: "https://storage.martela.com.mx/evidence/reception-valija-import.mp4",
+        estatus: "PENDIENTE_REVISION",
+        observaciones: `Valija internacional arribada de ${order.proveedor_nombre} (Orden ${order.folio_oc}). Enlace automático desde Compras. Listo para desempaque y semáforo de calidad.`,
+        fecha_llegada: new Date().toLocaleString('es-MX', { hour12: false })
+      };
+      db.recepciones_paqueteria.unshift(rec);
+    }
+
+    this._saveDB(db);
+
+    await this.audit(
+      'NOTIFICACION_ARRIBO_BOVEDA',
+      'Compras Internacionales',
+      order.folio_oc,
+      `Valija vinculada a Módulo 2 con Guía ${tracking} para inspección de David Morales`
+    );
+
+    return { order, recepcion: rec };
+  }
+
+  async getSupplierStatement(idProveedor) {
+    await this._simulateNetwork(120);
+    const db = this._getDB();
+    const provId = Number(idProveedor);
+    const prov = (db.proveedores || []).find(p => p.id === provId);
+    if (!prov) throw new Error(`Proveedor ${idProveedor} no encontrado`);
+
+    const movements = (db.proveedor_estado_cuenta || []).filter(m => m.id_proveedor === provId);
+
+    let totalCompras = 0;
+    let totalAnticipos = 0;
+    let totalLiquidaciones = 0;
+    let totalNotasCredito = 0;
+
+    movements.forEach(m => {
+      const val = Math.abs(m.monto_divisa || 0);
+      if (m.tipo_movimiento === 'CARGO_COMPRA') totalCompras += val;
+      else if (m.tipo_movimiento === 'ANTICIPO_PAGADO') totalAnticipos += val;
+      else if (m.tipo_movimiento === 'LIQUIDACION_PAGADA') totalLiquidaciones += val;
+      else if (m.tipo_movimiento === 'NOTA_CREDITO_DEFECTOS') totalNotasCredito += val;
+    });
+
+    const saldoPendiente = +(totalCompras - totalAnticipos - totalLiquidaciones - totalNotasCredito).toFixed(2);
+
+    return {
+      proveedor: prov,
+      movimientos: movements,
+      resumen: {
+        total_compras: +totalCompras.toFixed(2),
+        total_anticipos: +totalAnticipos.toFixed(2),
+        total_liquidaciones: +totalLiquidaciones.toFixed(2),
+        total_notas_credito: +totalNotasCredito.toFixed(2),
+        saldo_pendiente: saldoPendiente,
+        moneda: prov.moneda_defecto || prov.moneda_compra || 'USD'
+      }
+    };
+  }
+
+  async registerQualityCreditNote(idProveedor, monto, motivo, idOc = null) {
+    await this._simulateNetwork(150);
+    const db = this._getDB();
+    const provId = Number(idProveedor);
+    const prov = (db.proveedores || []).find(p => p.id === provId);
+    if (!prov) throw new Error(`Proveedor ${idProveedor} no encontrado`);
+
+    if (!db.proveedor_estado_cuenta) db.proveedor_estado_cuenta = [];
+    const val = Math.abs(parseFloat(monto) || 0);
+    if (val <= 0) throw new Error("El monto de la nota de crédito debe ser mayor a 0");
+
+    const nc = {
+      id_movimiento: db.proveedor_estado_cuenta.length + 1,
+      id_proveedor: provId,
+      id_oc: idOc ? Number(idOc) : null,
+      tipo_movimiento: 'NOTA_CREDITO_DEFECTOS',
+      folio_documento: `NC-PROV-2026-${Date.now().toString().slice(-4)}`,
+      monto_divisa: -val,
+      moneda: prov.moneda_defecto || prov.moneda_compra || 'USD',
+      observaciones: motivo || "Descuento de M.O. por piezas fundidas atribuibles a defecto de fábrica",
+      fecha_registro: new Date().toLocaleString('es-MX', { hour12: false })
+    };
+
+    db.proveedor_estado_cuenta.push(nc);
+    this._saveDB(db);
+
+    await this.audit(
+      'NOTA_CREDITO_PROVEEDOR',
+      'Compras Internacionales',
+      nc.folio_documento,
+      `Emitida a ${prov.razon_social} por $${val} ${nc.moneda} · Motivo: ${nc.observaciones}`
+    );
+
+    return nc;
   }
 }
 

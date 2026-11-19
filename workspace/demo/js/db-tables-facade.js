@@ -40,7 +40,9 @@ window.MartelaDbTablesFacade = (function() {
       codigo_interno: p.codigo_interno,
       razon_social: p.razon_social,
       pais_origen: p.pais_origen,
-      moneda_compra: p.moneda_compra
+      moneda_compra: p.moneda_compra,
+      factor_merma_oro: Number(p.factor_merma_oro || 0).toFixed(2),
+      moneda_defecto: p.moneda_defecto || p.moneda_compra || 'USD'
     }));
 
     const productos_sku = (db.products_sku || []).map(p => ({
@@ -155,6 +157,60 @@ window.MartelaDbTablesFacade = (function() {
     const salida_piezas_detalle = [];
     const pld_evidencias_entrega = db.pld_evidencias_entrega || [];
 
+    const ordenes_compra = (db.ordenes_compra || []).map(o => ({
+      id_oc: o.id_oc,
+      folio_oc: o.folio_oc,
+      id_proveedor: o.id_proveedor,
+      estatus: o.estatus,
+      peso_oro_teorico_total_g: Number(o.peso_oro_teorico_total_g || 0).toFixed(4),
+      costo_mo_total_estimado: Number(o.costo_mo_total_estimado || 0).toFixed(2),
+      fix_oro_cerrado_usd: o.fix_oro_cerrado_usd ? Number(o.fix_oro_cerrado_usd).toFixed(2) : null,
+      tipo_cambio_cerrado: o.tipo_cambio_cerrado ? Number(o.tipo_cambio_cerrado).toFixed(4) : null,
+      importe_metal_total: Number(o.importe_metal_total || 0).toFixed(2),
+      importe_total_liquidable: Number(o.importe_total_liquidable || 0).toFixed(2),
+      fecha_emision: o.fecha_emision,
+      fecha_promesa_entrega: o.fecha_promesa_entrega
+    }));
+
+    const orden_compra_lineas = (db.orden_compra_lineas || []).map(l => ({
+      id_linea: l.id_linea,
+      id_oc: l.id_oc,
+      sku: l.sku,
+      modelo_proveedor: l.modelo_proveedor,
+      descripcion: l.descripcion,
+      kilataje: l.kilataje,
+      cantidad_piezas: l.cantidad_piezas,
+      peso_teorico_unitario_g: Number(l.peso_teorico_unitario_g || 0).toFixed(4),
+      costo_mo_unitario: Number(l.costo_mo_unitario || 0).toFixed(2),
+      peso_packing_unitario_g: Number(l.peso_packing_unitario_g || 0).toFixed(4),
+      peso_packing_total_g: Number(l.peso_packing_total_g || 0).toFixed(4),
+      variacion_peso_porcentaje: Number(l.variacion_peso_porcentaje || 0).toFixed(2),
+      estatus_tolerancia: l.estatus_tolerancia
+    }));
+
+    const compras_logistica_importacion = (db.compras_logistica_importacion || []).map(log => ({
+      id_logistica: log.id_logistica,
+      id_oc: log.id_oc,
+      transportista_aerolinea: log.transportista_aerolinea,
+      guia_tracking: log.guia_tracking,
+      agente_aduanal: log.agente_aduanal,
+      costo_flete_divisa: Number(log.costo_flete_divisa || 0).toFixed(2),
+      impuestos_aduanales_mxn: Number(log.impuestos_aduanales_mxn || 0).toFixed(2),
+      estatus_transito: log.estatus_transito,
+      fecha_estimada_arribo: log.fecha_estimada_arribo
+    }));
+
+    const proveedor_estado_cuenta = (db.proveedor_estado_cuenta || []).map(mov => ({
+      id_movimiento: mov.id_movimiento,
+      id_proveedor: mov.id_proveedor,
+      id_oc: mov.id_oc,
+      tipo_movimiento: mov.tipo_movimiento,
+      folio_documento: mov.folio_documento,
+      monto_divisa: Number(mov.monto_divisa || 0).toFixed(2),
+      observaciones: mov.observaciones,
+      fecha_registro: mov.fecha_registro
+    }));
+
     return {
       proveedores,
       productos_sku,
@@ -168,7 +224,11 @@ window.MartelaDbTablesFacade = (function() {
       clientes_centros_logisticos,
       salidas_remisiones,
       salida_piezas_detalle,
-      pld_evidencias_entrega
+      pld_evidencias_entrega,
+      ordenes_compra,
+      orden_compra_lineas,
+      compras_logistica_importacion,
+      proveedor_estado_cuenta
     };
   }
 
@@ -226,6 +286,34 @@ window.MartelaDbTablesFacade = (function() {
     t.tasas_metal_fix.forEach(r => {
       lines.push(
         `INSERT INTO tasas_metal_fix (fecha, fix_oro_hoy_usd, fix_oro_ayer_usd, fix_aplicado, tipo_cambio_usd_mxn, costo_gramo_10k_mxn, costo_gramo_14k_mxn, costo_gramo_plata_mxn) VALUES (${escSql(r.fecha)}, ${r.fix_oro_hoy_usd}, ${r.fix_oro_ayer_usd}, ${r.fix_aplicado}, ${r.tipo_cambio_usd_mxn}, ${r.costo_gramo_10k_mxn}, ${r.costo_gramo_14k_mxn}, ${r.costo_gramo_plata_mxn}) ON CONFLICT (fecha) DO NOTHING;`
+      );
+    });
+
+    lines.push('\n-- 7. Tabla: ordenes_compra (Compras Internacionales)');
+    (t.ordenes_compra || []).forEach(r => {
+      lines.push(
+        `INSERT INTO ordenes_compra (id_oc, folio_oc, id_proveedor, estatus, peso_oro_teorico_total_g, costo_mo_total_estimado, fix_oro_cerrado_usd, tipo_cambio_cerrado, importe_metal_total, importe_total_liquidable, fecha_emision, fecha_promesa_entrega) VALUES (${r.id_oc}, ${escSql(r.folio_oc)}, ${r.id_proveedor}, ${escSql(r.estatus)}, ${r.peso_oro_teorico_total_g}, ${r.costo_mo_total_estimado}, ${r.fix_oro_cerrado_usd || 'NULL'}, ${r.tipo_cambio_cerrado || 'NULL'}, ${r.importe_metal_total}, ${r.importe_total_liquidable}, ${escSql(r.fecha_emision)}, ${escSql(r.fecha_promesa_entrega)}) ON CONFLICT (folio_oc) DO NOTHING;`
+      );
+    });
+
+    lines.push('\n-- 8. Tabla: orden_compra_lineas');
+    (t.orden_compra_lineas || []).forEach(r => {
+      lines.push(
+        `INSERT INTO orden_compra_lineas (id_linea, id_oc, sku, modelo_proveedor, descripcion, kilataje, cantidad_piezas, peso_teorico_unitario_g, costo_mo_unitario, peso_packing_unitario_g, peso_packing_total_g, variacion_peso_porcentaje, estatus_tolerancia) VALUES (${r.id_linea}, ${r.id_oc}, ${escSql(r.sku)}, ${escSql(r.modelo_proveedor)}, ${escSql(r.descripcion)}, ${escSql(r.kilataje)}, ${r.cantidad_piezas}, ${r.peso_teorico_unitario_g}, ${r.costo_mo_unitario}, ${r.peso_packing_unitario_g}, ${r.peso_packing_total_g}, ${r.variacion_peso_porcentaje}, ${escSql(r.estatus_tolerancia)}) ON CONFLICT (id_linea) DO NOTHING;`
+      );
+    });
+
+    lines.push('\n-- 9. Tabla: compras_logistica_importacion');
+    (t.compras_logistica_importacion || []).forEach(r => {
+      lines.push(
+        `INSERT INTO compras_logistica_importacion (id_logistica, id_oc, transportista_aerolinea, guia_tracking, agente_aduanal, costo_flete_divisa, impuestos_aduanales_mxn, estatus_transito, fecha_estimada_arribo) VALUES (${r.id_logistica}, ${r.id_oc}, ${escSql(r.transportista_aerolinea)}, ${escSql(r.guia_tracking)}, ${escSql(r.agente_aduanal)}, ${r.costo_flete_divisa}, ${r.impuestos_aduanales_mxn}, ${escSql(r.estatus_transito)}, ${escSql(r.fecha_estimada_arribo)}) ON CONFLICT (id_logistica) DO NOTHING;`
+      );
+    });
+
+    lines.push('\n-- 10. Tabla: proveedor_estado_cuenta');
+    (t.proveedor_estado_cuenta || []).forEach(r => {
+      lines.push(
+        `INSERT INTO proveedor_estado_cuenta (id_movimiento, id_proveedor, id_oc, tipo_movimiento, folio_documento, monto_divisa, observaciones, fecha_registro) VALUES (${r.id_movimiento}, ${r.id_proveedor}, ${r.id_oc || 'NULL'}, ${escSql(r.tipo_movimiento)}, ${escSql(r.folio_documento)}, ${r.monto_divisa}, ${escSql(r.observaciones)}, ${escSql(r.fecha_registro)}) ON CONFLICT (id_movimiento) DO NOTHING;`
       );
     });
 
