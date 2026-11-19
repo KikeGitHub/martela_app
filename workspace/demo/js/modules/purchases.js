@@ -1528,3 +1528,4 @@ window.MartelaPurchases = (function() {
     setStatementsPageSize
   };
 })();
+

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [int]$Port = 8090,
     [switch]$ValidarPlaywright
 )
@@ -14,10 +14,10 @@ if ($ValidarPlaywright) {
 
 $Url = "http://localhost:$Port/index.html"
 Write-Host "============================================================================" -ForegroundColor Yellow
-Write-Host "  💎 MARTELA JOYERÍA FINA — Demo Interactiva (6 Módulos Core SDOP)" -ForegroundColor Yellow
+Write-Host "  💎 MARTELA JOYERÍA FINA — Demo Interactiva (Módulos Core SDOP)" -ForegroundColor Yellow
 Write-Host "============================================================================" -ForegroundColor Yellow
 Write-Host "  URL:        $Url" -ForegroundColor Green
-Write-Host "  Roles:      admin | recepcion (David) | boveda (Elisa) | finanzas (Adriana) | chofer (Miguel)"
+Write-Host "  Roles:      admin | compras (Karina) | recepcion (David) | boveda (Elisa) | finanzas (Adriana) | chofer (Miguel)"
 Write-Host "  Contraseña: martela123"
 Write-Host "============================================================================" -ForegroundColor Yellow
 
