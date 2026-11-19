@@ -22,17 +22,11 @@ window.MartelaPricing = (function() {
       <!-- Encabezado Módulo 4 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 4 · ARQUITECTURA SDOP</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">ALGORITMO BIPARTITO & MAQUILA</span>
-          </div>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE COTIZACIÓN Y COSTOS</div>
           <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Motor Financiero Fix, Oro Fino y Facturación Bipartita</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Tarifa Máxima Fix (Hoy vs. Ayer), desglose bipartito (Mano de Obra + Metal), margen retail 70% + IVA 16% y cuenta corriente de Oro Fino 24K.
-          </p>
         </div>
-        <button onclick="MartelaPricing.openModalEditarRates()" class="btn btn-gold">
-          <span>⚙</span> Ajustar Parámetros Fix / Tipo de Cambio
+        <button onclick="MartelaPricing.openModalEditarRates()" class="btn btn-gold py-2.5 px-4 font-bold shadow-md">
+          <span>⚙</span> Ajustar Fix / Tipo de Cambio
         </button>
       </div>
 

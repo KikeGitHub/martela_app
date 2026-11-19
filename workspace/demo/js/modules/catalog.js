@@ -24,21 +24,21 @@ window.MartelaCatalog = (function() {
 
   function getMetalBadge(metalTipo) {
     if (metalTipo === 'ORO_14K' || metalTipo === '14K') {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-extrabold bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 shadow-sm">◈ Oro 14K (0.58333)</span>`;
+      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 shadow-sm">◈ Oro 14K</span>`;
     }
     if (metalTipo === 'ORO_10K' || metalTipo === '10K') {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-400/40">◈ Oro 10K (0.41667)</span>`;
+      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-400/40">◈ Oro 10K</span>`;
     }
     if (metalTipo === 'PLATA_925' || metalTipo === '.925' || metalTipo === '925') {
-      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-200 border border-slate-400/40">◈ Plata .925 (Margen)</span>`;
+      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-200 border border-slate-400/40">◈ Plata .925</span>`;
     }
-    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-200 text-amber-900">◈ ${metalTipo || 'Joyería'}</span>`;
+    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-200 text-amber-900">◈ ${metalTipo || 'Joyería'}</span>`;
   }
 
   function getCzChip(pesoCz) {
     const val = Number(pesoCz || 0);
     if (val <= 0) {
-      return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-400">Sin piedra (0.0000 g)</span>`;
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">Sin piedra</span>`;
     }
     return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 shadow-sm">💎 -${val.toFixed(4)} g CZ</span>`;
   }
@@ -72,23 +72,17 @@ window.MartelaCatalog = (function() {
       <!-- Encabezado Módulo 1 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 1 · ARQUITECTURA SDOP</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">LIBRO OFICIAL 02-03-26</span>
-          </div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Catálogo Maestro y Concentrado de Proveedores</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Gestión integral de 39 proveedores internacionales y nacionales con catálogo de más de 2,200 modelos y calibración milimétrica de circonias (CZ).
-          </p>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE PRODUCTOS Y TALLERES</div>
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Catálogo de Joyería y Proveedores</h1>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="MartelaCatalog.exportCatalogExcel()" class="btn btn-soft" title="Exportar catálogo completo a formato Excel (.xlsx)">
-            <span>📥</span> Exportar Excel (.xlsx)
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="MartelaCatalog.exportCatalogExcel()" class="btn btn-soft py-2.5 px-3 text-xs font-semibold" title="Exportar catálogo completo a formato Excel (.xlsx)">
+            <span>📥</span> Exportar Excel
           </button>
-          <button onclick="MartelaCatalog.openModalImportarCZ()" class="btn btn-soft" title="Importar JSON masivo de matrices CZ">
+          <button onclick="MartelaCatalog.openModalImportarCZ()" class="btn btn-soft py-2.5 px-3 text-xs font-semibold" title="Importar JSON masivo de matrices CZ">
             <span>💎</span> Importar Matriz CZ
           </button>
-          <button onclick="MartelaCatalog.openProductModal()" class="btn btn-gold shadow-lg shadow-amber-500/20" title="Dar de alta un nuevo modelo o equivalencia">
+          <button onclick="MartelaCatalog.openProductModal()" class="btn btn-gold py-2.5 px-4 font-bold shadow-md shadow-amber-500/20" title="Dar de alta un nuevo modelo o equivalencia">
             <span class="text-base font-black">＋</span> Registrar Nuevo Modelo
           </button>
         </div>

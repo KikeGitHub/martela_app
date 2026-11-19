@@ -31,21 +31,15 @@ window.MartelaReception = (function() {
       <!-- Encabezado Módulo 2 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 2 · ARQUITECTURA SDOP</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">ADUANAS & CONTROL DE CALIDAD</span>
-          </div>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE RECEPCIÓN</div>
           <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Recepción, Video-Evidencia y Mesa de Calidad</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Trazabilidad de valijas FedEx/Cometra con video continuo de apertura y clasificación en tiempo real hacia Báscula, Taller o Fundición.
-          </p>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="MartelaReception.setStep(1)" class="btn ${wizardStep === 1 ? 'btn-gold' : 'btn-soft'}">
-            <span>📦</span> Paso 1: Registrar Nueva Valija
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="MartelaReception.setStep(1)" class="btn ${wizardStep === 1 ? 'btn-gold' : 'btn-soft'} py-2.5 px-4 font-bold">
+            <span>📦</span> Registrar Valija
           </button>
-          <button onclick="MartelaReception.setStep(2)" class="btn ${wizardStep === 2 ? 'btn-gold' : 'btn-soft'}">
-            <span>🔬</span> Paso 2: Mesa y Semáforo de Calidad
+          <button onclick="MartelaReception.setStep(2)" class="btn ${wizardStep === 2 ? 'btn-gold' : 'btn-soft'} py-2.5 px-4 font-bold">
+            <span>🔬</span> Mesa de Calidad
           </button>
         </div>
       </div>

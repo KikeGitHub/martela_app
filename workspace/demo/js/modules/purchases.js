@@ -55,21 +55,15 @@ window.MartelaPurchases = (function() {
       <!-- Encabezado Principal -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO DE ABASTECIMIENTO INTERNACIONAL</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">CICLO OC &amp; PACKING AUDIT</span>
-          </div>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE COMPRAS</div>
           <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Compras, Órdenes OC y Cierre de Fix</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Emisión de OCs con Mano de Obra, alta anticipada de modelos, candado estricto de Packing List (±5%) y liquidación internacional.
-          </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="MartelaPurchases.openNewOcModal()" class="btn btn-gold flex items-center gap-2 py-2 px-4 font-bold shadow-md">
+          <button onclick="MartelaPurchases.openNewOcModal()" class="btn btn-gold flex items-center gap-2 py-2.5 px-4 font-bold shadow-md">
             <span>➕</span> Nueva Orden de Compra (OC)
           </button>
-          <button onclick="MartelaPurchases.exportPurchasesExcel()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs">
+          <button onclick="MartelaPurchases.exportPurchasesExcel()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold">
             <span>⇩</span> Exportar Órdenes (.xlsx)
           </button>
         </div>
@@ -78,27 +72,27 @@ window.MartelaPurchases = (function() {
       <!-- Tarjetas Resumen -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="panel p-4 border-l-4 border-amber-500">
-          <div class="text-xs text-slate-400 uppercase font-semibold">Órdenes de Compra</div>
-          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">${totalOcs} OCs</div>
-          <div class="text-[11px] text-amber-500 font-semibold">Fabricantes Arezzo, Vicenza, China</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Órdenes de Compra</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1.5">${totalOcs} OCs</div>
+          <div class="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-1">Activas en ciclo</div>
         </div>
 
         <div class="panel p-4 border-l-4 border-purple-500">
-          <div class="text-xs text-slate-400 uppercase font-semibold">Oro Fino Teórico Contratado</div>
-          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">${grams(totalGramosTeoricos)}</div>
-          <div class="text-[11px] text-slate-500">Gramos calculados sin precio de oro</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Oro Fino Teórico Contratado</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1.5">${grams(totalGramosTeoricos)}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Total en gramos de metal</div>
         </div>
 
         <div class="panel p-4 border-l-4 border-emerald-500">
-          <div class="text-xs text-slate-400 uppercase font-semibold">M.O. Total Estimada</div>
-          <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1">$${totalMoComprometida.toLocaleString('es-MX', { minimumFractionDigits: 2 })} USD</div>
-          <div class="text-[11px] text-slate-500">Mano de obra pactada por pieza/gramo</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">M.O. Total Estimada</div>
+          <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1.5">$${totalMoComprometida.toLocaleString('es-MX', { minimumFractionDigits: 2 })} USD</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Mano de obra pactada</div>
         </div>
 
         <div class="panel p-4 border-l-4 border-blue-500">
-          <div class="text-xs text-slate-400 uppercase font-semibold">Valijas en Vuelo / Aduana</div>
-          <div class="text-2xl font-black text-blue-500 mt-1">${ocsEnTransito} en tránsito</div>
-          <div class="text-[11px] text-blue-500 font-bold">Rastreo FedEx &amp; Eduardo (Aduanas)</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Valijas en Vuelo / Aduana</div>
+          <div class="text-2xl font-black text-blue-500 mt-1.5">${ocsEnTransito} en tránsito</div>
+          <div class="text-xs text-blue-600 dark:text-blue-400 font-semibold mt-1">Rastreo con Eduardo (Aduanas)</div>
         </div>
       </div>
 
@@ -204,13 +198,12 @@ window.MartelaPurchases = (function() {
             if (isCurrent) badgeBg = 'bg-amber-500 text-slate-900 font-black border-amber-400 ring-2 ring-amber-500/30';
 
             return `
-              <div class="p-2 rounded-xl border ${badgeBg} flex flex-col justify-between text-xs transition-all">
+              <div class="p-3 rounded-xl border ${badgeBg} flex flex-col justify-between text-xs transition-all shadow-sm">
                 <div class="flex items-center justify-between">
-                  <span class="font-mono font-bold text-[10px] opacity-75">${st.num}</span>
-                  <span>${isDone ? '✓' : (isCurrent ? '●' : '○')}</span>
+                  <span class="font-mono font-bold text-xs opacity-75">${st.num}</span>
+                  <span class="text-sm font-bold">${isDone ? '✓' : (isCurrent ? '●' : '○')}</span>
                 </div>
-                <div class="font-bold text-[11px] mt-1">${st.title}</div>
-                <div class="text-[9px] opacity-70 truncate">${st.desc}</div>
+                <div class="font-bold text-xs mt-1.5 leading-tight">${st.title}</div>
               </div>
             `;
           }).join('')}
@@ -299,65 +292,65 @@ window.MartelaPurchases = (function() {
         <div class="panel overflow-hidden bg-white dark:bg-slate-900">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase font-mono text-[11px]">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 uppercase font-mono text-xs font-bold border-b border-slate-200 dark:border-slate-700">
                 <tr>
-                  <th class="p-3">Folio OC</th>
-                  <th class="p-3">Fabricante / País</th>
-                  <th class="p-3 text-center">Partidas / Pzs</th>
-                  <th class="p-3 text-right">Oro Teórico (g)</th>
-                  <th class="p-3 text-right">M.O. Estimada</th>
-                  <th class="p-3 text-right">Fix Cerrado (USD)</th>
-                  <th class="p-3 text-right">Importe Liquidable</th>
-                  <th class="p-3 text-center">Estatus</th>
-                  <th class="p-3 text-center">Acciones</th>
+                  <th class="py-3.5 px-3">Folio OC</th>
+                  <th class="py-3.5 px-3">Fabricante</th>
+                  <th class="py-3.5 px-3 text-center">Partidas</th>
+                  <th class="py-3.5 px-3 text-right">Oro Teórico</th>
+                  <th class="py-3.5 px-3 text-right">M.O. Estimada</th>
+                  <th class="py-3.5 px-3 text-right">Fix Cerrado</th>
+                  <th class="py-3.5 px-3 text-right">Importe Liquidable</th>
+                  <th class="py-3.5 px-3 text-center">Estatus</th>
+                  <th class="py-3.5 px-3 text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
                 ${oPag.items.length === 0 ? `
                   <tr>
                     <td colspan="9" class="p-8 text-center text-slate-400">No se encontraron órdenes de compra registradas.</td>
                   </tr>
                 ` : oPag.items.map(o => `
                   <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition ${o.id_oc === selectedOcId ? 'bg-amber-50/40 dark:bg-amber-950/20' : ''}">
-                    <td class="p-3 font-mono font-bold text-amber-600 dark:text-amber-400">
+                    <td class="py-3.5 px-3 font-mono font-bold text-amber-600 dark:text-amber-400">
                       ${esc(o.folio_oc)}
-                      <div class="text-[10px] text-slate-400">${esc(o.fecha_emision ? o.fecha_emision.slice(0, 10) : '')}</div>
+                      <div class="text-xs text-slate-500 font-normal">${esc(o.fecha_emision ? o.fecha_emision.slice(0, 10) : '')}</div>
                     </td>
-                    <td class="p-3">
-                      <div class="font-bold text-slate-900 dark:text-white">${esc(o.proveedor_nombre)}</div>
-                      <div class="text-[10px] text-slate-400 font-semibold">${esc(o.pais_origen)} · Moneda: ${esc(o.moneda)}</div>
+                    <td class="py-3.5 px-3">
+                      <div class="font-bold text-slate-900 dark:text-white text-sm">${esc(o.proveedor_nombre)}</div>
+                      <div class="text-xs text-slate-500">${esc(o.pais_origen)} · ${esc(o.moneda)}</div>
                     </td>
-                    <td class="p-3 text-center font-mono">
-                      <span class="font-bold text-slate-800 dark:text-slate-200">${o.total_lineas || 1} lín.</span>
-                      <span class="text-slate-400">(${o.total_piezas || 0} pzs)</span>
+                    <td class="py-3.5 px-3 text-center font-mono">
+                      <span class="font-bold text-slate-800 dark:text-slate-200 text-sm">${o.total_lineas || 1} lín.</span>
+                      <div class="text-xs text-slate-500">${o.total_piezas || 0} pzs</div>
                     </td>
-                    <td class="p-3 text-right font-mono font-bold text-purple-600 dark:text-purple-400">
+                    <td class="py-3.5 px-3 text-right font-mono font-bold text-purple-600 dark:text-purple-400 text-sm">
                       ${grams(o.peso_oro_teorico_total_g)}
                     </td>
-                    <td class="p-3 text-right font-mono font-semibold text-slate-700 dark:text-slate-300">
+                    <td class="py-3.5 px-3 text-right font-mono font-semibold text-slate-700 dark:text-slate-300">
                       $${Number(o.costo_mo_total_estimado || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 })} ${esc(o.moneda)}
                     </td>
-                    <td class="p-3 text-right font-mono">
-                      ${o.fix_oro_cerrado_usd ? `<span class="font-bold text-amber-600">$${o.fix_oro_cerrado_usd}</span>` : `<span class="text-slate-400 italic">Pendiente</span>`}
+                    <td class="py-3.5 px-3 text-right font-mono font-bold">
+                      ${o.fix_oro_cerrado_usd ? `<span class="text-amber-600 font-black">$${o.fix_oro_cerrado_usd}</span>` : `<span class="text-slate-400 font-normal italic">Pendiente</span>`}
                     </td>
-                    <td class="p-3 text-right font-mono font-black text-slate-900 dark:text-white">
+                    <td class="py-3.5 px-3 text-right font-mono font-black text-slate-900 dark:text-white text-sm">
                       $${Number(o.importe_total_liquidable || o.costo_mo_total_estimado).toLocaleString('es-MX', { minimumFractionDigits: 2 })} ${esc(o.moneda)}
                     </td>
-                    <td class="p-3 text-center">
+                    <td class="py-3.5 px-3 text-center">
                       ${renderStatusBadge(o.estatus)}
                     </td>
-                    <td class="p-3 text-center">
+                    <td class="py-3.5 px-3 text-center">
                       <div class="flex items-center justify-center gap-1.5">
                         <button 
                           onclick="MartelaPurchases.selectOrderAndTab(${o.id_oc}, 'packing')" 
-                          class="btn btn-soft text-[10px] py-1 px-2 font-bold text-amber-600 hover:bg-amber-500/10"
+                          class="btn btn-soft text-xs py-1.5 px-2.5 font-bold text-amber-600 hover:bg-amber-500/10"
                           title="Auditar Packing List de esta orden"
                         >
                           ⚖️ Packing
                         </button>
                         <button 
                           onclick="MartelaPurchases.selectOrderAndTab(${o.id_oc}, 'fix')" 
-                          class="btn btn-soft text-[10px] py-1 px-2 font-bold text-emerald-600 hover:bg-emerald-500/10"
+                          class="btn btn-soft text-xs py-1.5 px-2.5 font-bold text-emerald-600 hover:bg-emerald-500/10"
                           title="Cerrar Fix y liquidar"
                         >
                           📈 Fix
@@ -1464,41 +1457,41 @@ window.MartelaPurchases = (function() {
 
   function renderStatusBadge(status) {
     const map = {
-      'BORRADOR': 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300',
-      'PROFORMA_PENDIENTE': 'bg-blue-500/10 text-blue-600 border-blue-500/20',
+      'BORRADOR': 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300',
+      'PROFORMA_PENDIENTE': 'bg-blue-500/10 text-blue-600 border-blue-500/20 font-bold',
       'PACKING_AUDITADO': 'bg-purple-500/10 text-purple-600 border-purple-500/20 font-bold',
-      'PACKING_RECHAZADO': 'bg-rose-500/20 text-rose-600 border-rose-500/30 font-bold animate-pulse',
+      'PACKING_RECHAZADO': 'bg-rose-500/20 text-rose-600 border-rose-500/30 font-black animate-pulse',
       'FIX_CERRADO': 'bg-amber-500/10 text-amber-600 border-amber-500/20 font-bold',
       'PAGADO': 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 font-bold',
       'EN_TRANSITO': 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20 font-bold',
       'ENTREGADO_BOVEDA': 'bg-emerald-600 text-white font-bold'
     };
-    const cls = map[status] || 'bg-slate-100 text-slate-500';
-    return `<span class="px-2 py-0.5 rounded-full text-[10px] border ${cls}">${status}</span>`;
+    const cls = map[status] || 'bg-slate-100 text-slate-600';
+    return `<span class="px-2.5 py-1 rounded-full text-xs font-bold border ${cls}">${status}</span>`;
   }
 
   function renderToleranceBadge(pct, status) {
     if (status === 'EXCEDE_TOLERANCIA_MAX' || pct > 5.0) {
-      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white animate-pulse">⚠️ EXCEDE (+${pct}%)</span>`;
+      return `<span class="px-2.5 py-1 rounded-full text-xs font-black bg-rose-500 text-white animate-pulse">⚠️ EXCEDE (+${pct}%)</span>`;
     }
     if (status === 'BAJO_TOLERANCIA_MIN' || pct < -5.0) {
-      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-600 text-white">⚠️ BAJO PESO (${pct}%)</span>`;
+      return `<span class="px-2.5 py-1 rounded-full text-xs font-black bg-rose-600 text-white">⚠️ BAJO PESO (${pct}%)</span>`;
     }
     if (status === 'DENTRO_RANGO' || (pct >= -5.0 && pct <= 5.0 && pct !== 0)) {
-      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">✓ DENTRO (${pct > 0 ? '+' : ''}${pct}%)</span>`;
+      return `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">✓ DENTRO (${pct > 0 ? '+' : ''}${pct}%)</span>`;
     }
-    return `<span class="text-slate-400 text-[10px]">Pendiente</span>`;
+    return `<span class="text-slate-500 text-xs font-semibold">Pendiente</span>`;
   }
 
   function renderMovementBadge(type) {
     const map = {
       'CARGO_COMPRA': 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
-      'ANTICIPO_PAGADO': 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
-      'LIQUIDACION_PAGADA': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+      'ANTICIPO_PAGADO': 'bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold',
+      'LIQUIDACION_PAGADA': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold',
       'NOTA_CREDITO_DEFECTOS': 'bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold'
     };
     const cls = map[type] || 'bg-slate-100 text-slate-600';
-    return `<span class="px-2 py-0.5 rounded text-[10px] ${cls}">${type}</span>`;
+    return `<span class="px-2.5 py-1 rounded text-xs font-bold ${cls}">${type}</span>`;
   }
 
   return {

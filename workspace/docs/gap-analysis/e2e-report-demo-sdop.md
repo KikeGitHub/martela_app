@@ -1,6 +1,6 @@
 # Reporte de Validación E2E (Oráculo Playwright) — Demo MARTELA Módulos SDOP
 
-- **Fecha de Ejecución**: 2026-11-19T19:33:49.041Z
+- **Fecha de Ejecución**: 2026-11-19T23:46:21.904Z
 - **Motor**: Playwright Chromium Headless
 - **Estado Global**: **PASS (12 / 12 validaciones exitosas)**
 - **Errores en Consola (`page.on('console')`)**: 0
@@ -10,7 +10,7 @@
 
 | # | Caso de Prueba Validado | Estado | Evidencia Técnica |
 | :--- | :--- | :---: | :--- |
-| 1 | 1. Pantalla de Login y 6 Roles Operativos del Análisis (Incluyendo Karina Cruz) | **PASS** | Roles detectados (6): Carlos Mendoza — Dirección / Administrador General (Todos los Módulos) | Karina Cruz — Compras Internacionales & Abastecimiento (Mód. 0, 1, 2) | David Morales — Recepción, Video-Evidencia y Calidad (Mód. 1, 2, 3, 5) | Elisa Ramírez — Báscula Digital, Gavetas y Despiece B2B (Mód. 1, 3, 5) | Adriana López — Motor Financiero Fix y Auditoría PLD (Mód. 0, 1, 4, 5, 6) | Miguel Torres — Chofer Custodio PWA Móvil (Mód. 6) |
+| 1 | 1. Pantalla de Login y 6 Roles Operativos del Análisis (Incluyendo Karina Cruz) | **PASS** | Roles detectados (6): Carlos Mendoza — Dirección General | Karina Cruz — Compras Internacionales & Abastecimiento | David Morales — Recepción y Calidad | Elisa Ramírez — Báscula y Bóveda | Adriana López — Finanzas y Fix | Miguel Torres — Custodia Móvil |
 | 2 | 2. Menú Lateral Depurado (Exactamente 7 Módulos Core, Cero Opciones Extra) | **PASS** | Opciones en menú (7): 0. Compras & Órdenes OC Ciclo internacional y packing list, 1. Catálogo & Circonias Fichas técnicas y matriz CZ, 2. Recepción & Calidad Valijas aduanales y video, 3. Báscula & Bóveda Pesaje analítico por gaveta, 4. Cotización FIX & Costos Tarifa máxima y liquidación, 5. Despiece B2B (Coppel & MLS) Portal Coppel & Montepío Luz Saviñón, 6. Custodia & Entrega PLD Firma digital y geo-evidencia |
 | 3 | 3. Módulo 0: Compras Internacionales, Ciclo OC, Candado Packing List (±5%), Fix y Estados de Cuenta | **PASS** | Pipeline visual de 7 fases, candado estricto ±5% verificado (bloqueo en +7.8% y aprobación en +1.2%), Cierre Fix, Tracking aduanal y Estados de Cuenta |
 | 4 | 4. Módulo 1: Catálogo Maestro Multi-Proveedor, Matriz CZ y Modal CRUD Compacto y Ergonómico | **PASS** | Búsqueda predictiva (1 resultado), Modal CRUD compacto y sin widgets innecesarios abierto y cerrado con éxito tras calibrar CZ a 0.1800g con feedback loading |

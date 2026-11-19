@@ -33,14 +33,8 @@ window.MartelaInventory = (function() {
       <!-- Encabezado Módulo 3 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 3 · ARQUITECTURA SDOP</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">BÁSCULA 4 DECIMALES & BÓVEDA</span>
-          </div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Báscula Digital, Sub-piezas y Almacén por Gavetas</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Lectura analítica (0.0000 g), deducción automática de circonia (CZ), conversión a Oro Fino Puro y ubicación por Gaveta física.
-          </p>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE BÓVEDA</div>
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Báscula Digital y Gavetas</h1>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button id="btnOpenFastScaleModal" onclick="MartelaInventory.openWeighModal()" class="btn btn-gold flex items-center gap-2 py-2.5 px-4 font-bold shadow-md hover:shadow-lg transition">

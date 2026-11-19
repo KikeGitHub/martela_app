@@ -24,14 +24,8 @@ window.MartelaLogistics = (function() {
       <!-- Encabezado Módulo 6 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 6 · ARQUITECTURA SDOP</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">PWA MÓVIL 390px &amp; PLD</span>
-          </div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">PWA Móvil de Reparto y Expediente Digital PLD</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Validación en campo del Folio de Sello de Seguridad, firma táctil en Canvas, foto del acuse sellado, coordenadas GPS y modo Offline-First.
-          </p>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE CUSTODIA Y ENTREGA</div>
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Custodia Móvil y Entrega PLD</h1>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button

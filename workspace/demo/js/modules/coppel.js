@@ -69,14 +69,8 @@ window.MartelaCoppel = (function() {
       <!-- Encabezado Módulo 5 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-4">
         <div>
-          <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">
-            <span>MÓDULO 5 · ARQUITECTURA SDOP MULTI-CLIENTE</span>
-            <span class="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px]">COPPEL · MLS · MAYORISTAS</span>
-          </div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Mesa de Despiece B2B &amp; Distribución Multi-Cliente</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Gestión segmentada por tipo de cliente: Carga de pedidos Coppel vía portal, Emisión de Layout 16 columnas para Montepío y Venta Mayorista libre por SKU.
-          </p>
+          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE DISTRIBUCIÓN</div>
+          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Despiece B2B &amp; Clientes Mayoristas</h1>
         </div>
         
         <!-- Saldo Cuenta Maquila MLS Header Widget -->
