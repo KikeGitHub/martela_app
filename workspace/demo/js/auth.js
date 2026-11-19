@@ -1,10 +1,11 @@
 /**
- * MARTELA — Control de Acceso, Autenticación y Roles Operativos (6 Módulos Core SDOP)
+ * MARTELA — Control de Acceso, Autenticación y Roles Operativos (Módulos Core SDOP)
  * Basado en los actores reales del análisis operativo de MARTELA:
- * - Carlos Mendoza (Dirección / Administrador General): Acceso a los 6 módulos
+ * - Carlos Mendoza (Dirección / Administrador General): Acceso a todos los módulos
+ * - Karina Cruz (Compras Internacionales & Abastecimiento): Módulos 0, 1, 2
  * - David Morales (Recepción de Valijas, Video-Evidencia y Mesa de Calidad): Módulos 2, 1, 3, 5
  * - Elisa Ramírez (Báscula Digital, Sub-piezas, Gavetas y Despiece B2B): Módulos 3, 1, 5
- * - Adriana López (Motor Financiero Fix, Liquidación Bipartita y Auditoría PLD): Módulos 4, 5, 6, 1
+ * - Adriana López (Motor Financiero Fix, Liquidación Bipartita y Auditoría PLD): Módulos 4, 5, 6, 1, 0
  * - Miguel Torres (Chofer Custodio PWA Móvil y Sellos PLD): Módulo 6
  */
 window.MartelaAuth = (function() {
@@ -14,7 +15,14 @@ window.MartelaAuth = (function() {
       name: 'Carlos Mendoza',
       role: 'Dirección / Administrador General',
       email: 'carlos.mendoza@martela.mx',
-      modules: ['catalog', 'reception', 'inventory', 'pricing', 'coppel', 'logistics']
+      modules: ['purchases', 'catalog', 'reception', 'inventory', 'pricing', 'coppel', 'logistics']
+    },
+    compras: {
+      key: 'compras',
+      name: 'Karina Cruz',
+      role: 'Compras Internacionales & Abastecimiento',
+      email: 'karina.cruz@martela.mx',
+      modules: ['purchases', 'catalog', 'reception']
     },
     recepcion: {
       key: 'recepcion',
@@ -35,7 +43,7 @@ window.MartelaAuth = (function() {
       name: 'Adriana López',
       role: 'Motor Financiero Fix y Auditoría PLD',
       email: 'adriana.lopez@martela.mx',
-      modules: ['pricing', 'coppel', 'logistics', 'catalog']
+      modules: ['pricing', 'coppel', 'logistics', 'catalog', 'purchases']
     },
     chofer: {
       key: 'chofer',

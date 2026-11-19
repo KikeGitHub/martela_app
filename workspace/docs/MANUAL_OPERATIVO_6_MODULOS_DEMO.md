@@ -1,16 +1,17 @@
-# 💎 Manual Operativo y Guía de Enseñanza Paso a Paso — Demo MARTELA (6 Módulos SDOP)
+# 💎 Manual Operativo y Guía de Enseñanza Paso a Paso — Demo MARTELA (Módulos Core SDOP)
 
-Este manual explica **qué hace cada pantalla**, **por qué fue diseñada así según las reglas reales de MARTELA**, **qué clic dar paso a paso**, cómo opera el **Control de Acceso por Roles (RBAC)** y **qué explicarle a tus usuarios o directivos** en cada uno de los **6 módulos de alto impacto**.
+Este manual explica **qué hace cada pantalla**, **por qué fue diseñada así según las reglas reales de MARTELA**, **qué clic dar paso a paso**, cómo opera el **Control de Acceso por Roles (RBAC)** y **qué explicarle a tus usuarios o directivos** en cada uno de los **módulos de alto impacto**.
 
 ---
 
 ## 🗺️ 1. Visión General: El Flujo de Valor End-to-End de MARTELA
 
-A diferencia de un ERP genérico (como Aspel-SAE) que solo cuenta piezas enteras con precios fijos, el flujo operativo de **MARTELA** sigue la vida física y financiera de cada joya desde que llega de importación hasta que se entrega sellada en tienda con expediente antilavado (PLD):
+A diferencia de un ERP genérico (como Aspel-SAE) que solo cuenta piezas enteras con precios fijos, el flujo operativo de **MARTELA** sigue la vida física y financiera de cada joya desde su contratación internacional hasta su entrega sellada en tienda con expediente antilavado (PLD):
 
 ```mermaid
 flowchart LR
-    M1["1. Catálogo & Circonias<br/>(SKU 14 díg + Matriz CZ)"] --> M2["2. Recepción & Calidad<br/>(Guía FedEx + Video + Semáforo)"]
+    M0["0. Compras Internacionales<br/>(OC + M.O. + Packing ±5% + Fix)"] --> M1["1. Catálogo & Circonias<br/>(Pre-alta SKU 14 díg + Matriz CZ)"]
+    M1 --> M2["2. Recepción & Calidad<br/>(Guía FedEx + Video + Semáforo)"]
     M2 --> M3["3. Báscula & Bóveda<br/>(Pesaje 0.0000g - CZ = Au Fino)"]
     M3 --> M4["4. Cotización FIX & Costos<br/>(Fix Mayor + M.O. + Maquila)"]
     M4 --> M5["5. Despiece B2B & Clientes<br/>(Coppel Inbound / MLS 16 Col / Mayoreo)"]
@@ -18,7 +19,7 @@ flowchart LR
 ```
 
 - **Fachada de Servicios Backend (`apiFacade`)**: Toda la lógica de negocio vive en [workspace/demo/js/api-facade.js](file:///c:/Users/kike2/OneDrive/Escritorio/FullStack%20Pojects/Martela/martela-app/workspace/demo/js/api-facade.js) (lista para recrearse 1 a 1 en **Spring Boot 3+**).
-- **Fachada de Tablas PostgreSQL (`MartelaDbTablesFacade`)**: Las **13 tablas relacionales** viven aisladas en [workspace/demo/js/db-tables-facade.js](file:///c:/Users/kike2/OneDrive/Escritorio/FullStack%20Pojects/Martela/martela-app/workspace/demo/js/db-tables-facade.js) y pueden descargarse como script `.sql` desde el botón **`🐘 Exportar SQL Postgres`** de la barra superior.
+- **Fachada de Tablas PostgreSQL (`MartelaDbTablesFacade`)**: Las **17 tablas relacionales** viven aisladas en [workspace/demo/js/db-tables-facade.js](file:///c:/Users/kike2/OneDrive/Escritorio/FullStack%20Pojects/Martela/martela-app/workspace/demo/js/db-tables-facade.js) y pueden descargarse como script `.sql` desde el botón **`🐘 Exportar SQL Postgres`** de la barra superior.
 
 ---
 
@@ -40,10 +41,11 @@ Al abrir [http://localhost:8090/index.html](http://localhost:8090/index.html), v
 
 | Usuario / Actor Real | Rol en el Sistema | Contraseña | Módulos Visibles | Atribuciones y Candados en Pantalla |
 | :--- | :--- | :---: | :--- | :--- |
-| **Carlos Mendoza** (`admin`) | Dirección / Administrador General | `martela123` | **Los 6 módulos** (1 al 6) | Acceso maestro: alta de catálogo, calibración FIX, autorización de layouts, edición de Facturas SAE y auditoría PLD. |
+| **Carlos Mendoza** (`admin`) | Dirección / Administrador General | `martela123` | **Todos los módulos** (0 al 6) | Acceso maestro: alta de catálogo, OCs, calibración FIX, autorización de layouts, edición de Facturas SAE y auditoría PLD. |
+| **Karina Cruz** (`compras`) | Compras Internacionales & Abastecimiento | `martela123` | **Módulos 0, 1 y 2** | Emisión de OCs con Mano de Obra, alta anticipada de productos, auditoría de packing list con candado estricto ±5%, Cierre de Fix y estados de cuenta. |
 | **David Morales** (`recepcion`) | Recepción, Video y Calidad | `martela123` | **Módulos 1, 2, 3 y 5** | Apertura de paquetes FedEx/Cometra, video-evidencia, semáforo de merma/taller y pesaje de entrada. |
 | **Elisa Ramírez** (`boveda`) | Báscula Digital y Bóveda | `martela123` | **Módulos 1, 3 y 5** | Operación de báscula pieza por pieza, asignación de gavetas y surtido físico con sellos plásticos. **Candado:** En Módulo 5, el campo de Factura SAE queda bloqueado con `🔒 Gestionado por Finanzas`. |
-| **Adriana López** (`finanzas`) | Motor Fix, Finanzas y PLD | `martela123` | **Módulos 1, 4, 5 y 6** | Supervisión del Fix del oro, debitación de cuentas de maquila (Montepío), captura de Facturas SAE y certificación de expedientes PLD. |
+| **Adriana López** (`finanzas`) | Motor Fix, Finanzas y PLD | `martela123` | **Módulos 0, 1, 4, 5 y 6** | Supervisión del Fix del oro, auditoría de OCs internacionales, debitación de cuentas de maquila (Montepío), captura de Facturas SAE y certificación de expedientes PLD. |
 | **Miguel Torres** (`chofer`) | Chofer Custodio PWA Móvil | `martela123` | **Solo Módulo 6** | Su menú lateral se reduce exclusivamente a Custodia & Entrega PLD (pantalla optimizada para celular). |
 
 > [!TIP]
@@ -51,7 +53,22 @@ Al abrir [http://localhost:8090/index.html](http://localhost:8090/index.html), v
 
 ---
 
-## 📦 4. Recorrido Paso a Paso por cada uno de los 6 Módulos
+## 📦 4. Recorrido Paso a Paso por cada uno de los Módulos
+
+---
+
+### MÓDULO 0: Compras Internacionales, Ciclo OC, Candado de Packing List (±5%) y Cierre Fix
+- **Archivo:** [workspace/demo/js/modules/purchases.js](file:///c:/Users/kike2/OneDrive/Escritorio/FullStack%20Pojects/Martela/martela-app/workspace/demo/js/modules/purchases.js)
+- **Tablas BD:** `ordenes_compra`, `orden_compra_lineas`, `compras_logistica_importacion`, `proveedor_estado_cuenta`
+- **Objetivo:** Resolver la peculiaridad joyera donde la Orden de Compra inicial **NO tiene precio de metal fijado**, sino únicamente Mano de Obra (M.O.) pactada por pieza/gramo y peso teórico en gramos de oro. Introduce la pre-alta en el Catálogo Maestro desde la emisión, el candado de tolerancia estricta (±5%), el Cierre de Fix contra tipo de cambio, trazabilidad aduanal con Eduardo y el Libro Mayor del proveedor con notas de crédito por piezas fundidas en el módulo de David Morales.
+- **Estructura por Pestañas:**
+  1. `[ 📋 1. Gestor de Órdenes de Compra (OC) ]`: Emisión y consulta de OCs con Pipeline Stepper visual de 7 fases documentales (`Borrador OC` ➔ `Proforma Ok` ➔ `Packing (±5%)` ➔ `Cierre Fix` ➔ `Pago / Anticipo` ➔ `En Tránsito` ➔ `Arribo Bóveda`), paginación universal (20, 50, 100) y modal de nueva OC con alta anticipada de productos al catálogo maestro (`PRE_REGISTRO_COMPRA`).
+  2. `[ ⚖️ 2. Mesa de Auditoría de Packing List (±5%) ]`: Comparador tabular renglón por renglón entre el peso teórico de la OC y el peso real empacado.
+     - **Candado Joyero Estricto (±5%):** Si la variación excede el ±5.0%, el botón de avance queda **BLOQUEADO** y se activa la alerta de refabricación/merma.
+     - Botones de simulación interactiva: `✓ Simular Packing Óptimo (+1.2%)` para autorizar avance y `⚠️ Simular Desvío (+7.8%)` para demostrar el bloqueo activo ante directores.
+  3. `[ 📈 3. Cierre de Fix Internacional & Liquidación ]`: Ingreso del London Spot ($ USD/oz) pactado con el fabricante y Tipo de Cambio. Realiza la matemática bipartita aplicando los coeficientes de ley (0.41667 para 10K y 0.58333 para 14K), fija el importe total a liquidar y registra la deuda en el libro mayor.
+  4. `[ ✈️ 4. Tracking Aduanal & Enlace a Bóveda ]`: Trazabilidad aérea con Eduardo (Aduanas), aerolínea, guía aérea, agente aduanal, y botón **`📦 Notificar Arribo a Bóveda (David Morales)`** que enlaza automáticamente la recepción con el Módulo 2.
+  5. `[ 🏛️ 5. Estado de Cuenta & Notas de Crédito ]`: Libro Mayor por fabricante con desglose de Total Comprado, Anticipos, Saldo Pendiente por Liquidar y registro de **Notas de Crédito por piezas fundidas por merma de calidad** en la mesa de David Morales.
 
 ---
 

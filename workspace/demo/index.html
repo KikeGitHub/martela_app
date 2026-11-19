@@ -346,10 +346,11 @@
                 Usuario / Rol Simulado
               </label>
               <select id="loginUserSelect">
-                <option value="admin">Carlos Mendoza — Dirección / Administrador General (6 Módulos)</option>
+                <option value="admin">Carlos Mendoza — Dirección / Administrador General (Todos los Módulos)</option>
+                <option value="compras">Karina Cruz — Compras Internacionales & Abastecimiento (Mód. 0, 1, 2)</option>
                 <option value="recepcion">David Morales — Recepción, Video-Evidencia y Calidad (Mód. 1, 2, 3, 5)</option>
                 <option value="boveda">Elisa Ramírez — Báscula Digital, Gavetas y Despiece B2B (Mód. 1, 3, 5)</option>
-                <option value="finanzas">Adriana López — Motor Financiero Fix y Auditoría PLD (Mód. 1, 4, 5, 6)</option>
+                <option value="finanzas">Adriana López — Motor Financiero Fix y Auditoría PLD (Mód. 0, 1, 4, 5, 6)</option>
                 <option value="chofer">Miguel Torres — Chofer Custodio PWA Móvil (Mód. 6)</option>
               </select>
             </div>
@@ -376,7 +377,11 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
               <button onclick="document.getElementById('loginUserSelect').value='admin'; document.querySelector('#loginView form').requestSubmit();" class="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:border-amber-500 border border-transparent text-left font-medium transition-all group">
                 <div class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400">Dirección General</div>
-                <div class="text-[10px] text-slate-400">Carlos Mendoza · 6 Mód.</div>
+                <div class="text-[10px] text-slate-400">Carlos Mendoza · 7 Mód.</div>
+              </button>
+              <button onclick="document.getElementById('loginUserSelect').value='compras'; document.querySelector('#loginView form').requestSubmit();" class="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:border-amber-500 border border-transparent text-left font-medium transition-all group">
+                <div class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400">Compras & Abasto</div>
+                <div class="text-[10px] text-slate-400">Karina Cruz · OCs &amp; Fix</div>
               </button>
               <button onclick="document.getElementById('loginUserSelect').value='recepcion'; document.querySelector('#loginView form').requestSubmit();" class="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:border-amber-500 border border-transparent text-left font-medium transition-all group">
                 <div class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400">Recepción & Calidad</div>
@@ -537,7 +542,8 @@
               class="bg-transparent border-0 text-xs font-bold text-amber-600 dark:text-amber-400 focus:ring-0 p-0 cursor-pointer"
               onchange="MartelaApp.handleRoleSwitch(this.value)"
             >
-              <option value="admin">Carlos Mendoza — Dirección General (6 Mód.)</option>
+              <option value="admin">Carlos Mendoza — Dirección General (Todos)</option>
+              <option value="compras">Karina Cruz — Compras Internacionales</option>
               <option value="recepcion">David Morales — Recepción y Calidad</option>
               <option value="boveda">Elisa Ramírez — Báscula y Gavetas</option>
               <option value="finanzas">Adriana López — Motor Fix y PLD</option>
@@ -590,13 +596,14 @@
   <div id="modalRoot"></div>
   <div id="toastRoot" class="fixed right-5 bottom-5 z-50 flex flex-col gap-2"></div>
 
-  <!-- Carga Modular de Scripts (6 Módulos de Alto Impacto + Fachadas BE y DB Postgres) -->
+  <!-- Carga Modular de Scripts (Módulos Core + Fachadas BE y DB Postgres) -->
   <script src="js/catalog-master-data.js"></script>
   <script src="js/data-seed.js"></script>
   <script src="js/db-tables-facade.js"></script>
   <script src="js/api-facade.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/ui-utils.js"></script>
+  <script src="js/modules/purchases.js"></script>
   <script src="js/modules/catalog.js"></script>
   <script src="js/modules/reception.js"></script>
   <script src="js/modules/inventory.js"></script>
