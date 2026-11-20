@@ -88,8 +88,8 @@ class ApiFacade {
         this._saveDB(parsed);
       }
 
-      // Autocuración garantizada: Si el navegador del usuario tiene localStorage previo sin las colecciones del Módulo 0
-      if (!parsed.ordenes_compra || !Array.isArray(parsed.ordenes_compra) || parsed.ordenes_compra.length === 0) {
+      // Autocuración y actualización del Set Completo de Prueba (8 fases completas del Módulo 0)
+      if (!parsed.ordenes_compra || !Array.isArray(parsed.ordenes_compra) || parsed.ordenes_compra.length < 8) {
         const seed = window.MartelaSeed ? window.MartelaSeed.getInitialData() : {};
         parsed.ordenes_compra = seed.ordenes_compra || [];
         parsed.orden_compra_lineas = seed.orden_compra_lineas || [];
@@ -2032,6 +2032,18 @@ class ApiFacade {
   // =========================================================================
   // MÓDULO: COMPRAS INTERNACIONALES, CICLO DE OC Y AUDITORÍA DE PACKING LIST
   // =========================================================================
+
+  async resetPurchasesDemoData() {
+    await this._simulateNetwork(150);
+    const db = this._getDB();
+    const seed = window.MartelaSeed ? window.MartelaSeed.getInitialData() : {};
+    db.ordenes_compra = seed.ordenes_compra || [];
+    db.orden_compra_lineas = seed.orden_compra_lineas || [];
+    db.compras_logistica_importacion = seed.compras_logistica_importacion || [];
+    db.proveedor_estado_cuenta = seed.proveedor_estado_cuenta || [];
+    this._saveDB(db);
+    return true;
+  }
 
   async getPurchaseOrders(filterStatus = '') {
     await this._simulateNetwork(100);

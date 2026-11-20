@@ -75,6 +75,9 @@ window.MartelaPurchases = (function() {
           <button onclick="MartelaPurchases.exportPurchasesExcel()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold">
             <span>⇩</span> Exportar Órdenes (.xlsx)
           </button>
+          <button onclick="MartelaPurchases.reloadDemoSuite()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold text-amber-600 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/10" title="Restaura y carga el set de prueba completo con las 8 fases documentales para demo">
+            <span>🔄</span> Recargar Suite Demo (8 OCs)
+          </button>
         </div>
       </div>
 
@@ -1593,6 +1596,15 @@ window.MartelaPurchases = (function() {
     return `<span class="px-2.5 py-1 rounded text-xs font-bold ${cls}">${type}</span>`;
   }
 
+  async function reloadDemoSuite() {
+    window.MartelaUI.flashLoading('Restaurando set completo de órdenes y componentes...', 220);
+    await window.apiFacade.resetPurchasesDemoData();
+    selectedOcId = 3;
+    activeTab = 'orders';
+    window.MartelaUI.toast('¡Set de prueba completo cargado con éxito! (8 OCs de demostración)', 'success');
+    render(document.getElementById('contentContainer'));
+  }
+
   return {
     render,
     switchTab,
@@ -1617,7 +1629,8 @@ window.MartelaPurchases = (function() {
     goToOrdersPage,
     setOrdersPageSize,
     goToStatementsPage,
-    setStatementsPageSize
+    setStatementsPageSize,
+    reloadDemoSuite
   };
 })();
 

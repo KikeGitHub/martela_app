@@ -1107,7 +1107,7 @@ window.MartelaSeed = (function() {
       importe_total_liquidable: 2450.00,
       fecha_emision: "2026-10-15 10:30:00",
       fecha_promesa_entrega: "2026-12-15",
-      notas: "Colección Anillos Solitarios y Dijes Navideños"
+      notas: "Colección Anillos Solitarios y Dijes Navideños (Solo M.O. pactada)"
     },
     {
       id_oc: 2,
@@ -1125,7 +1125,7 @@ window.MartelaSeed = (function() {
       importe_total_liquidable: 4800.00,
       fecha_emision: "2026-10-16 09:15:00",
       fecha_promesa_entrega: "2026-11-30",
-      notas: "Cadenas diamantadas y esclavas tejido italiano"
+      notas: "Cadenas Fígaro y esclavas tejido italiano; proforma lista para autorización"
     },
     {
       id_oc: 3,
@@ -1145,7 +1145,7 @@ window.MartelaSeed = (function() {
       importe_total_liquidable: 3200.00,
       fecha_emision: "2026-10-12 11:00:00",
       fecha_promesa_entrega: "2026-11-20",
-      notas: "Arracadas huecas 14K con packing list auditado dentro de tolerancia (+1.41%)"
+      notas: "Arracadas y broqueles; packing list auditado dentro de tolerancia (+1.41%)"
     },
     {
       id_oc: 4,
@@ -1167,7 +1167,7 @@ window.MartelaSeed = (function() {
       fecha_emision: "2026-10-10 14:20:00",
       fecha_cierre_fix: "2026-10-14 16:00:00",
       fecha_promesa_entrega: "2026-11-10",
-      notas: "Fix congelado a $2,680.00 USD/oz. Listo para anticipo del 50%"
+      notas: "Fix congelado a $2,680.00 USD/oz. Liquidación y anticipo calculados"
     },
     {
       id_oc: 5,
@@ -1194,10 +1194,78 @@ window.MartelaSeed = (function() {
       fecha_embarque: "2026-10-15",
       fecha_estimada_arribo: "2026-10-18",
       notas: "Valija aérea en vuelo internacional hacia CDMX. Enlace a Módulo 2"
+    },
+    {
+      id_oc: 6,
+      folio_oc: "OC-MARTELA-2026-0046",
+      id_proveedor: 4,
+      proveedor_nombre: "Lotus Gold Kuyumculuk A.S.",
+      pais_origen: "TURQUIA",
+      moneda: "USD",
+      estatus: "PACKING_RECHAZADO",
+      peso_oro_teorico_total_g: 400.0000,
+      peso_packing_total_g: 433.0000,
+      variacion_peso_total_pct: 8.25,
+      costo_mo_total_estimado: 1440.00,
+      fix_oro_cerrado_usd: null,
+      tipo_cambio_cerrado: null,
+      importe_metal_total: 0,
+      importe_total_liquidable: 1440.00,
+      fecha_emision: "2026-10-14 15:45:00",
+      fecha_promesa_entrega: "2026-11-25",
+      notas: "ALERTA: Variación de peso de +8.25% excede la tolerancia máxima permitida (±5%). Orden bloqueada"
+    },
+    {
+      id_oc: 7,
+      folio_oc: "OC-MARTELA-2026-0047",
+      id_proveedor: 2,
+      proveedor_nombre: "HK Gracey Jewel International Ltd.",
+      pais_origen: "CHINA",
+      moneda: "USD",
+      estatus: "PAGADO",
+      peso_oro_teorico_total_g: 375.0000,
+      peso_packing_total_g: 378.2000,
+      variacion_peso_total_pct: 0.85,
+      costo_mo_total_estimado: 2000.00,
+      fix_oro_cerrado_usd: 2640.00,
+      tipo_cambio_cerrado: 20.1000,
+      importe_metal_total: 13293.42,
+      importe_total_liquidable: 15293.42,
+      importe_total_liquidable_mxn: 307397.74,
+      fecha_emision: "2026-10-02 09:00:00",
+      fecha_cierre_fix: "2026-10-06 14:00:00",
+      fecha_pago: "2026-10-08",
+      fecha_promesa_entrega: "2026-10-28",
+      notas: "Factura comercial CI-GRC-2026-1044 liquidada 100%. Póliza de egreso bancario registrada"
+    },
+    {
+      id_oc: 8,
+      folio_oc: "OC-MARTELA-2026-0048",
+      id_proveedor: 6,
+      proveedor_nombre: "Orfebres Finos de Guadalajara S.A.",
+      pais_origen: "MEXICO",
+      moneda: "MXN",
+      estatus: "ENTREGADO_BOVEDA",
+      peso_oro_teorico_total_g: 750.0000,
+      peso_packing_total_g: 754.2000,
+      variacion_peso_total_pct: 0.56,
+      costo_mo_total_estimado: 2500.00,
+      fix_oro_cerrado_usd: 2650.00,
+      tipo_cambio_cerrado: 20.0000,
+      importe_metal_total: 37470.00,
+      importe_total_liquidable: 39970.00,
+      guia_tracking: "CMT-BLIND-2026-881",
+      transportista: "Cometra Blindados",
+      agente_aduanal: "Eduardo Mendoza (Custodia Nacional)",
+      fecha_emision: "2026-09-28 11:20:00",
+      fecha_cierre_fix: "2026-10-01 10:00:00",
+      fecha_arribo_boveda: "2026-10-12",
+      notas: "Mercancía entregada a David Morales en Bóveda Central. Enlace directo al Módulo 2"
     }
   ];
 
   const orden_compra_lineas = [
+    // Líneas OC 1 (Borrador)
     {
       id_linea: 1,
       id_oc: 1,
@@ -1232,8 +1300,46 @@ window.MartelaSeed = (function() {
       variacion_peso_porcentaje: 0.00,
       estatus_tolerancia: "PENDIENTE"
     },
+
+    // Líneas OC 2 (Proforma Pendiente)
     {
       id_linea: 3,
+      id_oc: 2,
+      sku: "07502278209756",
+      modelo_proveedor: "ITL-FIG-3X1",
+      descripcion: "Cadena Fígaro 3x1 Diamantada Italiana 14K",
+      kilataje: "14K",
+      cantidad_piezas: 150,
+      peso_teorico_unitario_g: 4.8000,
+      peso_teorico_total_g: 720.0000,
+      costo_mo_unitario: 20.00,
+      costo_mo_total: 3000.00,
+      peso_packing_unitario_g: 0.0000,
+      peso_packing_total_g: 0.0000,
+      variacion_peso_porcentaje: 0.00,
+      estatus_tolerancia: "PENDIENTE"
+    },
+    {
+      id_linea: 4,
+      id_oc: 2,
+      sku: "07502278209695",
+      modelo_proveedor: "ITL-ARZ-552",
+      descripcion: "Esclava Tejido Cubano Broche de Caja 14K",
+      kilataje: "14K",
+      cantidad_piezas: 60,
+      peso_teorico_unitario_g: 6.6667,
+      peso_teorico_total_g: 400.0000,
+      costo_mo_unitario: 30.00,
+      costo_mo_total: 1800.00,
+      peso_packing_unitario_g: 0.0000,
+      peso_packing_total_g: 0.0000,
+      variacion_peso_porcentaje: 0.00,
+      estatus_tolerancia: "PENDIENTE"
+    },
+
+    // Líneas OC 3 (Packing Auditado - Aprobado dentro de ±5%)
+    {
+      id_linea: 5,
       id_oc: 3,
       sku: "07502278209701",
       modelo_proveedor: "LT-ARR-320",
@@ -1250,7 +1356,7 @@ window.MartelaSeed = (function() {
       estatus_tolerancia: "DENTRO_RANGO"
     },
     {
-      id_linea: 4,
+      id_linea: 6,
       id_oc: 3,
       sku: "07502278209718",
       modelo_proveedor: "LT-BRQ-BOLA",
@@ -1266,12 +1372,14 @@ window.MartelaSeed = (function() {
       variacion_peso_porcentaje: 1.08,
       estatus_tolerancia: "DENTRO_RANGO"
     },
+
+    // Líneas OC 4 (Fix Cerrado)
     {
-      id_linea: 5,
+      id_linea: 7,
       id_oc: 4,
-      sku: "07502278209695",
-      modelo_proveedor: "ARP-CAD-ROLO",
-      descripcion: "Esclava Tejido Cubano Broche de Caja Oro 14K",
+      sku: "07502278209749",
+      modelo_proveedor: "ARP-14K-302",
+      descripcion: "Pulsera Rivière con Galería de Circonias 14K",
       kilataje: "14K",
       cantidad_piezas: 100,
       peso_teorico_unitario_g: 6.2000,
@@ -1283,12 +1391,14 @@ window.MartelaSeed = (function() {
       variacion_peso_porcentaje: 1.37,
       estatus_tolerancia: "DENTRO_RANGO"
     },
+
+    // Líneas OC 5 (En Tránsito)
     {
-      id_linea: 6,
+      id_linea: 8,
       id_oc: 5,
       sku: "07502278209695",
       modelo_proveedor: "ITL-ARZ-552",
-      descripcion: "Esclava Tejido Cubano Broche de Caja Oro 14K",
+      descripcion: "Esclava Tejido Cubano Broche de Caja 14K",
       kilataje: "14K",
       cantidad_piezas: 200,
       peso_teorico_unitario_g: 6.7500,
@@ -1298,6 +1408,63 @@ window.MartelaSeed = (function() {
       peso_packing_unitario_g: 6.8120,
       peso_packing_total_g: 1362.4000,
       variacion_peso_porcentaje: 0.92,
+      estatus_tolerancia: "DENTRO_RANGO"
+    },
+
+    // Líneas OC 6 (Packing Rechazado - Excede +8.25%)
+    {
+      id_linea: 9,
+      id_oc: 6,
+      sku: "07502278209732",
+      modelo_proveedor: "LTS-TR-901",
+      descripcion: "Anillo Sello Imperial con Ónix y Circonias Laterales 14K",
+      kilataje: "14K",
+      cantidad_piezas: 80,
+      peso_teorico_unitario_g: 5.0000,
+      peso_teorico_total_g: 400.0000,
+      costo_mo_unitario: 18.00,
+      costo_mo_total: 1440.00,
+      peso_packing_unitario_g: 5.4125,
+      peso_packing_total_g: 433.0000,
+      variacion_peso_porcentaje: 8.25,
+      estatus_tolerancia: "EXCEDE_TOLERANCIA_MAX"
+    },
+
+    // Líneas OC 7 (Pagado / Commercial Invoice)
+    {
+      id_linea: 10,
+      id_oc: 7,
+      sku: "07502278209763",
+      modelo_proveedor: "GRC-CRZ-019",
+      descripcion: "Dije Cruz Tradicional con Micro-Circonias 10K",
+      kilataje: "10K",
+      cantidad_piezas: 250,
+      peso_teorico_unitario_g: 1.5000,
+      peso_teorico_total_g: 375.0000,
+      costo_mo_unitario: 8.00,
+      costo_mo_total: 2000.00,
+      peso_packing_unitario_g: 1.5128,
+      peso_packing_total_g: 378.2000,
+      variacion_peso_porcentaje: 0.85,
+      estatus_tolerancia: "DENTRO_RANGO"
+    },
+
+    // Líneas OC 8 (Entregado en Bóveda)
+    {
+      id_linea: 11,
+      id_oc: 8,
+      sku: "07502278209770",
+      modelo_proveedor: "ORF-GDL-088",
+      descripcion: "Medalla Ovalada Bautizo Bisel Diamantado 14K",
+      kilataje: "14K",
+      cantidad_piezas: 250,
+      peso_teorico_unitario_g: 3.0000,
+      peso_teorico_total_g: 750.0000,
+      costo_mo_unitario: 10.00,
+      costo_mo_total: 2500.00,
+      peso_packing_unitario_g: 3.0168,
+      peso_packing_total_g: 754.2000,
+      variacion_peso_porcentaje: 0.56,
       estatus_tolerancia: "DENTRO_RANGO"
     }
   ];
@@ -1316,10 +1483,53 @@ window.MartelaSeed = (function() {
       destino: "Aeropuerto Internacional Benito Juárez CDMX (MEX)",
       fecha_salida: "2026-10-15",
       fecha_estimada_arribo: "2026-10-18"
+    },
+    {
+      id_logistica: 2,
+      id_oc: 6,
+      transportista_aerolinea: "Emirates SkyCargo",
+      guia_tracking: "EK-PRECIOUS-9021-TR",
+      agente_aduanal: "Eduardo Mendoza (Agencia Aduanal del Valle)",
+      costo_flete_divisa: 520.00,
+      impuestos_aduanales_mxn: 0.00,
+      estatus_transito: "EN_ADUANA_MEXICO",
+      origen: "Aeropuerto de Estambul (IST)",
+      destino: "Aduana de Carga AICM Terminal 1",
+      fecha_salida: "2026-10-16",
+      fecha_estimada_arribo: "2026-10-19"
+    },
+    {
+      id_logistica: 3,
+      id_oc: 7,
+      transportista_aerolinea: "FedEx Express",
+      guia_tracking: "FDX-9901452108-HK",
+      agente_aduanal: "Eduardo Mendoza (Agencia Aduanal del Valle)",
+      costo_flete_divisa: 390.00,
+      impuestos_aduanales_mxn: 18400.00,
+      estatus_transito: "EN_VUELO",
+      origen: "Hong Kong International Airport (HKG)",
+      destino: "Aeropuerto Internacional Benito Juárez CDMX (MEX)",
+      fecha_salida: "2026-10-10",
+      fecha_estimada_arribo: "2026-10-14"
+    },
+    {
+      id_logistica: 4,
+      id_oc: 8,
+      transportista_aerolinea: "Cometra Internacional",
+      guia_tracking: "CMT-BLIND-2026-881",
+      agente_aduanal: "Eduardo Mendoza (Custodia Nacional)",
+      costo_flete_divisa: 310.00,
+      impuestos_aduanales_mxn: 12500.00,
+      estatus_transito: "LIBERADO_RUTA_OFICINA",
+      origen: "Guadalajara Centro Joyero (GDL)",
+      destino: "Bóveda Central MARTELA (CDMX)",
+      fecha_salida: "2026-10-09",
+      fecha_estimada_arribo: "2026-10-12"
     }
   ];
 
   const proveedor_estado_cuenta = [
+    // Proveedor 3: Italoro Arezzo S.p.A.
     {
       id_movimiento: 1,
       id_proveedor: 3,
@@ -1353,6 +1563,8 @@ window.MartelaSeed = (function() {
       observaciones: "Nota de crédito por 2 esclavas porosas remitidas a fundición por David Morales",
       fecha_registro: "2026-10-12 16:45:00"
     },
+
+    // Proveedor 5: Arpas Export Jewelry Istanbul
     {
       id_movimiento: 4,
       id_proveedor: 5,
@@ -1374,6 +1586,78 @@ window.MartelaSeed = (function() {
       moneda: "USD",
       observaciones: "Anticipo 50% para arranque de producción en Estambul",
       fecha_registro: "2026-10-15 09:20:00"
+    },
+
+    // Proveedor 4: Lotus Gold Kuyumculuk A.S.
+    {
+      id_movimiento: 6,
+      id_proveedor: 4,
+      id_oc: 3,
+      tipo_movimiento: "CARGO_COMPRA",
+      folio_documento: "PI-LTG-2026-7710",
+      monto_divisa: 3200.00,
+      moneda: "USD",
+      observaciones: "Mano de obra pactada para 500 piezas de arracadas y broqueles",
+      fecha_registro: "2026-10-12 12:00:00"
+    },
+    {
+      id_movimiento: 7,
+      id_proveedor: 4,
+      id_oc: null,
+      tipo_movimiento: "NOTA_CREDITO_DEFECTOS",
+      folio_documento: "NC-LTG-2026-0004",
+      monto_divisa: -250.00,
+      moneda: "USD",
+      observaciones: "Descuento en M.O. por 5 broqueles con postes torcidos en recepción de David",
+      fecha_registro: "2026-10-13 17:10:00"
+    },
+
+    // Proveedor 2: HK Gracey Jewel International Ltd.
+    {
+      id_movimiento: 8,
+      id_proveedor: 2,
+      id_oc: 7,
+      tipo_movimiento: "CARGO_COMPRA",
+      folio_documento: "CI-GRC-2026-1044",
+      monto_divisa: 15293.42,
+      moneda: "USD",
+      observaciones: "Factura comercial definitiva liquidación de compra OC-MARTELA-2026-0047",
+      fecha_registro: "2026-10-06 15:00:00"
+    },
+    {
+      id_movimiento: 9,
+      id_proveedor: 2,
+      id_oc: 7,
+      tipo_movimiento: "LIQUIDACION_PAGADA",
+      folio_documento: "SWIFT-CITI-901882",
+      monto_divisa: -15293.42,
+      moneda: "USD",
+      observaciones: "Liquidación total del 100% transferida vía Citibank Hong Kong",
+      fecha_registro: "2026-10-08 10:15:00"
+    },
+
+    // Proveedor 6: Orfebres Finos de Guadalajara S.A.
+    {
+      id_movimiento: 10,
+      id_proveedor: 6,
+      id_oc: 8,
+      tipo_movimiento: "CARGO_COMPRA",
+      folio_documento: "FAC-ORF-2026-0199",
+      monto_divisa: 39970.00,
+      moneda: "USD",
+      observaciones: "Cargo total lote medallas Guadalupe 14K",
+      fecha_registro: "2026-10-01 11:00:00"
+    },
+    {
+      id_movimiento: 11,
+      id_proveedor: 6,
+      id_oc: 8,
+      tipo_movimiento: "LIQUIDACION_PAGADA",
+      folio_documento: "SPEI-BANORTE-881203",
+      monto_divisa: -39970.00,
+      moneda: "USD",
+      observaciones: "Liquidación bancaria total contra entrega física en Bóveda",
+      fecha_registro: "2026-10-12 13:40:00"
     }
   ];
 
