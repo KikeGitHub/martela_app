@@ -90,18 +90,18 @@ window.MartelaCoppel = (function() {
 
       <!-- Stepper / Selector Visual de 3 Canales B2B -->
       <div class="mb-6">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1.5 rounded-2xl bg-[#e9ebef] dark:bg-slate-800/80 border border-[#d9dde3] dark:border-slate-700 shadow-sm">
           <button 
             id="tabBtnCoppel"
             onclick="MartelaCoppel.switchClientTab('coppel')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'coppel' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'coppel' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'coppel' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'coppel' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏢</span> Canal Coppel B2B
               </div>
-              <div class="text-[11px] ${currentClientTab === 'coppel' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+              <div class="text-[11px] ${currentClientTab === 'coppel' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
                 Excel Semanal &amp; Surtido FIFO
               </div>
             </div>
@@ -110,14 +110,14 @@ window.MartelaCoppel = (function() {
           <button 
             id="tabBtnMontepio"
             onclick="MartelaCoppel.switchClientTab('montepio')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'montepio' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'montepio' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'montepio' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'montepio' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏛️</span> Montepío MLS
               </div>
-              <div class="text-[11px] ${currentClientTab === 'montepio' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+              <div class="text-[11px] ${currentClientTab === 'montepio' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
                 Layout 16 Cols &amp; Oro Fino
               </div>
             </div>
@@ -126,9 +126,9 @@ window.MartelaCoppel = (function() {
           <button 
             id="tabBtnMayoristas"
             onclick="MartelaCoppel.switchClientTab('mayoristas')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'mayoristas' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'mayoristas' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'mayoristas' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'mayoristas' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏬</span> Mayoristas Libres

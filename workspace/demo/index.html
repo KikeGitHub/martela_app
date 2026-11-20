@@ -19,16 +19,16 @@
         extend: {
           colors: {
             gold: {
-              50: '#fffbeb',
-              100: '#fef3c7',
-              200: '#fde68a',
-              300: '#fcd34d',
-              400: '#fbbf24',
-              500: '#d4a017',
-              600: '#b8860b',
-              700: '#926b09',
-              800: '#78350f',
-              900: '#451a03'
+              50: '#faf8f2',
+              100: '#f4ede0',
+              200: '#e8dcbe',
+              300: '#d9c492',
+              400: '#caa861',
+              500: '#b5851d',
+              600: '#996e16',
+              700: '#7d5710',
+              800: '#5c400c',
+              900: '#3d2b08'
             }
           }
         }
@@ -42,11 +42,11 @@
   <!-- Estilos Globales de la Demo -->
   <style>
     :root {
-      --bg: #f8fafc;
-      --panel: #ffffff;
-      --line: #e2e8f0;
-      --muted: #64748b;
-      --ink: #0f172a;
+      --bg: #eeeff2;
+      --panel: #f8f9fa;
+      --line: #d9dde3;
+      --muted: #526075;
+      --ink: #242d3d;
     }
     html.dark {
       --bg: #0b1220;
@@ -157,9 +157,9 @@
       transition: all 0.2s;
     }
     #sidebarCollapseBtn:hover {
-      background: rgba(212, 160, 23, 0.15);
-      border-color: #d4a017;
-      color: #d4a017;
+      background: rgba(181, 133, 29, 0.12);
+      border-color: #b5851d;
+      color: #b5851d;
     }
     #topbarCollapseBtn {
       display: inline-flex !important;
@@ -207,8 +207,8 @@
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     input:focus, select:focus, textarea:focus {
-      border-color: #d4a017;
-      box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.2);
+      border-color: #b5851d;
+      box-shadow: 0 0 0 2px rgba(181, 133, 29, 0.2);
     }
     .btn {
       border-radius: 10px;
@@ -226,13 +226,13 @@
       transform: scale(0.98);
     }
     .btn-gold {
-      background: linear-gradient(135deg, #d4a017, #b8860b);
-      color: #0f172a;
-      box-shadow: 0 4px 12px rgba(212, 160, 23, 0.25);
+      background: linear-gradient(135deg, #b5851d, #996e16);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(181, 133, 29, 0.22);
     }
     .btn-gold:hover {
-      background: linear-gradient(135deg, #e4b52e, #c99512);
-      box-shadow: 0 6px 16px rgba(212, 160, 23, 0.35);
+      background: linear-gradient(135deg, #c29424, #a87915);
+      box-shadow: 0 4px 12px rgba(181, 133, 29, 0.32);
     }
     .btn-soft {
       border: 1px solid var(--line);
@@ -240,8 +240,8 @@
       color: var(--ink);
     }
     .btn-soft:hover {
-      border-color: #d4a017;
-      background-color: rgba(212, 160, 23, 0.05);
+      border-color: #b5851d;
+      background-color: rgba(181, 133, 29, 0.06);
     }
     .navbtn {
       width: 100%;
@@ -257,12 +257,12 @@
       transition: background 0.15s, color 0.15s;
     }
     .navbtn:hover, .navbtn.active {
-      background: rgba(212, 160, 23, 0.12);
+      background: rgba(181, 133, 29, 0.12);
       color: var(--ink);
     }
     .navbtn.active {
       font-weight: 700;
-      box-shadow: inset 3px 0 #d4a017;
+      box-shadow: inset 3px 0 #b5851d;
     }
     @media (max-width: 768px) {
       #appSidebar {
