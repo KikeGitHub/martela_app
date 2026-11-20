@@ -33,7 +33,7 @@ window.MartelaPurchases = (function() {
     `;
 
     const db = window.apiFacade._getDB();
-    const orders = await window.apiFacade.getPurchaseOrders(filterStatus);
+    const orders = await window.apiFacade.getPurchaseOrders('');
     const suppliers = db.proveedores || [];
     const user = window.MartelaAuth?.getCurrentUser() || { name: 'Karina Cruz', role: 'Compras' };
 
@@ -43,7 +43,14 @@ window.MartelaPurchases = (function() {
     }
 
     const activeOrder = orders.find(o => o.id_oc === selectedOcId) || orders[0] || null;
-    const activeOrderFull = activeOrder ? await window.apiFacade.getPurchaseOrderById(activeOrder.id_oc) : null;
+    let activeOrderFull = null;
+    if (activeOrder) {
+      try {
+        activeOrderFull = await window.apiFacade.getPurchaseOrderById(activeOrder.id_oc);
+      } catch (e) {
+        activeOrderFull = activeOrder;
+      }
+    }
 
     const { money, grams, esc, badge } = window.MartelaUI;
 
@@ -735,8 +742,25 @@ window.MartelaPurchases = (function() {
   // =========================================================================
   function renderTabTransit(orders, activeOrderFull) {
     const { esc, grams, money } = window.MartelaUI;
-    const transitOrders = orders.filter(o => o.estatus === 'EN_TRANSITO' || o.estatus === 'ENTREGADO_BOVEDA' || o.estatus === 'FIX_CERRADO');
-    const order = activeOrderFull || transitOrders[0] || orders[0];
+    const allOrders = orders || [];
+    const transitOrders = allOrders.filter(o => o.estatus === 'EN_TRANSITO' || o.estatus === 'ENTREGADO_BOVEDA' || o.estatus === 'FIX_CERRADO');
+    const order = activeOrderFull || transitOrders[0] || allOrders[0] || null;
+
+    if (!order) {
+      return `
+        <div class="panel p-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <div class="text-4xl mb-3">✈️</div>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Sin Órdenes de Compra Disponibles</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+            No hay órdenes de compra registradas actualmente para rastreo logístico. Emita una nueva Orden de Compra desde el paso 1.
+          </p>
+          <button onclick="MartelaPurchases.setStep('orders')" class="btn btn-gold text-xs font-bold py-2 px-4 mt-4 inline-flex items-center gap-1.5">
+            <span>＋</span> Ir al Gestor de Órdenes
+          </button>
+        </div>
+      `;
+    }
+
     const log = order?.logistica || {
       transportista_aerolinea: 'FedEx Express',
       guia_tracking: order?.guia_tracking || 'FDX-7894512039-HK',
@@ -751,8 +775,20 @@ window.MartelaPurchases = (function() {
         <div class="panel p-5 bg-white dark:bg-slate-900 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <div class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Rastreo de Carga Aérea y Despacho Aduanal</div>
-            <h3 class="text-base font-bold text-slate-900 dark:text-white">Trazabilidad Internacional con Eduardo (Aduanas)</h3>
-            <p class="text-xs text-slate-500">Conexión directa: Al aterrizar la valija, se despacha al Módulo 2 con David Morales.</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <select 
+                onchange="MartelaPurchases.selectOrderAndTab(this.value, 'transit')"
+                class="text-sm font-mono font-bold py-1.5 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800"
+              >
+                ${allOrders.map(o => `
+                  <option value="${o.id_oc}" ${o.id_oc === order.id_oc ? 'selected' : ''}>
+                    ${o.folio_oc} — ${o.proveedor_nombre} (${o.estatus})
+                  </option>
+                `).join('')}
+              </select>
+              <span class="text-xs text-slate-500">Fabricante: <b>${esc(order.proveedor_nombre)}</b></span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1.5">Trazabilidad Internacional con Eduardo (Aduanas). Al aterrizar la valija, se despacha al Módulo 2 con David Morales.</p>
           </div>
 
           <button 
@@ -839,7 +875,20 @@ window.MartelaPurchases = (function() {
   function renderTabStatements(suppliers) {
     const { esc, money } = window.MartelaUI;
     const db = window.apiFacade._getDB();
-    const currentProv = suppliers.find(p => p.id === selectedSupplierId) || suppliers[0];
+    const provs = suppliers || [];
+    const currentProv = provs.find(p => p.id === selectedSupplierId) || provs[0] || null;
+
+    if (!currentProv) {
+      return `
+        <div class="panel p-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <div class="text-4xl mb-3">🏢</div>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Sin Proveedores Registrados</h3>
+          <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+            No se han encontrado fabricantes en el catálogo para generar libros mayores de compras.
+          </p>
+        </div>
+      `;
+    }
 
     const allMovements = (db.proveedor_estado_cuenta || []).filter(m => m.id_proveedor === currentProv.id);
     const sPag = window.MartelaUI.paginate(allMovements, statementsPage, statementsPageSize);

@@ -87,6 +87,16 @@ class ApiFacade {
         }
         this._saveDB(parsed);
       }
+
+      // Autocuración garantizada: Si el navegador del usuario tiene localStorage previo sin las colecciones del Módulo 0
+      if (!parsed.ordenes_compra || !Array.isArray(parsed.ordenes_compra) || parsed.ordenes_compra.length === 0) {
+        const seed = window.MartelaSeed ? window.MartelaSeed.getInitialData() : {};
+        parsed.ordenes_compra = seed.ordenes_compra || [];
+        parsed.orden_compra_lineas = seed.orden_compra_lineas || [];
+        parsed.compras_logistica_importacion = seed.compras_logistica_importacion || [];
+        parsed.proveedor_estado_cuenta = seed.proveedor_estado_cuenta || [];
+        this._saveDB(parsed);
+      }
       return parsed;
     } catch (e) {
       this.initDatabase(true);
