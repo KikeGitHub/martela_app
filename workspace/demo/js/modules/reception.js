@@ -29,17 +29,44 @@ window.MartelaReception = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Módulo 2 -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
-        <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE RECEPCIÓN</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Recepción, Video-Evidencia y Mesa de Calidad</h1>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="MartelaReception.setStep(1)" class="btn ${wizardStep === 1 ? 'btn-gold' : 'btn-soft'} py-2.5 px-4 font-bold">
-            <span>📦</span> Registrar Valija
+      <div class="mb-5">
+        <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE RECEPCIÓN</div>
+        <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Recepción, Video-Evidencia y Mesa de Calidad</h1>
+      </div>
+
+      <!-- Stepper Visual de 2 Pasos (Recepción & Calidad) -->
+      <div class="mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm max-w-2xl">
+          <button
+            id="stepBtn-rec-valija"
+            onclick="MartelaReception.setStep(1)"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${wizardStep === 1 ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${wizardStep === 1 ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>📦</span> Paso 1: Registro de Valija
+              </div>
+              <div class="text-[11px] ${wizardStep === 1 ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal">
+                Guía FedEx &amp; Video Desempaque
+              </div>
+            </div>
           </button>
-          <button onclick="MartelaReception.setStep(2)" class="btn ${wizardStep === 2 ? 'btn-gold' : 'btn-soft'} py-2.5 px-4 font-bold">
-            <span>🔬</span> Mesa de Calidad
+
+          <button
+            id="stepBtn-rec-calidad"
+            onclick="MartelaReception.setStep(2)"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${wizardStep === 2 ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${wizardStep === 2 ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🔬</span> Paso 2: Mesa de Calidad
+              </div>
+              <div class="text-[11px] ${wizardStep === 2 ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal">
+                Semáforo de Inspección &amp; Merma
+              </div>
+            </div>
           </button>
         </div>
       </div>

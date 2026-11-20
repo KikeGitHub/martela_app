@@ -95,23 +95,89 @@ window.MartelaBilling = (function() {
         </div>
       </div>
 
-      <!-- Barra de Navegación por Pestañas -->
-      <div class="flex border-b border-slate-200 dark:border-slate-800 mb-6 gap-2 overflow-x-auto text-xs font-bold">
-        <button onclick="MartelaBilling.switchTab('invoices')" class="py-3 px-4 border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === 'invoices' ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
-          <span>📑</span> Facturas Emitidas (${invoices.length})
-        </button>
-        <button onclick="MartelaBilling.switchTab('new_invoice')" class="py-3 px-4 border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === 'new_invoice' ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
-          <span>⚡</span> Asistente Nueva Factura ${eligibleOrders.length > 0 ? `<span class="px-1.5 py-0.2 bg-amber-500 text-white rounded-full text-[10px]">${eligibleOrders.length}</span>` : ''}
-        </button>
-        <button onclick="MartelaBilling.switchTab('cxc')" class="py-3 px-4 border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === 'cxc' ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
-          <span>💳</span> Cuentas por Cobrar & Pagos (REP)
-        </button>
-        <button onclick="MartelaBilling.switchTab('credit_notes')" class="py-3 px-4 border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === 'credit_notes' ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
-          <span>🔄</span> Notas de Crédito (${creditNotes.length})
-        </button>
-        <button onclick="MartelaBilling.switchTab('clients')" class="py-3 px-4 border-b-2 transition flex items-center gap-2 whitespace-nowrap ${activeTab === 'clients' ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
-          <span>👥</span> Catálogo Fiscal Clientes (${clients.length})
-        </button>
+      <!-- Stepper / Navegación Visual de 5 Pasos Fiscales -->
+      <div class="mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <button
+            id="tabBtn-invoices"
+            onclick="MartelaBilling.switchTab('invoices')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'invoices' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${activeTab === 'invoices' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>📑</span> Facturas
+              </div>
+              <div class="text-[11px] ${activeTab === 'invoices' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                ${invoices.length} emitidas (CFDI)
+              </div>
+            </div>
+          </button>
+
+          <button
+            id="tabBtn-new_invoice"
+            onclick="MartelaBilling.switchTab('new_invoice')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'new_invoice' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${activeTab === 'new_invoice' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>⚡</span> Nueva Factura
+              </div>
+              <div class="text-[11px] ${activeTab === 'new_invoice' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                ${eligibleOrders.length} listos timbrar
+              </div>
+            </div>
+          </button>
+
+          <button
+            id="tabBtn-cxc"
+            onclick="MartelaBilling.switchTab('cxc')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'cxc' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${activeTab === 'cxc' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>💳</span> Cobranza (REP)
+              </div>
+              <div class="text-[11px] ${activeTab === 'cxc' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                Saldos y pagos
+              </div>
+            </div>
+          </button>
+
+          <button
+            id="tabBtn-credit_notes"
+            onclick="MartelaBilling.switchTab('credit_notes')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'credit_notes' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${activeTab === 'credit_notes' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">4</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🔄</span> Notas Crédito
+              </div>
+              <div class="text-[11px] ${activeTab === 'credit_notes' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                ${creditNotes.length} registradas
+              </div>
+            </div>
+          </button>
+
+          <button
+            id="tabBtn-clients"
+            onclick="MartelaBilling.switchTab('clients')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'clients' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${activeTab === 'clients' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">5</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>👥</span> RFCs Clientes
+              </div>
+              <div class="text-[11px] ${activeTab === 'clients' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                ${clients.length} razones fiscales
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- Contenedor Dinámico de la Pestaña Activa -->

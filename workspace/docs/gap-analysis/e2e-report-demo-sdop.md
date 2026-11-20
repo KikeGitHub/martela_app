@@ -1,6 +1,6 @@
 # Reporte de Validación E2E (Oráculo Playwright) — Demo MARTELA Módulos SDOP
 
-- **Fecha de Ejecución**: 2026-11-19T23:46:21.904Z
+- **Fecha de Ejecución**: 2026-11-20T00:46:34.377Z
 - **Motor**: Playwright Chromium Headless
 - **Estado Global**: **PASS (12 / 12 validaciones exitosas)**
 - **Errores en Consola (`page.on('console')`)**: 0

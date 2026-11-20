@@ -88,29 +88,41 @@ window.MartelaCatalog = (function() {
         </div>
       </div>
 
-      <!-- Barra de Pestañas Principales del Módulo 1 -->
-      <div class="flex border-b border-slate-200 dark:border-slate-800 mb-6 gap-2">
-        <button
-          onclick="MartelaCatalog.switchSubTab('productos')"
-          class="py-3 px-5 text-sm font-bold border-b-2 flex items-center gap-2 transition ${currentSubTab === 'productos' ? 'border-amber-500 text-amber-600 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}"
-        >
-          <span>💎</span>
-          <span>Catálogo de Productos y SKUs</span>
-          <span class="px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">
-            ${items.length}
-          </span>
-        </button>
+      <!-- Stepper / Navegación Visual de 2 Pasos del Módulo 1 -->
+      <div class="mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm max-w-2xl">
+          <button
+            id="subtabBtn-productos"
+            onclick="MartelaCatalog.switchSubTab('productos')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentSubTab === 'productos' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentSubTab === 'productos' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>💎</span> Catálogo de Joyas &amp; SKUs
+              </div>
+              <div class="text-[11px] ${currentSubTab === 'productos' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal">
+                ${items.length} modelos y matrices CZ
+              </div>
+            </div>
+          </button>
 
-        <button
-          onclick="MartelaCatalog.switchSubTab('proveedores')"
-          class="py-3 px-5 text-sm font-bold border-b-2 flex items-center gap-2 transition ${currentSubTab === 'proveedores' ? 'border-amber-500 text-amber-600 dark:text-amber-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}"
-        >
-          <span>🏢</span>
-          <span>Concentrado Maestro de Proveedores y Talleres</span>
-          <span class="px-2 py-0.5 rounded-full text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono font-bold">
-            ${suppliers.length}
-          </span>
-        </button>
+          <button
+            id="subtabBtn-proveedores"
+            onclick="MartelaCatalog.switchSubTab('proveedores')"
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentSubTab === 'proveedores' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentSubTab === 'proveedores' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🏢</span> Directorio de Fabricantes
+              </div>
+              <div class="text-[11px] ${currentSubTab === 'proveedores' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal">
+                ${suppliers.length} talleres y factores de merma
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- Vista 1: Catálogo de Productos y SKUs -->

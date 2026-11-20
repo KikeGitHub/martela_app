@@ -88,43 +88,57 @@ window.MartelaCoppel = (function() {
       <!-- Banner de Seguridad Contextual RBAC -->
       ${renderRbacBadge(user)}
 
-      <!-- Selector de 3 Pestañas por Cliente Mayorista -->
-      <div class="flex flex-col sm:flex-row items-center gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 mb-6 shadow-sm">
-        <button 
-          id="tabBtnCoppel"
-          onclick="MartelaCoppel.switchClientTab('coppel')" 
-          class="flex-1 w-full py-2.5 px-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2.5 transition-all ${currentClientTab === 'coppel' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}"
-        >
-          <span class="text-lg">🏢</span>
-          <div class="text-left leading-tight">
-            <div>Coppel B2B (Portal)</div>
-            <div class="text-[10px] font-normal text-slate-400">Importar Excel Semanal &amp; Surtido FIFO</div>
-          </div>
-        </button>
+      <!-- Stepper / Selector Visual de 3 Canales B2B -->
+      <div class="mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <button 
+            id="tabBtnCoppel"
+            onclick="MartelaCoppel.switchClientTab('coppel')" 
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'coppel' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'coppel' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🏢</span> Canal Coppel B2B
+              </div>
+              <div class="text-[11px] ${currentClientTab === 'coppel' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                Excel Semanal &amp; Surtido FIFO
+              </div>
+            </div>
+          </button>
 
-        <button 
-          id="tabBtnMontepio"
-          onclick="MartelaCoppel.switchClientTab('montepio')" 
-          class="flex-1 w-full py-2.5 px-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2.5 transition-all ${currentClientTab === 'montepio' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}"
-        >
-          <span class="text-lg">🏛️</span>
-          <div class="text-left leading-tight">
-            <div>Montepío Luz Saviñón / MLS</div>
-            <div class="text-[10px] font-normal text-slate-400">Layout 16 Cols, Oro Fino / 70% &amp; Sello</div>
-          </div>
-        </button>
+          <button 
+            id="tabBtnMontepio"
+            onclick="MartelaCoppel.switchClientTab('montepio')" 
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'montepio' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'montepio' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🏛️</span> Montepío MLS
+              </div>
+              <div class="text-[11px] ${currentClientTab === 'montepio' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                Layout 16 Cols &amp; Oro Fino
+              </div>
+            </div>
+          </button>
 
-        <button 
-          id="tabBtnMayoristas"
-          onclick="MartelaCoppel.switchClientTab('mayoristas')" 
-          class="flex-1 w-full py-2.5 px-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2.5 transition-all ${currentClientTab === 'mayoristas' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md border border-slate-200 dark:border-slate-700' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}"
-        >
-          <span class="text-lg">🏬</span>
-          <div class="text-left leading-tight">
-            <div>Mayoristas &amp; Boutiques</div>
-            <div class="text-[10px] font-normal text-slate-400">Venta Libre por SKU &amp; Remisión Directa</div>
-          </div>
-        </button>
+          <button 
+            id="tabBtnMayoristas"
+            onclick="MartelaCoppel.switchClientTab('mayoristas')" 
+            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'mayoristas' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400 ring-2 ring-amber-500/20' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-amber-500/50 border border-slate-200/80 dark:border-slate-700/60'}"
+          >
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${currentClientTab === 'mayoristas' ? 'bg-slate-950 text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
+                <span>🏬</span> Mayoristas Libres
+              </div>
+              <div class="text-[11px] ${currentClientTab === 'mayoristas' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+                Venta Libre &amp; Remisión Directa
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- Contenedor Dinámico de la Pestaña Activa -->

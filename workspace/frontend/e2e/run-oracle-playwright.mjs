@@ -88,7 +88,7 @@ async function runOracle() {
                        mod0Content.includes('Arribo a Bóveda');
 
     // Validar Pestaña 2: Mesa de Auditoría de Packing List y Candado de Tolerancia Estricta (±5%)
-    await page.click('button:has-text("2. Mesa de Auditoría de Packing List")');
+    await page.click('#stepBtn-packing');
     await page.waitForTimeout(200);
 
     // Simular Desvío (+7.8% de sobrepeso rechazado)
@@ -106,20 +106,20 @@ async function runOracle() {
                               packingOptimalText.includes('DENTRO DE TOLERANCIA');
 
     // Validar Pestaña 3: Cierre de Fix Internacional & Liquidación
-    await page.click('button:has-text("3. Cierre de Fix Internacional")');
+    await page.click('#stepBtn-fix');
     await page.waitForTimeout(200);
     const fixText = await page.locator('#purchasesTabContent').innerText();
     const hasFixCalculation = fixText.includes('Cierre de Fix de Compra') && fixText.includes('London Spot');
 
     // Validar Pestaña 4: Tracking Aduanal y Enlace a Bóveda (David Morales)
-    await page.click('button:has-text("4. Tracking Aduanal")');
+    await page.click('#stepBtn-transit');
     await page.waitForTimeout(200);
     const transitText = await page.locator('#purchasesTabContent').innerText();
     const hasTransitVaultLink = transitText.includes('Trazabilidad Internacional con Eduardo') && 
                                 transitText.includes('Notificar Arribo a Bóveda (David Morales)');
 
     // Validar Pestaña 5: Estado de Cuenta & Notas de Crédito
-    await page.click('button:has-text("5. Estado de Cuenta")');
+    await page.click('#stepBtn-statements');
     await page.waitForTimeout(200);
     const statementText = await page.locator('#purchasesTabContent').innerText();
     const hasStatements = statementText.includes('Libro Mayor de Fabricante') &&
