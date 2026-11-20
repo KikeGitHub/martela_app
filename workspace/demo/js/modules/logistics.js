@@ -22,28 +22,28 @@ window.MartelaLogistics = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Módulo 6 -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-5">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE CUSTODIA Y ENTREGA</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Custodia Móvil y Entrega PLD</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE CUSTODIA Y ENTREGA</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Custodia Móvil y Entrega PLD</h1>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button
             onclick="MartelaLogistics.toggleOfflineMode()"
-            class="btn ${isOfflineSimulated ? 'bg-amber-600 text-white' : 'btn-soft'}"
+            class="btn ${isOfflineSimulated ? 'bg-slate-800 text-white' : 'btn-soft'}"
           >
-            <span>${isOfflineSimulated ? '📡 Modo Sin Señal (Offline-First Activo)' : '📶 Señal LTE Online'}</span>
+            <span>${isOfflineSimulated ? '📡 Modo Sin Señal (Offline Activo)' : '📶 Señal LTE Online'}</span>
           </button>
           ${offlineQueueCount > 0 ? `
-            <button onclick="MartelaLogistics.syncOffline()" class="btn btn-gold">
-              <span>🔄</span> Sincronizar Cola Offline (${offlineQueueCount})
+            <button onclick="MartelaLogistics.syncOffline()" class="btn btn-gold py-2 px-3.5">
+              <span>🔄</span> Sincronizar Cola (${offlineQueueCount})
             </button>
           ` : ''}
           <button
             onclick="MartelaLogistics.togglePhoneFrame()"
-            class="btn ${isMobileFrameActive ? 'btn-gold' : 'btn-soft'}"
+            class="btn ${isMobileFrameActive ? 'btn-gold' : 'btn-soft'} py-2 px-3 text-xs"
           >
-            <span>📱</span> ${isMobileFrameActive ? 'Vista Escritorio Completa' : 'Simular Smartphone PWA (390px)'}
+            <span>📱</span> ${isMobileFrameActive ? 'Vista Escritorio' : 'Simular Smartphone PWA'}
           </button>
         </div>
       </div>
@@ -54,13 +54,13 @@ window.MartelaLogistics = (function() {
           <div class="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3"></div>
           <div class="flex justify-between items-center text-[10px] text-slate-400 px-2 mb-3 font-mono">
             <span>09:42 · GPS ACTIVO</span>
-            <span class="text-amber-400 font-bold">MARTELA PWA v2</span>
+            <span class="text-slate-300 font-bold">MARTELA PWA v2</span>
             <span>${isOfflineSimulated ? '⚡ OFFLINE-DB' : '5G 100%'}</span>
           </div>
         ` : ''}
 
         <!-- Cabecera de Ruta y Progreso -->
-        <div class="panel p-5 mb-6 border-l-4 border-amber-500">
+        <div class="panel p-4 mb-5 border-l-4 border-slate-600">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
               <div class="flex flex-wrap items-center gap-2">
@@ -68,24 +68,24 @@ window.MartelaLogistics = (function() {
                 ${badge(route.estatus)}
                 <span class="text-xs text-slate-400">Auditoría PLD: <b>${esc(route.auditor_pld || 'Adriana López')}</b></span>
               </div>
-              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                 Chofer: <b>${esc(route.chofer)}</b> · Unidad: <b>${esc(route.vehiculo)}</b>
               </div>
             </div>
             <div class="text-right">
-              <span class="text-xs text-slate-400 font-semibold">Paradas Certificadas:</span>
-              <div class="text-lg font-black text-amber-600 dark:text-amber-400">${completadas} / ${totalParadas} sucursales</div>
+              <span class="text-[11px] text-slate-400 font-semibold">Paradas Certificadas:</span>
+              <div class="text-lg font-black text-slate-800 dark:text-slate-100">${completadas} / ${totalParadas} sucursales</div>
             </div>
           </div>
         </div>
 
         <!-- Lista de Paradas de la Ruta -->
-        <div class="space-y-4 mb-8">
+        <div class="space-y-3 mb-6">
           ${route.paradas.map((parada, idx) => `
-            <div class="panel p-5 ${parada.estatus === 'ENTREGADA' ? 'border-emerald-500/40 bg-emerald-50/10' : 'border-slate-200 dark:border-slate-800'}">
+            <div class="panel p-4 ${parada.estatus === 'ENTREGADA' ? 'border-emerald-500/40 bg-emerald-50/10' : 'border-slate-200 dark:border-slate-800'}">
               <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${parada.estatus === 'ENTREGADA' ? 'bg-emerald-500 text-white' : 'bg-amber-500/20 text-amber-500'}">
+                  <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${parada.estatus === 'ENTREGADA' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'}">
                     ${idx + 1}
                   </div>
                   <div>
@@ -94,14 +94,14 @@ window.MartelaLogistics = (function() {
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
                     🔒 SELLO: ${esc(parada.sello_seguridad_bolsa || 'Z008341')}
                   </span>
                   ${badge(parada.estatus)}
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-slate-50 dark:bg-slate-800/40 p-3 rounded-xl mb-4 font-mono">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg mb-3 font-mono">
                 <div>
                   <span class="text-slate-400 block text-[10px]">REMISIÓN / SAE:</span>
                   <span class="font-bold">${esc(parada.id_remision || 'REM-2026')} · ${esc(parada.folio_factura)}</span>
@@ -116,7 +116,7 @@ window.MartelaLogistics = (function() {
                 </div>
                 <div>
                   <span class="text-slate-400 block text-[10px]">EXPEDIENTE PLD:</span>
-                  <span class="font-bold text-amber-600 dark:text-amber-400">${esc(parada.expediente_pld_folio || 'PLD-EXP-2026')}</span>
+                  <span class="font-bold text-slate-700 dark:text-slate-200">${esc(parada.expediente_pld_folio || 'PLD-EXP-2026')}</span>
                 </div>
               </div>
 

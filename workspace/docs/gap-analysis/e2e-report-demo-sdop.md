@@ -1,6 +1,6 @@
 # Reporte de Validación E2E (Oráculo Playwright) — Demo MARTELA Módulos SDOP
 
-- **Fecha de Ejecución**: 2026-11-20T02:12:24.786Z
+- **Fecha de Ejecución**: 2026-11-20T02:24:59.524Z
 - **Motor**: Playwright Chromium Headless
 - **Estado Global**: **PASS (12 / 12 validaciones exitosas)**
 - **Errores en Consola (`page.on('console')`)**: 0
@@ -11,7 +11,7 @@
 | # | Caso de Prueba Validado | Estado | Evidencia Técnica |
 | :--- | :--- | :---: | :--- |
 | 1 | 1. Pantalla de Login y 6 Roles Operativos del Análisis (Incluyendo Karina Cruz) | **PASS** | Roles detectados (6): Carlos Mendoza — Dirección General | Karina Cruz — Compras Internacionales & Abastecimiento | David Morales — Recepción y Calidad | Elisa Ramírez — Báscula y Bóveda | Adriana López — Finanzas y Fix | Miguel Torres — Custodia Móvil |
-| 2 | 2. Menú Lateral Depurado (Exactamente 7 Módulos Core, Cero Opciones Extra) | **PASS** | Opciones en menú (7): 0. Compras & Órdenes OC Ciclo internacional y packing list, 1. Catálogo & Circonias Fichas técnicas y matriz CZ, 2. Recepción & Calidad Valijas aduanales y video, 3. Báscula & Bóveda Pesaje analítico por gaveta, 4. Cotización FIX & Costos Tarifa máxima y liquidación, 5. Despiece B2B (Coppel & MLS) Portal Coppel & Montepío Luz Saviñón, 6. Custodia & Entrega PLD Firma digital y geo-evidencia |
+| 2 | 2. Menú Lateral Depurado (Exactamente 7 Módulos Core, Cero Opciones Extra) | **PASS** | Opciones en menú (7): 0. Compras (OC) Órdenes y Packing, 1. Catálogo Joyas y Circonias, 2. Recepción Paquetería y Calidad, 3. Bóveda Báscula y Gavetas, 4. Cotización FIX Precios y Metal, 5. Despiece B2B Coppel y Mayoristas, 6. Entrega PLD Custodia y Firmas |
 | 3 | 3. Módulo 0: Compras Internacionales, Ciclo OC, Candado Packing List (±5%), Fix y Estados de Cuenta | **PASS** | Pipeline visual de 7 fases, candado estricto ±5% verificado (bloqueo en +7.8% y aprobación en +1.2%), Cierre Fix, Tracking aduanal y Estados de Cuenta |
 | 4 | 4. Módulo 1: Catálogo Maestro Multi-Proveedor, Matriz CZ y Modal CRUD Compacto y Ergonómico | **PASS** | Búsqueda predictiva (1 resultado), Modal CRUD compacto y sin widgets innecesarios abierto y cerrado con éxito tras calibrar CZ a 0.1800g con feedback loading |
 | 5 | 5. Módulo 2: Recepción FedEx/Cometra, Video-Evidencia y Semáforo de Calidad (+1 Aprobado/Reparación/Merma) | **PASS** | Guía FDX-7894512039-HK, visor de video-evidencia y botones +1 del Semáforo de Calidad verificados |

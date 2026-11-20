@@ -30,24 +30,24 @@ window.MartelaReception = (function() {
     container.innerHTML = `
       <!-- Encabezado Módulo 2 -->
       <div class="mb-5">
-        <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE RECEPCIÓN</div>
-        <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Recepción, Video-Evidencia y Mesa de Calidad</h1>
+        <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE RECEPCIÓN</div>
+        <h1 class="text-2xl font-black text-slate-900 dark:text-white">Recepción, Video-Evidencia y Mesa de Calidad</h1>
       </div>
 
       <!-- Stepper Visual de 2 Pasos (Recepción & Calidad) -->
-      <div class="mb-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#e9ebef] dark:bg-slate-800/80 border border-[#d9dde3] dark:border-slate-700 shadow-sm max-w-2xl">
+      <div class="mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 shadow-sm max-w-xl">
           <button
             id="stepBtn-rec-valija"
             onclick="MartelaReception.setStep(1)"
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${wizardStep === 1 ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${wizardStep === 1 ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${wizardStep === 1 ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${wizardStep === 1 ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>📦</span> Paso 1: Registro de Valija
               </div>
-              <div class="text-[11px] ${wizardStep === 1 ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal">
+              <div class="text-[11px] ${wizardStep === 1 ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal">
                 Guía FedEx &amp; Video Desempaque
               </div>
             </div>
@@ -56,14 +56,14 @@ window.MartelaReception = (function() {
           <button
             id="stepBtn-rec-calidad"
             onclick="MartelaReception.setStep(2)"
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${wizardStep === 2 ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${wizardStep === 2 ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${wizardStep === 2 ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${wizardStep === 2 ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🔬</span> Paso 2: Mesa de Calidad
               </div>
-              <div class="text-[11px] ${wizardStep === 2 ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal">
+              <div class="text-[11px] ${wizardStep === 2 ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal">
                 Semáforo de Inspección &amp; Merma
               </div>
             </div>
@@ -72,30 +72,30 @@ window.MartelaReception = (function() {
       </div>
 
       <!-- Selector de Valijas / Recepciones Recientes -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
         ${receptions.map(rec => `
           <div
             onclick="MartelaReception.selectReception(${rec.id_recepcion})"
-            class="panel p-4 cursor-pointer transition border-l-4 ${rec.id_recepcion === activeReceptionId ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-300 dark:border-slate-700 opacity-80 hover:opacity-100'}"
+            class="panel p-3.5 cursor-pointer transition border-l-4 ${rec.id_recepcion === activeReceptionId ? 'border-slate-800 dark:border-slate-300 bg-slate-50/80 dark:bg-slate-800/60 ring-1 ring-slate-400/20' : 'border-slate-300 dark:border-slate-700 opacity-80 hover:opacity-100'}"
           >
             <div class="flex justify-between items-start gap-2">
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="font-mono font-black text-sm text-slate-900 dark:text-white">${esc(rec.folio_recepcion)}</span>
-                  <span class="font-mono text-xs text-amber-600 dark:text-amber-400 font-bold">${esc(rec.guia_tracking)}</span>
+                  <span class="font-mono font-bold text-sm text-slate-900 dark:text-white">${esc(rec.folio_recepcion)}</span>
+                  <span class="font-mono text-xs text-slate-700 dark:text-slate-300 font-semibold">${esc(rec.guia_tracking)}</span>
                 </div>
-                <div class="text-xs font-semibold text-slate-600 dark:text-slate-300 mt-1">
+                <div class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-1">
                   [${esc(rec.pais_origen)}] ${esc(rec.proveedor_nombre)} · ${esc(rec.paqueteria)}
                 </div>
               </div>
               ${badge(rec.estatus)}
             </div>
-            <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center text-[11px] text-slate-500">
-              <span>📦 <b>${rec.total_bultos} bultos</b> · Peso Bruto Valija: <b>${grams(rec.peso_bruto_paquete_g, 2)}</b></span>
+            <div class="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center text-[11px] text-slate-500">
+              <span>📦 <b>${rec.total_bultos} bultos</b> · Peso Bruto: <b>${grams(rec.peso_bruto_paquete_g, 2)}</b></span>
               <button
                 type="button"
                 onclick="event.stopPropagation(); MartelaReception.openVideoModal('${esc(rec.guia_tracking)}', '${esc(rec.url_video_evidencia)}', '${esc(rec.proveedor_nombre)}')"
-                class="text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center gap-1"
+                class="text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white font-semibold flex items-center gap-1"
               >
                 <span>🎥</span> Ver Video-Evidencia
               </button>
@@ -108,11 +108,11 @@ window.MartelaReception = (function() {
         <!-- ============================================================== -->
         <!-- WIZARD PASO 1: ALTA DE GUÍA, PESAJE DE VALIJA Y VIDEO EVIDENCIA -->
         <!-- ============================================================== -->
-        <div class="panel p-6 mb-6 border-t-4 border-amber-500">
+        <div class="panel p-5 mb-5 border border-slate-200 dark:border-slate-800">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <span class="text-xs font-bold uppercase text-amber-500">Wizard Paso 1 de 2</span>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">Registro de Valija Consolidada y Video de Desempaque</h3>
+              <span class="text-[11px] font-bold uppercase text-slate-500">Wizard Paso 1 de 2</span>
+              <h3 class="text-base font-bold text-slate-900 dark:text-white">Registro de Valija Consolidada y Video de Desempaque</h3>
             </div>
             <span class="text-xs text-slate-400">Responsable: David Morales (Almacén)</span>
           </div>
@@ -170,67 +170,68 @@ window.MartelaReception = (function() {
       <!-- ============================================================== -->
       <!-- WIZARD PASO 2: MESA DE CONTROL DE CALIDAD Y SEMÁFORO INTERACTIVO -->
       <!-- ============================================================== -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-        <div class="panel p-4 border-l-4 border-slate-500">
-          <div class="text-xs font-bold uppercase text-slate-400">Piezas en Valija (${esc(activeRec?.folio_recepcion)})</div>
-          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">${totalRecibidas} pzs</div>
-          <div class="text-[11px] text-slate-500">${pendientesConteo} pendientes por clasificar</div>
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-5">
+        <div class="panel p-3.5 border-l-4 border-slate-500">
+          <div class="text-[11px] font-bold uppercase text-slate-400">Piezas en Valija (${esc(activeRec?.folio_recepcion)})</div>
+          <div class="text-xl font-black text-slate-900 dark:text-white mt-1">${totalRecibidas} pzs</div>
+          <div class="text-[11px] text-slate-500">${pendientesConteo} pendientes</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/10">
-          <div class="text-xs font-bold uppercase text-emerald-600 dark:text-emerald-400">🟢 Aprobadas → Báscula</div>
-          <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">${totalAprobadas} pzs</div>
-          <div class="text-[11px] text-slate-500">Pasan a Pesaje Individual (Módulo 3)</div>
+        <div class="panel p-3.5 border-l-4 border-emerald-600 bg-emerald-50/20 dark:bg-emerald-950/10">
+          <div class="text-[11px] font-bold uppercase text-emerald-700 dark:text-emerald-400">🟢 Aprobadas → Báscula</div>
+          <div class="text-xl font-black text-emerald-700 dark:text-emerald-400 mt-1">${totalAprobadas} pzs</div>
+          <div class="text-[11px] text-slate-500">Pasan a Pesaje (Módulo 3)</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-amber-500 bg-amber-50/30 dark:bg-amber-950/10">
-          <div class="text-xs font-bold uppercase text-amber-600 dark:text-amber-400">🟡 Taller Reparación Interna</div>
-          <div class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">${totalReparacion} pzs</div>
-          <div class="text-[11px] text-slate-500">Falta circonia o reasa abierta</div>
+        <div class="panel p-3.5 border-l-4 border-amber-600 bg-amber-50/20 dark:bg-amber-950/10">
+          <div class="text-[11px] font-bold uppercase text-amber-700 dark:text-amber-400">🟡 Taller Reparación</div>
+          <div class="text-xl font-black text-amber-700 dark:text-amber-400 mt-1">${totalReparacion} pzs</div>
+          <div class="text-[11px] text-slate-500">Falta circonia o reasa</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-rose-500 bg-rose-50/30 dark:bg-rose-950/10">
-          <div class="text-xs font-bold uppercase text-rose-600 dark:text-rose-400">🔴 Charola Pedacería / Fundición</div>
-          <div class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">${totalMerma} pzs</div>
-          <div class="text-[11px] text-slate-500">Daño severo → Crisol de Fundición</div>
+        <div class="panel p-3.5 border-l-4 border-rose-600 bg-rose-50/20 dark:bg-rose-950/10">
+          <div class="text-[11px] font-bold uppercase text-rose-700 dark:text-rose-400">🔴 Merma Fundición</div>
+          <div class="text-xl font-black text-rose-700 dark:text-rose-400 mt-1">${totalMerma} pzs</div>
+          <div class="text-[11px] text-slate-500">Crisol de fundición</div>
         </div>
       </div>
 
-      <div class="panel overflow-hidden">
-        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-slate-50 dark:bg-slate-900/50">
+      <div class="panel overflow-hidden mb-6 shadow-sm">
+        <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-slate-50 dark:bg-slate-900/50">
           <div>
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white">
-              Mesa de Control de Calidad · Guía ${esc(activeRec?.guia_tracking)} (${esc(activeRec?.proveedor_nombre)})
+            <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <span>Mesa de Control de Calidad</span>
+              <span class="text-[11px] font-normal text-slate-400">· Guía ${esc(activeRec?.guia_tracking)} (${esc(activeRec?.proveedor_nombre)})</span>
             </h3>
-            <p class="text-xs text-slate-400">Utiliza los botones rápidos del Semáforo de Calidad (+1) para clasificar cada pieza física en tiempo real.</p>
+            <p class="text-[11px] text-slate-400">Semáforo de Calidad (+1) para clasificar cada pieza física en tiempo real.</p>
           </div>
           <div class="flex items-center gap-2">
             <button
               onclick="MartelaReception.openVideoModal('${esc(activeRec?.guia_tracking)}', '${esc(activeRec?.url_video_evidencia)}', '${esc(activeRec?.proveedor_nombre)}')"
-              class="btn btn-soft text-xs py-1.5"
+              class="btn btn-soft text-xs py-1.5 px-3"
             >
               🎥 Ver Video Desempaque
             </button>
             <button
               onclick="MartelaReception.finalizeConciliation(${activeRec?.id_recepcion})"
-              class="btn btn-gold text-xs py-1.5"
+              class="btn btn-gold text-xs py-1.5 px-3"
             >
-              ✓ Cerrar Acta y Enviar Aprobadas a Báscula
+              ✓ Cerrar Acta y Enviar a Báscula
             </button>
           </div>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">
+            <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th class="p-4">SKU 14 Dígitos / Modelo</th>
-                <th class="p-4 text-center">Recibidas</th>
-                <th class="p-4 text-center">🟢 Aprobadas (Báscula)</th>
-                <th class="p-4 text-center">🟡 Taller Reparación</th>
-                <th class="p-4 text-center">🔴 Merma Fundición</th>
-                <th class="p-4 text-center">Semáforo de Acción Rápida (+1 / -1)</th>
-                <th class="p-4">Observaciones Técnicas</th>
+                <th class="px-3 py-2.5">SKU / Modelo</th>
+                <th class="px-3 py-2.5 text-center">Recibidas</th>
+                <th class="px-3 py-2.5 text-center">🟢 Aprobadas</th>
+                <th class="px-3 py-2.5 text-center">🟡 Reparación</th>
+                <th class="px-3 py-2.5 text-center">🔴 Merma</th>
+                <th class="px-3 py-2.5 text-center">Semáforo de Acción Rápida</th>
+                <th class="px-3 py-2.5">Observaciones Técnicas</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -240,66 +241,66 @@ window.MartelaReception = (function() {
                   const clasif = r.piezas_aprobadas + r.piezas_reparacion_interna + r.piezas_merma_fundicion;
                   const completo = clasif === r.piezas_recibidas;
                   return `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                      <td class="p-4">
-                        <div class="font-mono font-bold text-slate-900 dark:text-white">${esc(r.sku_14 || r.sku)}</div>
-                        <div class="text-xs font-bold text-amber-600 dark:text-amber-400">${esc(r.modelo_martela || r.sku)}</div>
-                        <div class="text-[11px] text-slate-400">${esc(r.descripcion)}</div>
-                      </td>
-                      <td class="p-4 text-center">
-                        <span class="text-sm font-black text-slate-900 dark:text-white">${r.piezas_recibidas}</span>
-                        <div class="text-[10px] ${completo ? 'text-emerald-500 font-bold' : 'text-amber-500'}">
-                          ${clasif}/${r.piezas_recibidas} revisadas
+                    <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition h-10 border-b border-slate-200 dark:border-slate-800 text-xs">
+                      <td class="px-3 py-2 whitespace-nowrap">
+                        <div class="flex items-center gap-1.5">
+                          <span class="font-mono font-bold text-slate-800 dark:text-slate-100">${esc(r.sku_14 || r.sku)}</span>
+                          <span class="text-[11px] font-semibold text-slate-500">(${esc(r.modelo_martela || r.sku)})</span>
+                          <span class="text-[11px] text-slate-400 truncate max-w-[180px]" title="${esc(r.descripcion)}">· ${esc(r.descripcion)}</span>
                         </div>
                       </td>
-                      <td class="p-4 text-center">
-                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300">
+                      <td class="px-3 py-2 text-center whitespace-nowrap font-mono">
+                        <span class="font-bold text-slate-800 dark:text-slate-200">${r.piezas_recibidas}</span>
+                        <span class="text-[10px] ${completo ? 'text-emerald-600 font-bold' : 'text-slate-400'}">(${clasif}/${r.piezas_recibidas})</span>
+                      </td>
+                      <td class="px-3 py-2 text-center whitespace-nowrap">
+                        <span class="px-2 py-0.5 rounded font-mono text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300">
                           ${r.piezas_aprobadas}
                         </span>
                       </td>
-                      <td class="p-4 text-center">
-                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300">
+                      <td class="px-3 py-2 text-center whitespace-nowrap">
+                        <span class="px-2 py-0.5 rounded font-mono text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300">
                           ${r.piezas_reparacion_interna}
                         </span>
                       </td>
-                      <td class="p-4 text-center">
-                        <span class="px-3 py-1 rounded-lg font-mono text-sm font-black bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300">
+                      <td class="px-3 py-2 text-center whitespace-nowrap">
+                        <span class="px-2 py-0.5 rounded font-mono text-xs font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300">
                           ${r.piezas_merma_fundicion}
                         </span>
                       </td>
-                      <td class="p-4">
-                        <div class="flex flex-wrap items-center justify-center gap-1.5">
+                      <td class="px-3 py-2 text-center whitespace-nowrap">
+                        <div class="inline-flex items-center gap-1">
                           <button
                             onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'APROBADA', 1)"
-                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm transition"
+                            class="px-2 py-0.5 rounded font-semibold text-xs bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"
                             title="Enviar a Báscula Digital"
                           >
                             +1 Aprobado
                           </button>
                           <button
                             onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'REPARACION', 1)"
-                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-sm transition"
+                            class="px-2 py-0.5 rounded font-semibold text-xs bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-sm transition"
                             title="Enviar a Taller de Reparación Interna"
                           >
                             +1 Reparación
                           </button>
                           <button
                             onclick="MartelaReception.bumpSemaphore(${r.id_inspeccion}, 'MERMA', 1)"
-                            class="px-2.5 py-1.5 rounded-lg font-bold text-xs bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition"
+                            class="px-2 py-0.5 rounded font-semibold text-xs bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition"
                             title="Enviar a Charola de Pedacería para Fundición"
                           >
                             +1 Merma
                           </button>
                           <button
                             onclick="MartelaReception.resetRowForDemo(${r.id_inspeccion})"
-                            class="px-2 py-1.5 rounded-lg text-[11px] bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                            class="px-1.5 py-0.5 rounded text-[11px] bg-slate-200 dark:bg-slate-700 text-slate-500 hover:text-slate-900"
                             title="Reiniciar conteo de esta fila para probar el semáforo"
                           >
                             ↺
                           </button>
                         </div>
                       </td>
-                      <td class="p-4 text-slate-500 dark:text-slate-400 max-w-xs">
+                      <td class="px-3 py-2 text-slate-500 dark:text-slate-400 truncate max-w-xs text-[11px]">
                         ${esc(r.observaciones_tecnicas)}
                       </td>
                     </tr>

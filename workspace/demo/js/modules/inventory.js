@@ -31,17 +31,17 @@ window.MartelaInventory = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Módulo 3 -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-5">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE BÓVEDA</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Báscula Digital y Gavetas</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE BÓVEDA</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Báscula Digital y Gavetas</h1>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button id="btnOpenFastScaleModal" onclick="MartelaInventory.openWeighModal()" class="btn btn-gold flex items-center gap-2 py-2.5 px-4 font-bold shadow-md hover:shadow-lg transition">
+          <button id="btnOpenFastScaleModal" onclick="MartelaInventory.openWeighModal()" class="btn btn-gold flex items-center gap-2 py-2 px-3.5 font-bold shadow-sm">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
             <span>Pesar Sub-pieza / Báscula Digital</span>
           </button>
-          <button onclick="MartelaInventory.exportExcel()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3">
+          <button onclick="MartelaInventory.exportExcel()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs font-semibold">
             <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
             <span>Exportar Existencias (.xlsx)</span>
           </button>
@@ -49,28 +49,28 @@ window.MartelaInventory = (function() {
       </div>
 
       <!-- Métricas Globales de Bóveda -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div class="panel p-4 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-xl">💎</div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+        <div class="panel p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg">💎</div>
           <div>
-            <div class="text-xs text-slate-400 uppercase font-semibold">Total Sub-piezas Físicas</div>
-            <div class="text-2xl font-black text-slate-900 dark:text-white">${totalPiezas} piezas</div>
-            <div class="text-[11px] text-emerald-500 font-medium">Con serial único y gaveta asignada</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold">Total Sub-piezas Físicas</div>
+            <div class="text-xl font-black text-slate-900 dark:text-white">${totalPiezas} piezas</div>
+            <div class="text-[11px] text-emerald-600 font-medium">Serial único y gaveta asignada</div>
           </div>
         </div>
-        <div class="panel p-4 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-xl">⚖️</div>
+        <div class="panel p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg">⚖️</div>
           <div>
-            <div class="text-xs text-slate-400 uppercase font-semibold">Peso Neto Metal (Sin CZ)</div>
-            <div class="text-2xl font-black font-mono text-slate-900 dark:text-white">${totalGramosNeto.toFixed(4)} g</div>
-            <div class="text-[11px] text-slate-500">Descontando circonias de fábrica</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold">Peso Neto Metal (Sin CZ)</div>
+            <div class="text-xl font-black font-mono text-slate-900 dark:text-white">${totalGramosNeto.toFixed(4)} g</div>
+            <div class="text-[11px] text-slate-500">Descontando circonias</div>
           </div>
         </div>
-        <div class="panel p-4 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-xl">🏛️</div>
+        <div class="panel p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg">🏛️</div>
           <div>
-            <div class="text-xs text-slate-400 uppercase font-semibold">Respaldo en Oro Fino Puro (24K)</div>
-            <div class="text-2xl font-black font-mono text-amber-600 dark:text-amber-400">${totalOroFino.toFixed(5)} g</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold">Respaldo en Oro Fino (24K)</div>
+            <div class="text-xl font-black font-mono text-slate-900 dark:text-white">${totalOroFino.toFixed(5)} g</div>
             <div class="text-[11px] text-slate-500">${gavetas.length} gavetas estructuradas</div>
           </div>
         </div>
@@ -131,51 +131,54 @@ window.MartelaInventory = (function() {
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 uppercase font-mono">
+            <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th class="p-3.5">SKU 14 Dígitos / Modelo</th>
-                <th class="p-3.5">Quilataje &amp; Piedra CZ</th>
-                <th class="p-3.5 text-center">Existencias Físicas</th>
-                <th class="p-3.5 text-right">Peso Neto Metal Total</th>
-                <th class="p-3.5 text-center">Estatus Stock</th>
-                <th class="p-3.5 text-center">Acciones</th>
+                <th class="px-3 py-2.5">SKU / Modelo</th>
+                <th class="px-3 py-2.5">Quilataje &amp; CZ</th>
+                <th class="px-3 py-2.5 text-center">Existencias Físicas</th>
+                <th class="px-3 py-2.5 text-right">Peso Neto Metal</th>
+                <th class="px-3 py-2.5 text-center">Estatus</th>
+                <th class="px-3 py-2.5 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
               ${(() => {
                 const invPag = window.MartelaUI.paginate(masterList, currentPage, pageSize);
                 return invPag.items.map(item => `
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
-                  <td class="p-3.5">
-                    <div class="font-mono font-bold text-slate-900 dark:text-white text-sm">${esc(item.sku_14 || item.sku)}</div>
-                    <div class="text-xs font-semibold text-amber-600 dark:text-amber-400">${esc(item.modelo_martela || item.sku)} — ${esc(item.descripcion)}</div>
+                <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition h-10 border-b border-slate-200 dark:border-slate-800 text-xs">
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-mono font-bold text-slate-800 dark:text-slate-100">${esc(item.sku_14 || item.sku)}</span>
+                      <span class="text-[11px] font-semibold text-slate-500">(${esc(item.modelo_martela || item.sku)})</span>
+                      <span class="text-[11px] text-slate-400 truncate max-w-[200px]" title="${esc(item.descripcion)}">· ${esc(item.descripcion)}</span>
+                    </div>
                   </td>
-                  <td class="p-3.5">
-                    <span class="font-bold">${esc(item.quilataje)}</span>
-                    <span class="ml-2 text-cyan-600 dark:text-cyan-400 font-mono font-bold">💎 -${Number(item.peso_piedra_cz || 0).toFixed(4)}g CZ</span>
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <span class="font-semibold text-slate-800 dark:text-slate-200">${esc(item.quilataje)}</span>
+                    <span class="ml-1.5 text-cyan-700 dark:text-cyan-400 font-mono text-[11px] font-medium">-${Number(item.peso_piedra_cz || 0).toFixed(4)}g CZ</span>
                   </td>
-                  <td class="p-3.5 text-center">
-                    <span class="font-bold text-slate-900 dark:text-white text-sm">${item.piezas_total}</span>
-                    <span class="text-slate-400 ml-1">(${item.piezas_disponibles} disp.)</span>
+                  <td class="px-3 py-2 text-center font-mono whitespace-nowrap">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">${item.piezas_total}</span>
+                    <span class="text-slate-400 text-[11px]">(${item.piezas_disponibles} disp.)</span>
                   </td>
-                  <td class="p-3.5 text-right font-mono font-black text-slate-900 dark:text-white text-sm">
+                  <td class="px-3 py-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
                     ${Number(item.peso_neto_total_g).toFixed(4)} g
                   </td>
-                  <td class="p-3.5 text-center">
+                  <td class="px-3 py-2 text-center whitespace-nowrap">
                     ${item.alerta_stock ? badge('STOCK BAJO') : badge('DISPONIBLE')}
                   </td>
-                  <td class="p-3.5 text-center">
-                    <div class="flex items-center justify-center gap-2">
+                  <td class="px-3 py-2 text-center whitespace-nowrap">
+                    <div class="inline-flex items-center gap-1.5">
                       <button
                         onclick="MartelaInventory.toggleSubTable('${item.sku}')"
-                        class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline"
+                        class="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900"
                         title="Ver detalle de cada pieza"
                       >
                         Sub-piezas (${item.sub_piezas.length}) ▼
                       </button>
                       <button
                         onclick="MartelaInventory.openWeighModal('${item.sku}')"
-                        class="btn btn-soft text-[11px] py-1 px-2 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-500/10 transition"
+                        class="btn btn-soft text-xs py-0.5 px-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 font-semibold"
                         title="Pesar una nueva pieza para este SKU"
                       >
                         ⚖️ Pesar

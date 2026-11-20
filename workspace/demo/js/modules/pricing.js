@@ -20,55 +20,55 @@ window.MartelaPricing = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Módulo 4 -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-5">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE COTIZACIÓN Y COSTOS</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Motor Financiero Fix, Oro Fino y Facturación Bipartita</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE COTIZACIÓN Y COSTOS</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Motor Financiero Fix, Oro Fino y Facturación Bipartita</h1>
         </div>
-        <button onclick="MartelaPricing.openModalEditarRates()" class="btn btn-gold py-2.5 px-4 font-bold shadow-md">
+        <button onclick="MartelaPricing.openModalEditarRates()" class="btn btn-gold py-2 px-3.5 font-bold shadow-sm">
           <span>⚙</span> Ajustar Fix / Tipo de Cambio
         </button>
       </div>
 
       <!-- Dashboard Ejecutivo Superior con Tarjetas Financieras -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="panel p-5 border-l-4 border-slate-400">
-          <div class="text-xs font-bold text-slate-400 uppercase">FIX Oro Hoy (LBMA)</div>
-          <div class="text-2xl font-black font-mono mt-2 text-slate-900 dark:text-white">$${Number(rates.fix_oro_hoy_usd).toFixed(2)} USD</div>
-          <div class="text-xs text-slate-500 mt-1">Cotización internacional del día</div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+        <div class="panel p-3.5 border-l-4 border-slate-500">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">FIX Oro Hoy (LBMA)</div>
+          <div class="text-xl font-black font-mono mt-1 text-slate-900 dark:text-white">$${Number(rates.fix_oro_hoy_usd).toFixed(2)} USD</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">Cotización internacional del día</div>
         </div>
 
-        <div class="panel p-5 border-l-4 border-amber-500">
-          <div class="text-xs font-bold text-slate-400 uppercase">FIX Oro Ayer (Cierre)</div>
-          <div class="text-2xl font-black font-mono mt-2 text-slate-900 dark:text-white">$${Number(rates.fix_oro_ayer_usd).toFixed(2)} USD</div>
-          <div class="text-xs text-slate-500 mt-1">Referencia de protección de margen</div>
+        <div class="panel p-3.5 border-l-4 border-slate-600">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">FIX Oro Ayer (Cierre)</div>
+          <div class="text-xl font-black font-mono mt-1 text-slate-900 dark:text-white">$${Number(rates.fix_oro_ayer_usd).toFixed(2)} USD</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">Referencia de protección de margen</div>
         </div>
 
-        <div class="panel p-5 border-l-4 border-blue-500">
-          <div class="text-xs font-bold text-slate-400 uppercase">Tipo de Cambio USD/MXN</div>
-          <div class="text-2xl font-black font-mono mt-2 text-slate-900 dark:text-white">$${Number(rates.tipo_cambio_usd_mxn).toFixed(4)}</div>
-          <div class="text-xs text-slate-500 mt-1">Plata .925 Base: ${money(db.metal_rates.costo_gramo_plata_mxn || 24.80)}/g</div>
+        <div class="panel p-3.5 border-l-4 border-blue-600">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">Tipo de Cambio USD/MXN</div>
+          <div class="text-xl font-black font-mono mt-1 text-slate-900 dark:text-white">$${Number(rates.tipo_cambio_usd_mxn).toFixed(4)}</div>
+          <div class="text-[11px] text-slate-500 mt-0.5">Plata .925 Base: ${money(db.metal_rates.costo_gramo_plata_mxn || 24.80)}/g</div>
         </div>
 
-        <div class="panel p-5 bg-gradient-to-br from-emerald-500/10 to-amber-500/15 border-l-4 border-emerald-500">
+        <div class="panel p-3.5 border-l-4 border-emerald-600 bg-emerald-50/20 dark:bg-emerald-950/10">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-500 text-white">TARIFA VIGENTE APLICADA</span>
+            <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white">TARIFA VIGENTE APLICADA</span>
           </div>
-          <div class="text-2xl font-black font-mono mt-2 text-emerald-600 dark:text-emerald-400">$${Number(rates.fix_aplicado_usd).toFixed(2)} USD</div>
-          <div class="text-xs font-semibold text-slate-600 dark:text-slate-300 mt-1">Gramo Au 24K: ${money(rates.precio_gramo_fino_mxn)}</div>
+          <div class="text-xl font-black font-mono mt-1 text-emerald-700 dark:text-emerald-400">$${Number(rates.fix_aplicado_usd).toFixed(2)} USD</div>
+          <div class="text-[11px] font-medium text-slate-600 dark:text-slate-300 mt-0.5">Gramo Au 24K: ${money(rates.precio_gramo_fino_mxn)}</div>
         </div>
       </div>
 
       <!-- Simulador de Liquidación Bipartita + Cuenta Corriente Maquila -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- Simulador Interactivo Bipartito (7 cols) -->
-        <div class="lg:col-span-7 panel p-6">
+        <div class="lg:col-span-7 panel p-5">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span class="text-amber-500">◇</span>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="text-slate-500">◇</span>
               <span>Simulador de Liquidación Bipartita (M.O. + Metal + Margen 70% + IVA)</span>
             </h3>
-            <span class="text-xs font-mono text-slate-400">RoundingMode.HALF_UP</span>
+            <span class="text-[11px] font-mono text-slate-400">RoundingMode.HALF_UP</span>
           </div>
 
           <form id="bipartiteForm" oninput="MartelaPricing.onCalculateBipartite()" class="space-y-4">

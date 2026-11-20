@@ -5,51 +5,51 @@
 window.MartelaApp = (function() {
   const MODULE_MAP = {
     purchases: {
-      name: '0. Compras & Órdenes OC',
-      shortName: 'Compras & OC',
-      desc: 'Ciclo internacional y packing list',
+      name: '0. Compras (OC)',
+      shortName: 'Compras',
+      desc: 'Órdenes y Packing',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" /></svg>`,
       module: window.MartelaPurchases
     },
     catalog: {
-      name: '1. Catálogo & Circonias',
+      name: '1. Catálogo',
       shortName: 'Catálogo',
-      desc: 'Fichas técnicas y matriz CZ',
+      desc: 'Joyas y Circonias',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12l4 6-10 12L2 9l4-6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2 9h20M12 21L8 9l-2-6M12 21l4-12 2-6M8 9l4-6 4 6" /></svg>`,
       module: window.MartelaCatalog
     },
     reception: {
-      name: '2. Recepción & Calidad',
+      name: '2. Recepción',
       shortName: 'Recepción',
-      desc: 'Valijas aduanales y video',
+      desc: 'Paquetería y Calidad',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /></svg>`,
       module: window.MartelaReception
     },
     inventory: {
-      name: '3. Báscula & Bóveda',
-      shortName: 'Báscula',
-      desc: 'Pesaje analítico por gaveta',
+      name: '3. Bóveda',
+      shortName: 'Bóveda',
+      desc: 'Báscula y Gavetas',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-8-6l4-8 4 8H4zm12 0l4-8 4 8h-8zM4 21h16" /></svg>`,
       module: window.MartelaInventory
     },
     pricing: {
-      name: '4. Cotización FIX & Costos',
-      shortName: 'Cotización FIX',
-      desc: 'Tarifa máxima y liquidación',
+      name: '4. Cotización FIX',
+      shortName: 'Cotización',
+      desc: 'Precios y Metal',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18" /></svg>`,
       module: window.MartelaPricing
     },
     coppel: {
-      name: '5. Despiece B2B (Coppel & MLS)',
+      name: '5. Despiece B2B',
       shortName: 'Despiece B2B',
-      desc: 'Portal Coppel & Montepío Luz Saviñón',
+      desc: 'Coppel y Mayoristas',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>`,
       module: window.MartelaCoppel
     },
     logistics: {
-      name: '6. Custodia & Entrega PLD',
-      shortName: 'Custodia PLD',
-      desc: 'Firma digital y geo-evidencia',
+      name: '6. Entrega PLD',
+      shortName: 'Entrega PLD',
+      desc: 'Custodia y Firmas',
       iconSvg: `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>`,
       module: window.MartelaLogistics
     }

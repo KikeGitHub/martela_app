@@ -69,17 +69,17 @@ window.MartelaCoppel = (function() {
       <!-- Encabezado Módulo 5 -->
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-4">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE DISTRIBUCIÓN</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Despiece B2B &amp; Clientes Mayoristas</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE DISTRIBUCIÓN</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Despiece B2B &amp; Clientes Mayoristas</h1>
         </div>
         
         <!-- Saldo Cuenta Maquila MLS Header Widget -->
-        <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl px-4 py-2 flex items-center gap-3">
-          <div class="text-2xl">🏛️</div>
+        <div class="bg-slate-200/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-1.5 flex items-center gap-2.5">
+          <div class="text-xl">🏛️</div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">Cuenta Maquila Montepío (MLS)</div>
-            <div class="text-sm font-mono font-black text-slate-900 dark:text-white">
-              ${Number(clientMls.saldo_oro_fino_g || 145.8).toFixed(5)} <span class="text-xs font-bold text-amber-600">g Au 24K</span>
+            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Cuenta Maquila MLS</div>
+            <div class="text-xs font-mono font-bold text-slate-900 dark:text-white">
+              ${Number(clientMls.saldo_oro_fino_g || 145.8).toFixed(5)} <span class="text-[11px] font-medium text-slate-500">g Au 24K</span>
             </div>
           </div>
         </div>
@@ -89,19 +89,19 @@ window.MartelaCoppel = (function() {
       ${renderRbacBadge(user)}
 
       <!-- Stepper / Selector Visual de 3 Canales B2B -->
-      <div class="mb-6">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1.5 rounded-2xl bg-[#e9ebef] dark:bg-slate-800/80 border border-[#d9dde3] dark:border-slate-700 shadow-sm">
+      <div class="mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 shadow-sm max-w-2xl">
           <button 
             id="tabBtnCoppel"
             onclick="MartelaCoppel.switchClientTab('coppel')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'coppel' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${currentClientTab === 'coppel' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'coppel' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'coppel' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏢</span> Canal Coppel B2B
               </div>
-              <div class="text-[11px] ${currentClientTab === 'coppel' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
+              <div class="text-[11px] ${currentClientTab === 'coppel' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
                 Excel Semanal &amp; Surtido FIFO
               </div>
             </div>
@@ -110,14 +110,14 @@ window.MartelaCoppel = (function() {
           <button 
             id="tabBtnMontepio"
             onclick="MartelaCoppel.switchClientTab('montepio')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'montepio' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${currentClientTab === 'montepio' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'montepio' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'montepio' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏛️</span> Montepío MLS
               </div>
-              <div class="text-[11px] ${currentClientTab === 'montepio' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
+              <div class="text-[11px] ${currentClientTab === 'montepio' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
                 Layout 16 Cols &amp; Oro Fino
               </div>
             </div>
@@ -126,14 +126,14 @@ window.MartelaCoppel = (function() {
           <button 
             id="tabBtnMayoristas"
             onclick="MartelaCoppel.switchClientTab('mayoristas')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentClientTab === 'mayoristas' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${currentClientTab === 'mayoristas' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'mayoristas' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentClientTab === 'mayoristas' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">3</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏬</span> Mayoristas Libres
               </div>
-              <div class="text-[11px] ${currentClientTab === 'mayoristas' ? 'text-slate-900/80' : 'text-slate-400 dark:text-slate-500'} font-normal truncate">
+              <div class="text-[11px] ${currentClientTab === 'mayoristas' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">
                 Venta Libre &amp; Remisión Directa
               </div>
             </div>
