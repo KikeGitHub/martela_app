@@ -24,23 +24,23 @@ window.MartelaCatalog = (function() {
 
   function getMetalBadge(metalTipo) {
     if (metalTipo === 'ORO_14K' || metalTipo === '14K') {
-      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 shadow-sm">◈ Oro 14K</span>`;
+      return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100/80 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300/60">14K</span>`;
     }
     if (metalTipo === 'ORO_10K' || metalTipo === '10K') {
-      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-400/40">◈ Oro 10K</span>`;
+      return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">10K</span>`;
     }
     if (metalTipo === 'PLATA_925' || metalTipo === '.925' || metalTipo === '925') {
-      return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-200 border border-slate-400/40">◈ Plata .925</span>`;
+      return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700">.925</span>`;
     }
-    return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-200 text-amber-900">◈ ${metalTipo || 'Joyería'}</span>`;
+    return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-300">${metalTipo || 'Joya'}</span>`;
   }
 
   function getCzChip(pesoCz) {
     const val = Number(pesoCz || 0);
     if (val <= 0) {
-      return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">Sin piedra</span>`;
+      return `<span class="text-slate-400 text-xs font-mono">—</span>`;
     }
-    return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 shadow-sm">💎 -${val.toFixed(4)} g CZ</span>`;
+    return `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-bold bg-cyan-50 dark:bg-cyan-950/40 text-cyan-800 dark:text-cyan-300 border border-cyan-300/50">-${val.toFixed(4)}g CZ</span>`;
   }
 
   function getFlagEmoji(pais) {
@@ -70,38 +70,38 @@ window.MartelaCatalog = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Módulo 1 -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-5">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE PRODUCTOS Y TALLERES</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Catálogo de Joyería y Proveedores</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE PRODUCTOS Y TALLERES</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Catálogo de Joyería y Proveedores</h1>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="MartelaCatalog.exportCatalogExcel()" class="btn btn-soft py-2.5 px-3 text-xs font-semibold" title="Exportar catálogo completo a formato Excel (.xlsx)">
+          <button onclick="MartelaCatalog.exportCatalogExcel()" class="btn btn-soft py-2 px-3 text-xs font-semibold" title="Exportar catálogo completo a formato Excel (.xlsx)">
             <span>📥</span> Exportar Excel
           </button>
-          <button onclick="MartelaCatalog.openModalImportarCZ()" class="btn btn-soft py-2.5 px-3 text-xs font-semibold" title="Importar JSON masivo de matrices CZ">
+          <button onclick="MartelaCatalog.openModalImportarCZ()" class="btn btn-soft py-2 px-3 text-xs font-semibold" title="Importar JSON masivo de matrices CZ">
             <span>💎</span> Importar Matriz CZ
           </button>
-          <button onclick="MartelaCatalog.openProductModal()" class="btn btn-gold py-2.5 px-4 font-bold shadow-md shadow-amber-500/20" title="Dar de alta un nuevo modelo o equivalencia">
+          <button onclick="MartelaCatalog.openProductModal()" class="btn btn-gold py-2 px-3.5 font-bold shadow-sm" title="Dar de alta un nuevo modelo o equivalencia">
             <span class="text-base font-black">＋</span> Registrar Nuevo Modelo
           </button>
         </div>
       </div>
 
       <!-- Stepper / Navegación Visual de 2 Pasos del Módulo 1 -->
-      <div class="mb-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#e9ebef] dark:bg-slate-800/80 border border-[#d9dde3] dark:border-slate-700 shadow-sm max-w-2xl">
+      <div class="mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 shadow-sm max-w-xl">
           <button
             id="subtabBtn-productos"
             onclick="MartelaCatalog.switchSubTab('productos')"
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentSubTab === 'productos' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${currentSubTab === 'productos' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentSubTab === 'productos' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentSubTab === 'productos' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">1</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>💎</span> Catálogo de Joyas &amp; SKUs
               </div>
-              <div class="text-[11px] ${currentSubTab === 'productos' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal">
+              <div class="text-[11px] ${currentSubTab === 'productos' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal">
                 ${items.length} modelos y matrices CZ
               </div>
             </div>
@@ -110,14 +110,14 @@ window.MartelaCatalog = (function() {
           <button
             id="subtabBtn-proveedores"
             onclick="MartelaCatalog.switchSubTab('proveedores')"
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${currentSubTab === 'proveedores' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${currentSubTab === 'proveedores' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentSubTab === 'proveedores' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${currentSubTab === 'proveedores' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">2</span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight flex items-center gap-1.5">
                 <span>🏢</span> Directorio de Fabricantes
               </div>
-              <div class="text-[11px] ${currentSubTab === 'proveedores' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal">
+              <div class="text-[11px] ${currentSubTab === 'proveedores' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal">
                 ${suppliers.length} talleres y factores de merma
               </div>
             </div>
@@ -128,31 +128,31 @@ window.MartelaCatalog = (function() {
       <!-- Vista 1: Catálogo de Productos y SKUs -->
       <div id="subtab-productos" class="${currentSubTab === 'productos' ? '' : 'hidden'}">
         <!-- KPIs Rápidos del Catálogo -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div class="panel p-4 border-l-4 border-amber-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Total Modelos en Catálogo</div>
-            <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">${items.length} SKUs activos</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div class="panel p-3.5 border-l-4 border-slate-500">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Total Modelos en Catálogo</div>
+            <div class="text-xl font-black text-slate-800 dark:text-white mt-1">${items.length} SKUs activos</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Oro 14K (966) · Plata .925 (838) · Oro 10K (406)</div>
           </div>
-          <div class="panel p-4 border-l-4 border-cyan-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Modelos con Descuento CZ</div>
-            <div class="text-2xl font-black text-cyan-600 dark:text-cyan-400 mt-1">${conCirconia} / ${items.length}</div>
+          <div class="panel p-3.5 border-l-4 border-cyan-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Modelos con Descuento CZ</div>
+            <div class="text-xl font-black text-cyan-800 dark:text-cyan-400 mt-1">${conCirconia} / ${items.length}</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Rango calibrado: 0.0100 g a 1.1200 g</div>
           </div>
-          <div class="panel p-4 border-l-4 border-yellow-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Factor Oro Fino 14K / 10K</div>
-            <div class="text-lg font-black font-mono text-amber-600 dark:text-amber-400 mt-1">0.58333 / 0.41667</div>
+          <div class="panel p-3.5 border-l-4 border-slate-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Factor Oro Fino 14K / 10K</div>
+            <div class="text-lg font-black font-mono text-slate-800 dark:text-slate-200 mt-1">0.58333 / 0.41667</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Generado automáticamente por ley de metal</div>
           </div>
-          <div class="panel p-4 border-l-4 border-emerald-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Estándar Código de Barras</div>
-            <div class="text-xl font-black font-mono text-slate-900 dark:text-white mt-1">SKU 14 Dígitos</div>
-            <div class="text-[11px] text-emerald-500 font-semibold mt-0.5">Ej. 07502278209688 (GTIN-14)</div>
+          <div class="panel p-3.5 border-l-4 border-emerald-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Estándar Código de Barras</div>
+            <div class="text-xl font-black font-mono text-slate-800 dark:text-white mt-1">SKU 14 Dígitos</div>
+            <div class="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold mt-0.5">Ej. 07502278209688 (GTIN-14)</div>
           </div>
         </div>
 
         <!-- Filtros y Buscador Predictivo -->
-        <div class="panel p-4 mb-6">
+        <div class="panel p-3.5 mb-5">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
             <div class="md:col-span-5">
               <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-1">
@@ -191,15 +191,15 @@ window.MartelaCatalog = (function() {
         </div>
 
         <!-- Tabla Principal de Modelos con Paginación -->
-        <div class="panel overflow-hidden mb-8 shadow-sm">
-          <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-2 bg-slate-50 dark:bg-slate-900/50">
+        <div class="panel overflow-hidden mb-6 shadow-sm">
+          <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-2 bg-slate-50 dark:bg-slate-900/50">
             <div>
-              <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
                 <span>Matriz Maestra de Modelos y Descuento de Pedrería CZ</span>
-                <span class="text-xs font-normal text-slate-400">· 4 decimales de precisión</span>
+                <span class="text-[11px] font-normal text-slate-400">· 4 decimales de precisión</span>
               </h3>
             </div>
-            <span class="text-xs font-bold text-amber-500" id="catalogCountLabel">
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-mono" id="catalogCountLabel">
               ${items.length} modelos encontrados
             </span>
           </div>
@@ -213,32 +213,32 @@ window.MartelaCatalog = (function() {
       <!-- Vista 2: Concentrado Maestro de Proveedores y Talleres -->
       <div id="subtab-proveedores" class="${currentSubTab === 'proveedores' ? '' : 'hidden'}">
         <!-- Resumen de Proveedores -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div class="panel p-4 border-l-4 border-amber-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Directorio de Proveedores Oficiales</div>
-            <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">${suppliers.length} Proveedores y Talleres</div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <div class="panel p-3.5 border-l-4 border-slate-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Directorio de Proveedores Oficiales</div>
+            <div class="text-xl font-black text-slate-800 dark:text-white mt-1">${suppliers.length} Proveedores y Talleres</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Suministran a las 50 sucursales y CEDIS de MARTELA</div>
           </div>
-          <div class="panel p-4 border-l-4 border-indigo-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Proveedores Internacionales (Importación)</div>
-            <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">18 Fabricantes Mundiales</div>
+          <div class="panel p-3.5 border-l-4 border-indigo-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Proveedores Internacionales (Importación)</div>
+            <div class="text-xl font-black text-indigo-700 dark:text-indigo-400 mt-1">18 Fabricantes Mundiales</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Turquía, China, Italia, Hong Kong, Tailandia, India, Indonesia, EE.UU.</div>
           </div>
-          <div class="panel p-4 border-l-4 border-emerald-500">
-            <div class="text-xs font-bold uppercase text-slate-400">Talleres Nacionales de Hechura (Maquila)</div>
-            <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">21 Talleres Mexicanos</div>
+          <div class="panel p-3.5 border-l-4 border-emerald-600">
+            <div class="text-[11px] font-bold uppercase text-slate-400">Talleres Nacionales de Hechura (Maquila)</div>
+            <div class="text-xl font-black text-emerald-700 dark:text-emerald-400 mt-1">21 Talleres Mexicanos</div>
             <div class="text-[11px] text-slate-500 mt-0.5">Guadalajara (Centro Joyero), Taxco de Alarcón, CDMX y León</div>
           </div>
         </div>
 
         <!-- Tabla de Proveedores y Talleres con Paginación -->
-        <div class="panel overflow-hidden mb-8 shadow-sm">
-          <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+        <div class="panel overflow-hidden mb-6 shadow-sm">
+          <div class="px-5 py-3 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
             <div>
-              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Concentrado Oficial de Proveedores y Talleres</h3>
-              <p class="text-xs text-slate-400">Datos consolidados del archivo maestro ALTAS Y SKUS DE MODELOS PROVEEDORES 02-03-26.xlsx</p>
+              <h3 class="text-xs font-bold text-slate-800 dark:text-slate-100">Concentrado Oficial de Proveedores y Talleres</h3>
+              <p class="text-[11px] text-slate-400">Datos consolidados del archivo maestro ALTAS Y SKUS DE MODELOS PROVEEDORES 02-03-26.xlsx</p>
             </div>
-            <span class="text-xs font-bold text-amber-500">${suppliers.length} talleres registrados</span>
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-mono">${suppliers.length} talleres</span>
           </div>
 
           ${(() => {
@@ -246,59 +246,61 @@ window.MartelaCatalog = (function() {
             return `
               <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                  <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono">
+                  <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
                     <tr>
-                      <th class="p-3.5">Código / Taller</th>
-                      <th class="p-3.5">País y Ciudad de Origen</th>
-                      <th class="p-3.5 text-center">Tipo</th>
-                      <th class="p-3.5 text-center">Modelos Suministrados</th>
-                      <th class="p-3.5">Metales y Quilatajes</th>
-                      <th class="p-3.5 text-center">Moneda / Lead Time</th>
-                      <th class="p-3.5 text-center">Acciones</th>
+                      <th class="px-3 py-2.5">Código / Taller</th>
+                      <th class="px-3 py-2.5">País y Ciudad de Origen</th>
+                      <th class="px-3 py-2.5 text-center">Tipo</th>
+                      <th class="px-3 py-2.5 text-center">Modelos Suministrados</th>
+                      <th class="px-3 py-2.5">Metales y Quilatajes</th>
+                      <th class="px-3 py-2.5 text-center">Moneda / Lead Time</th>
+                      <th class="px-3 py-2.5 text-center">Acciones</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                     ${suppPag.items.map(s => `
-                      <tr class="hover:bg-amber-500/5 transition">
-                        <td class="p-3.5">
-                          <div class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs">${esc(s.codigo_interno)}</div>
-                          <div class="font-bold text-slate-900 dark:text-white text-sm mt-0.5">${esc(s.razon_social)}</div>
-                          <div class="text-[10px] text-slate-400 font-mono mt-0.5">ID: ${s.id}</div>
-                        </td>
-                        <td class="p-3.5">
-                          <div class="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200">
-                            <span class="text-base">${getFlagEmoji(s.pais_origen)}</span>
-                            <span>${esc(s.pais_origen)}</span>
+                      <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition h-10 border-b border-slate-200 dark:border-slate-800">
+                        <td class="px-3 py-2 whitespace-nowrap">
+                          <div class="flex items-center gap-1.5">
+                            <span class="font-mono font-bold text-slate-800 dark:text-slate-100">${esc(s.codigo_interno)}</span>
+                            <span class="font-semibold text-slate-700 dark:text-slate-200">· ${esc(s.razon_social)}</span>
+                            <span class="text-[10px] text-slate-400 font-mono">(ID: ${s.id})</span>
                           </div>
-                          <div class="text-[11px] text-slate-400">${esc(s.ciudad || 'N/A')}</div>
                         </td>
-                        <td class="p-3.5 text-center">
-                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${s.tipo === 'INTERNACIONAL' ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-400/30' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/30'}">
+                        <td class="px-3 py-2 whitespace-nowrap">
+                          <div class="flex items-center gap-1.5 font-medium text-slate-800 dark:text-slate-200">
+                            <span>${getFlagEmoji(s.pais_origen)}</span>
+                            <span>${esc(s.pais_origen)}</span>
+                            <span class="text-[11px] text-slate-400">· ${esc(s.ciudad || 'N/A')}</span>
+                          </div>
+                        </td>
+                        <td class="px-3 py-2 text-center whitespace-nowrap">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold ${s.tipo === 'INTERNACIONAL' ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-400/30' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/30'}">
                             ${esc(s.tipo || 'NACIONAL')}
                           </span>
                         </td>
-                        <td class="p-3.5 text-center font-mono font-black text-slate-900 dark:text-white text-sm">
+                        <td class="px-3 py-2 text-center font-mono font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
                           ${s.total_modelos || 0} SKUs
                         </td>
-                        <td class="p-3.5">
+                        <td class="px-3 py-2 whitespace-nowrap">
                           <div class="flex flex-wrap gap-1">
                             ${(s.quilatajes || ['Oro 10K', 'Oro 14K']).map(q => `
-                              <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                              <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                                 ${esc(q)}
                               </span>
                             `).join('')}
                           </div>
                         </td>
-                        <td class="p-3.5 text-center font-mono">
-                          <span class="font-bold text-slate-700 dark:text-slate-300">${esc(s.moneda_compra || 'USD')}</span>
-                          <div class="text-[10px] text-slate-400">${s.lead_time_dias || 30} días promedio</div>
+                        <td class="px-3 py-2 text-center font-mono whitespace-nowrap">
+                          <span class="font-semibold text-slate-700 dark:text-slate-300">${esc(s.moneda_compra || 'USD')}</span>
+                          <span class="text-[10px] text-slate-400">· ${s.lead_time_dias || 30}d</span>
                         </td>
-                        <td class="p-3.5 text-center">
+                        <td class="px-3 py-2 text-center whitespace-nowrap">
                           <button
                             onclick="MartelaCatalog.filterBySupplierFromTab('${s.id}')"
-                            class="btn btn-soft text-xs py-1 px-3 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-500/10 transition"
+                            class="btn btn-soft text-xs py-0.5 px-2.5 text-slate-700 dark:text-slate-200 hover:text-slate-900 font-semibold"
                           >
-                            🔍 Ver Modelos (${s.total_modelos || 0})
+                            Ver Modelos (${s.total_modelos || 0})
                           </button>
                         </td>
                       </tr>
@@ -354,76 +356,79 @@ window.MartelaCatalog = (function() {
 
     return `
       <table class="w-full text-left text-xs">
-        <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-500 uppercase tracking-wider font-semibold font-mono">
+        <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase tracking-wider font-bold font-mono text-[11px] border-b border-slate-200 dark:border-slate-700">
           <tr>
-            <th class="p-3.5">SKU 14 Dígitos / Modelo Martela</th>
-            <th class="p-3.5">Equivalencia Proveedor</th>
-            <th class="p-3.5">Descripción &amp; Medida</th>
-            <th class="p-3.5">Quilataje &amp; Ley</th>
-            <th class="p-3.5 text-center">Descuento Circonia (CZ)</th>
-            <th class="p-3.5 text-center">Existencias Físicas</th>
-            <th class="p-3.5 text-right">Costo Hechura Base</th>
-            <th class="p-3.5 text-center">Acciones</th>
+            <th class="px-2.5 py-2.5">SKU / Modelo</th>
+            <th class="px-2.5 py-2.5">Equiv. Proveedor</th>
+            <th class="px-2.5 py-2.5">Descripción &amp; Medida</th>
+            <th class="px-2 py-2.5 text-center">Ley</th>
+            <th class="px-2 py-2.5 text-center">Desc. CZ</th>
+            <th class="px-2.5 py-2.5 text-center">Existencias</th>
+            <th class="px-2.5 py-2.5 text-right">Costo Hechura</th>
+            <th class="px-2.5 py-2.5 text-center">Acciones</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
           ${prodPag.items.map(item => `
-            <tr class="hover:bg-amber-500/5 transition cursor-pointer group" onclick="MartelaCatalog.openProductModal('${esc(item.sku)}')">
-              <td class="p-3.5">
-                <div class="font-mono font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                  <span class="text-slate-400 text-[10px]">▦</span>
-                  <span>${esc(item.sku_14 || item.sku)}</span>
+            <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition cursor-pointer group h-10 border-b border-slate-200 dark:border-slate-800" onclick="MartelaCatalog.openProductModal('${esc(item.sku)}')">
+              <td class="px-2.5 py-2 whitespace-nowrap">
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span class="font-mono font-bold text-slate-800 dark:text-slate-100">${esc(item.sku_14 || item.sku)}</span>
+                  <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">(${esc(item.modelo_martela || item.sku)})</span>
                 </div>
-                <div class="text-[11px] font-bold text-amber-600 dark:text-amber-400 mt-0.5">${esc(item.modelo_martela || item.sku)}</div>
               </td>
-              <td class="p-3.5">
-                <div class="font-mono font-bold text-slate-800 dark:text-slate-200">${esc(item.modelo_proveedor || 'N/A')}</div>
-                <div class="text-[11px] text-slate-400 truncate max-w-[180px]">[${getFlagEmoji(item.pais_origen)} ${esc(item.pais_origen)}] ${esc(item.proveedor_nombre)}</div>
+              <td class="px-2.5 py-2 whitespace-nowrap">
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span class="font-mono font-medium text-slate-700 dark:text-slate-300">${esc(item.modelo_proveedor || '—')}</span>
+                  <span class="text-[11px] text-slate-400 truncate max-w-[130px]" title="${esc(item.proveedor_nombre)}">[${getFlagEmoji(item.pais_origen)}] ${esc(item.proveedor_nombre)}</span>
+                </div>
               </td>
-              <td class="p-3.5">
-                <div class="font-semibold text-slate-900 dark:text-white">${esc(item.descripcion)}</div>
-                <div class="text-[11px] text-slate-400">Tipo: ${esc(item.tipo_alhaja || item.categoria)} · Medida: ${esc(item.medida || 'Estándar')}</div>
+              <td class="px-2.5 py-2">
+                <div class="flex items-center gap-1.5 text-xs">
+                  <span class="font-medium text-slate-800 dark:text-slate-200 truncate max-w-[220px]" title="${esc(item.descripcion)}">${esc(item.descripcion)}</span>
+                  <span class="text-[11px] text-slate-400 shrink-0">· ${esc(item.medida || item.tipo_alhaja || '')}</span>
+                </div>
               </td>
-              <td class="p-3.5">
+              <td class="px-2 py-2 text-center whitespace-nowrap">
                 ${getMetalBadge(item.metal_tipo)}
               </td>
-              <td class="p-3.5 text-center">
+              <td class="px-2 py-2 text-center whitespace-nowrap">
                 ${getCzChip(item.peso_piedra_cz)}
               </td>
-              <td class="p-3.5 text-center" onclick="event.stopPropagation()">
+              <td class="px-2.5 py-2 text-center whitespace-nowrap" onclick="event.stopPropagation()">
                 ${item.piezas_disponibles > 0 ? `
                   <button
                     type="button"
                     onclick="MartelaCatalog.openStockModal('${esc(item.sku)}')"
-                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-100 transition shadow-sm"
+                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300/40 hover:bg-emerald-100 transition"
                     title="Ver desglose por gaveta física en bóveda"
                   >
-                    <span>🗄️</span> <span>${item.piezas_disponibles} pzs</span>
+                    <span>🗄️ ${item.piezas_disponibles} pzs</span>
+                    <span class="text-[10px] text-slate-400 font-normal">(${Number(item.peso_neto_total_g || 0).toFixed(1)}g)</span>
                   </button>
-                  <div class="text-[10px] text-slate-400 font-mono mt-0.5">${Number(item.peso_neto_total_g || 0).toFixed(2)} g netos</div>
                 ` : `
-                  <span class="inline-flex items-center px-2 py-0.5 rounded text-xs text-slate-400 bg-slate-100 dark:bg-slate-800 font-mono">
+                  <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 font-mono">
                     0 pzs
                   </span>
                 `}
               </td>
-              <td class="p-3.5 text-right font-mono font-bold text-slate-900 dark:text-white">
+              <td class="px-2.5 py-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200 text-xs whitespace-nowrap">
                 ${money(item.costo_mo_base || item.costo_hechura_base || 185)}
               </td>
-              <td class="p-3.5 text-center" onclick="event.stopPropagation()">
-                <div class="flex items-center justify-center gap-1.5">
+              <td class="px-2.5 py-2 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                <div class="inline-flex items-center gap-1">
                   <button
                     type="button"
                     onclick="MartelaCatalog.openProductModal('${esc(item.sku)}')"
-                    class="btn btn-soft py-1 px-2.5 text-xs text-amber-600 dark:text-amber-400 hover:border-amber-500 font-bold"
+                    class="btn btn-soft py-0.5 px-2 text-xs text-slate-700 dark:text-slate-200 hover:text-slate-900 border-slate-300 dark:border-slate-700 font-semibold"
                     title="Editar producto en modal"
                   >
-                    ✏️ Editar
+                    Editar
                   </button>
                   <button
                     type="button"
                     onclick="MartelaCatalog.handleDeleteProduct('${esc(item.sku)}', '${esc(item.modelo_martela)}')"
-                    class="btn btn-soft py-1 px-2 text-xs text-rose-500 hover:bg-rose-500/10 hover:border-rose-500"
+                    class="btn btn-soft py-0.5 px-1.5 text-xs text-slate-400 hover:text-rose-600 border-slate-200 dark:border-slate-700"
                     title="Eliminar de catálogo"
                   >
                     🗑️

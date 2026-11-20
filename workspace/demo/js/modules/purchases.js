@@ -62,49 +62,49 @@ window.MartelaPurchases = (function() {
 
     container.innerHTML = `
       <!-- Encabezado Principal -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-5">
         <div>
-          <div class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-1">MÓDULO DE COMPRAS</div>
-          <h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Compras, Órdenes OC y Cierre de Fix</h1>
+          <div class="text-[11px] uppercase tracking-widest text-slate-500 font-bold mb-1">MÓDULO DE COMPRAS</div>
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white">Compras, Órdenes OC y Cierre de Fix</h1>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="MartelaPurchases.openNewOcModal()" class="btn btn-gold flex items-center gap-2 py-2.5 px-4 font-bold shadow-md">
+          <button onclick="MartelaPurchases.openNewOcModal()" class="btn btn-gold flex items-center gap-2 py-2 px-3.5 font-bold shadow-sm">
             <span>➕</span> Nueva Orden de Compra (OC)
           </button>
-          <button onclick="MartelaPurchases.exportPurchasesExcel()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold">
+          <button onclick="MartelaPurchases.exportPurchasesExcel()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs font-semibold">
             <span>⇩</span> Exportar Órdenes (.xlsx)
           </button>
-          <button onclick="MartelaPurchases.reloadDemoSuite()" class="btn btn-soft flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold text-amber-600 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/10" title="Restaura y carga el set de prueba completo con las 8 fases documentales para demo">
+          <button onclick="MartelaPurchases.reloadDemoSuite()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs font-semibold text-slate-700 dark:text-slate-300 border-slate-300 hover:bg-slate-100" title="Restaura y carga el set de prueba completo con las 8 fases documentales para demo">
             <span>🔄</span> Recargar Suite Demo (8 OCs)
           </button>
         </div>
       </div>
 
       <!-- Tarjetas Resumen -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="panel p-4 border-l-4 border-amber-500">
-          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Órdenes de Compra</div>
-          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1.5">${totalOcs} OCs</div>
-          <div class="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-1">Activas en ciclo</div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+        <div class="panel p-3.5 border-l-4 border-slate-500">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Órdenes de Compra</div>
+          <div class="text-xl font-black text-slate-900 dark:text-white mt-1">${totalOcs} OCs</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-0.5">Activas en ciclo</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-purple-500">
-          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Oro Fino Teórico Contratado</div>
-          <div class="text-2xl font-black text-slate-900 dark:text-white mt-1.5">${grams(totalGramosTeoricos)}</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Total en gramos de metal</div>
+        <div class="panel p-3.5 border-l-4 border-slate-600">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Oro Fino Teórico Contratado</div>
+          <div class="text-xl font-black text-slate-900 dark:text-white mt-1">${grams(totalGramosTeoricos)}</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-0.5">Total en gramos de metal</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-emerald-500">
-          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">M.O. Total Estimada</div>
-          <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1.5">$${totalMoComprometida.toLocaleString('es-MX', { minimumFractionDigits: 2 })} USD</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Mano de obra pactada</div>
+        <div class="panel p-3.5 border-l-4 border-emerald-600">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">M.O. Total Estimada</div>
+          <div class="text-xl font-black text-emerald-700 dark:text-emerald-400 font-mono mt-1">$${totalMoComprometida.toLocaleString('es-MX', { minimumFractionDigits: 2 })} USD</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-0.5">Mano de obra pactada</div>
         </div>
 
-        <div class="panel p-4 border-l-4 border-blue-500">
-          <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Valijas en Vuelo / Aduana</div>
-          <div class="text-2xl font-black text-blue-500 mt-1.5">${ocsEnTransito} en tránsito</div>
-          <div class="text-xs text-blue-600 dark:text-blue-400 font-semibold mt-1">Rastreo con Eduardo (Aduanas)</div>
+        <div class="panel p-3.5 border-l-4 border-blue-600">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Valijas en Vuelo / Aduana</div>
+          <div class="text-xl font-black text-blue-600 mt-1">${ocsEnTransito} en tránsito</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-0.5">Rastreo con Eduardo (Aduanas)</div>
         </div>
       </div>
 
@@ -112,22 +112,22 @@ window.MartelaPurchases = (function() {
       ${renderLifecycleStepper(activeOrder)}
 
       <!-- Stepper Visual de 5 Fases Operativas (Compacto, Ligero y Sin Scrollbar) -->
-      <div class="mb-6">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 p-1.5 rounded-2xl bg-[#e9ebef] dark:bg-slate-800/80 border border-[#d9dde3] dark:border-slate-700 shadow-sm">
+      <div class="mb-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 shadow-sm">
           
           <!-- Paso 1 -->
           <button 
             id="stepBtn-orders"
             onclick="MartelaPurchases.switchTab('orders')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'orders' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${activeTab === 'orders' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
             title="Paso 1: Gestor de Órdenes de Compra (OC)"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'orders' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'orders' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
               1
             </span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight truncate">1. Órdenes OC</div>
-              <div class="text-[11px] ${activeTab === 'orders' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Emisión &amp; Pesos</div>
+              <div class="text-[11px] ${activeTab === 'orders' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Emisión &amp; Pesos</div>
             </div>
           </button>
 
@@ -135,15 +135,15 @@ window.MartelaPurchases = (function() {
           <button 
             id="stepBtn-packing"
             onclick="MartelaPurchases.switchTab('packing')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'packing' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${activeTab === 'packing' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
             title="Paso 2: Mesa de Auditoría de Packing List (±5%)"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'packing' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'packing' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
               2
             </span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight truncate">2. Auditoría Packing</div>
-              <div class="text-[11px] ${activeTab === 'packing' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Candado (±5%)</div>
+              <div class="text-[11px] ${activeTab === 'packing' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Candado (±5%)</div>
             </div>
           </button>
 
@@ -151,15 +151,15 @@ window.MartelaPurchases = (function() {
           <button 
             id="stepBtn-fix"
             onclick="MartelaPurchases.switchTab('fix')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'fix' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${activeTab === 'fix' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
             title="Paso 3: Cierre de Fix Internacional & Liquidación"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'fix' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'fix' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
               3
             </span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight truncate">3. Cierre Fix</div>
-              <div class="text-[11px] ${activeTab === 'fix' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">London Spot &amp; TC</div>
+              <div class="text-[11px] ${activeTab === 'fix' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">London Spot &amp; TC</div>
             </div>
           </button>
 
@@ -167,15 +167,15 @@ window.MartelaPurchases = (function() {
           <button 
             id="stepBtn-transit"
             onclick="MartelaPurchases.switchTab('transit')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'transit' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${activeTab === 'transit' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
             title="Paso 4: Tracking Aduanal & Enlace a Bóveda"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'transit' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'transit' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
               4
             </span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight truncate">4. Tracking Aduanal</div>
-              <div class="text-[11px] ${activeTab === 'transit' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Vuelo &amp; Bóveda</div>
+              <div class="text-[11px] ${activeTab === 'transit' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Vuelo &amp; Bóveda</div>
             </div>
           </button>
 
@@ -183,15 +183,15 @@ window.MartelaPurchases = (function() {
           <button 
             id="stepBtn-statements"
             onclick="MartelaPurchases.switchTab('statements')" 
-            class="flex items-center gap-2.5 p-2.5 rounded-xl transition-all text-left ${activeTab === 'statements' ? 'bg-[#b5851d] text-white font-bold shadow-sm border border-[#996e16] ring-2 ring-[#b5851d]/25' : 'bg-[#f8f9fa] dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-[#b5851d]/50 border border-[#d9dde3] dark:border-slate-700/60'}"
+            class="flex items-center gap-2.5 p-2 rounded-lg transition-all text-left ${activeTab === 'statements' ? 'bg-slate-800 text-white font-bold shadow-sm border border-slate-900' : 'bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-400 border border-slate-200 dark:border-slate-700/60'}"
             title="Paso 5: Estado de Cuenta & Notas de Crédito"
           >
-            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'statements' ? 'bg-[#242d3d] text-[#e8dcbe]' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
+            <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${activeTab === 'statements' ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}">
               5
             </span>
             <div class="min-w-0 flex-1">
               <div class="text-xs font-bold leading-tight truncate">5. Estado de Cuenta</div>
-              <div class="text-[11px] ${activeTab === 'statements' ? 'text-amber-100' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Pagos &amp; Créditos</div>
+              <div class="text-[11px] ${activeTab === 'statements' ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'} font-normal truncate">Pagos &amp; Créditos</div>
             </div>
           </button>
 
@@ -352,17 +352,17 @@ window.MartelaPurchases = (function() {
         <div class="panel overflow-hidden bg-white dark:bg-slate-900">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 uppercase font-mono text-xs font-bold border-b border-slate-200 dark:border-slate-700">
+              <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase font-mono text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
                 <tr>
-                  <th class="py-3.5 px-3">Folio OC</th>
-                  <th class="py-3.5 px-3">Fabricante</th>
-                  <th class="py-3.5 px-3 text-center">Partidas</th>
-                  <th class="py-3.5 px-3 text-right">Oro Teórico</th>
-                  <th class="py-3.5 px-3 text-right">M.O. Estimada</th>
-                  <th class="py-3.5 px-3 text-right">Fix Cerrado</th>
-                  <th class="py-3.5 px-3 text-right">Importe Liquidable</th>
-                  <th class="py-3.5 px-3 text-center">Estatus</th>
-                  <th class="py-3.5 px-3 text-center">Acciones</th>
+                  <th class="px-3 py-2.5">Folio OC</th>
+                  <th class="px-3 py-2.5">Fabricante</th>
+                  <th class="px-3 py-2.5 text-center">Partidas</th>
+                  <th class="px-3 py-2.5 text-right">Oro Teórico</th>
+                  <th class="px-3 py-2.5 text-right">M.O. Estimada</th>
+                  <th class="px-3 py-2.5 text-right">Fix Cerrado</th>
+                  <th class="px-3 py-2.5 text-right">Importe Liquidable</th>
+                  <th class="px-3 py-2.5 text-center">Estatus</th>
+                  <th class="px-3 py-2.5 text-center">Acciones</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
@@ -371,49 +371,53 @@ window.MartelaPurchases = (function() {
                     <td colspan="9" class="p-8 text-center text-slate-400">No se encontraron órdenes de compra registradas.</td>
                   </tr>
                 ` : oPag.items.map(o => `
-                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition ${o.id_oc === selectedOcId ? 'bg-amber-50/40 dark:bg-amber-950/20' : ''}">
-                    <td class="py-3.5 px-3 font-mono font-bold text-amber-600 dark:text-amber-400">
-                      ${esc(o.folio_oc)}
-                      <div class="text-xs text-slate-500 font-normal">${esc(o.fecha_emision ? o.fecha_emision.slice(0, 10) : '')}</div>
+                  <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition h-10 border-b border-slate-200 dark:border-slate-800 ${o.id_oc === selectedOcId ? 'bg-slate-200/50 dark:bg-slate-800/60 font-semibold' : ''}">
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="flex items-center gap-1.5 font-mono text-xs">
+                        <span class="font-bold text-slate-800 dark:text-slate-100">${esc(o.folio_oc)}</span>
+                        <span class="text-[11px] text-slate-400 font-normal">(${esc(o.fecha_emision ? o.fecha_emision.slice(0, 10) : '')})</span>
+                      </div>
                     </td>
-                    <td class="py-3.5 px-3">
-                      <div class="font-bold text-slate-900 dark:text-white text-sm">${esc(o.proveedor_nombre)}</div>
-                      <div class="text-xs text-slate-500">${esc(o.pais_origen)} · ${esc(o.moneda)}</div>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="flex items-center gap-1.5 text-xs">
+                        <span class="font-semibold text-slate-800 dark:text-slate-200">${esc(o.proveedor_nombre)}</span>
+                        <span class="text-[11px] text-slate-400">· ${esc(o.pais_origen)}</span>
+                      </div>
                     </td>
-                    <td class="py-3.5 px-3 text-center font-mono">
-                      <span class="font-bold text-slate-800 dark:text-slate-200 text-sm">${o.total_lineas || 1} lín.</span>
-                      <div class="text-xs text-slate-500">${o.total_piezas || 0} pzs</div>
+                    <td class="px-3 py-2 text-center font-mono whitespace-nowrap">
+                      <span class="font-bold text-slate-800 dark:text-slate-200 text-xs">${o.total_lineas || 1} lín</span>
+                      <span class="text-[11px] text-slate-400">(${o.total_piezas || 0} pzs)</span>
                     </td>
-                    <td class="py-3.5 px-3 text-right font-mono font-bold text-purple-600 dark:text-purple-400 text-sm">
+                    <td class="px-3 py-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200 text-xs whitespace-nowrap">
                       ${grams(o.peso_oro_teorico_total_g)}
                     </td>
-                    <td class="py-3.5 px-3 text-right font-mono font-semibold text-slate-700 dark:text-slate-300">
+                    <td class="px-3 py-2 text-right font-mono font-semibold text-slate-700 dark:text-slate-300 text-xs whitespace-nowrap">
                       $${Number(o.costo_mo_total_estimado || 0).toLocaleString('es-MX', { minimumFractionDigits: 2 })} ${esc(o.moneda)}
                     </td>
-                    <td class="py-3.5 px-3 text-right font-mono font-bold">
-                      ${o.fix_oro_cerrado_usd ? `<span class="text-amber-600 font-black">$${o.fix_oro_cerrado_usd}</span>` : `<span class="text-slate-400 font-normal italic">Pendiente</span>`}
+                    <td class="px-3 py-2 text-right font-mono font-bold whitespace-nowrap">
+                      ${o.fix_oro_cerrado_usd ? `<span class="text-slate-900 dark:text-white">$${o.fix_oro_cerrado_usd}</span>` : `<span class="text-slate-400 font-normal italic text-[11px]">Pendiente</span>`}
                     </td>
-                    <td class="py-3.5 px-3 text-right font-mono font-black text-slate-900 dark:text-white text-sm">
+                    <td class="px-3 py-2 text-right font-mono font-bold text-slate-900 dark:text-white text-xs whitespace-nowrap">
                       $${Number(o.importe_total_liquidable || o.costo_mo_total_estimado).toLocaleString('es-MX', { minimumFractionDigits: 2 })} ${esc(o.moneda)}
                     </td>
-                    <td class="py-3.5 px-3 text-center">
+                    <td class="px-3 py-2 text-center whitespace-nowrap">
                       ${renderStatusBadge(o.estatus)}
                     </td>
-                    <td class="py-3.5 px-3 text-center">
-                      <div class="flex items-center justify-center gap-1.5">
+                    <td class="px-3 py-2 text-center whitespace-nowrap">
+                      <div class="flex items-center justify-center gap-1">
                         <button 
                           onclick="MartelaPurchases.selectOrderAndTab(${o.id_oc}, 'packing')" 
-                          class="btn btn-soft text-xs py-1.5 px-2.5 font-bold text-amber-600 hover:bg-amber-500/10"
+                          class="btn btn-soft text-xs py-0.5 px-2 font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900"
                           title="Auditar Packing List de esta orden"
                         >
-                          ⚖️ Packing
+                          Packing
                         </button>
                         <button 
                           onclick="MartelaPurchases.selectOrderAndTab(${o.id_oc}, 'fix')" 
-                          class="btn btn-soft text-xs py-1.5 px-2.5 font-bold text-emerald-600 hover:bg-emerald-500/10"
+                          class="btn btn-soft text-xs py-0.5 px-2 font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900"
                           title="Cerrar Fix y liquidar"
                         >
-                          📈 Fix
+                          Fix
                         </button>
                       </div>
                     </td>

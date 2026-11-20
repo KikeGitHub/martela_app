@@ -125,11 +125,11 @@ window.MartelaApp = (function() {
           class="navbtn group ${currentTab === key ? 'active' : ''}"
           title="${item.name} — ${item.desc}"
         >
-          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-amber-500 group-[.active]:text-amber-500 bg-slate-100/70 dark:bg-slate-800/80 group-[.active]:bg-amber-500/10 transition-colors flex-shrink-0">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 group-[.active]:text-slate-900 dark:group-[.active]:text-white bg-slate-100/70 dark:bg-slate-800/80 group-[.active]:bg-slate-300/80 dark:group-[.active]:bg-slate-700 transition-colors flex-shrink-0">
             ${item.iconSvg}
           </span>
           <div class="sidebar-text flex-1 min-w-0 text-left">
-            <div class="text-xs font-bold leading-tight text-slate-700 dark:text-slate-200 group-[.active]:text-amber-600 dark:group-[.active]:text-amber-400 truncate">
+            <div class="text-xs font-bold leading-tight text-slate-700 dark:text-slate-200 group-[.active]:text-slate-950 dark:group-[.active]:text-white truncate">
               ${item.name}
             </div>
             <div class="text-[10px] text-slate-400 dark:text-slate-500 font-normal leading-tight mt-0.5 truncate">
