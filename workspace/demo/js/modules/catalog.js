@@ -43,6 +43,86 @@ window.MartelaCatalog = (function() {
     return `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-bold bg-cyan-50 dark:bg-cyan-950/40 text-cyan-800 dark:text-cyan-300 border border-cyan-300/50">-${val.toFixed(4)}g CZ</span>`;
   }
 
+  function getJewelryPhoto(item) {
+    if (item.imagen_url && item.imagen_url.trim()) {
+      return `<img src="${item.imagen_url}" alt="${item.modelo_martela || 'Joya'}" class="w-7 h-7 rounded object-cover border border-slate-300 dark:border-slate-700 shadow-xs flex-shrink-0 mx-auto" onerror="this.outerHTML='<span class=\\'text-base\\'>💎</span>'" />`;
+    }
+    const cat = String(item.tipo_alhaja || item.categoria || '').toUpperCase();
+    let icon = '💎';
+    let bg = 'bg-amber-100/80 text-amber-900 border-amber-300/60 dark:bg-amber-950/40 dark:text-amber-300';
+    if (cat.includes('ANILLO')) { icon = '💍'; bg = 'bg-amber-100/70 text-amber-900 border-amber-300/60 dark:bg-amber-950/40 dark:text-amber-300'; }
+    else if (cat.includes('CADENA') || cat.includes('COLLAR')) { icon = '⛓️'; bg = 'bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-200'; }
+    else if (cat.includes('ESCLAVA') || cat.includes('PULSERA')) { icon = '📿'; bg = 'bg-yellow-100 text-yellow-900 border-yellow-300 dark:bg-yellow-950/40 dark:text-yellow-300'; }
+    else if (cat.includes('ARETE') || cat.includes('ARRANCADA')) { icon = '✨'; bg = 'bg-cyan-100/70 text-cyan-900 border-cyan-300/60 dark:bg-cyan-950/40 dark:text-cyan-300'; }
+    else if (cat.includes('DIJE') || cat.includes('MEDALLA')) { icon = '✝️'; bg = 'bg-purple-100/70 text-purple-900 border-purple-300/60 dark:bg-purple-950/40 dark:text-purple-300'; }
+    
+    return `<div class="w-7 h-7 rounded border ${bg} flex items-center justify-center text-xs shadow-xs mx-auto" title="Ver foto: ${item.modelo_martela || 'Alhaja'}">${icon}</div>`;
+  }
+
+  function openPhotoLightbox(sku) {
+    const db = window.apiFacade._getDB();
+    const item = (db.products_sku || []).find(p => p.sku === sku || p.sku_14 === sku);
+    if (!item) return;
+    const { esc, money } = window.MartelaUI;
+    const cat = String(item.tipo_alhaja || item.categoria || 'ALHAJA').toUpperCase();
+    const modalHtml = `
+      <div class="space-y-4">
+        <div class="w-full h-56 rounded-2xl bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-center overflow-hidden p-6 relative">
+          ${item.imagen_url ? `
+            <img src="${item.imagen_url}" class="max-h-full max-w-full object-contain filter drop-shadow-md" alt="${esc(item.modelo_martela)}" />
+          ` : `
+            <div class="text-center">
+              <div class="text-6xl mb-2">${cat.includes('ANILLO') ? '💍' : (cat.includes('CADENA') ? '⛓️' : (cat.includes('ARETE') ? '✨' : '💎'))}</div>
+              <div class="text-xs font-semibold text-slate-500">Muestrario Oficial MARTELA Joyería</div>
+            </div>
+          `}
+          <div class="absolute top-3 right-3">
+            ${getMetalBadge(item.metal_tipo)}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs font-mono bg-slate-50 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/60">
+          <div>
+            <span class="text-slate-400 block text-[10px]">SKU 14 DÍGITOS:</span>
+            <span class="font-bold text-slate-900 dark:text-white">${esc(item.sku_14 || item.sku)}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">MODELO MARTELA:</span>
+            <span class="font-bold text-amber-600 dark:text-amber-400">${esc(item.modelo_martela || item.sku)}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">PROVEEDOR / ORIGEN:</span>
+            <span>[${getFlagEmoji(item.pais_origen)}] ${esc(item.proveedor_nombre || 'Internacional')} (${esc(item.modelo_proveedor || '—')})</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">DESCUENTO CZ:</span>
+            <span class="font-bold text-cyan-600 dark:text-cyan-400">${item.peso_piedra_cz > 0 ? `-${Number(item.peso_piedra_cz).toFixed(4)} g CZ` : 'Sin piedra'}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">FACTOR LEY FINA:</span>
+            <span class="font-bold text-slate-700 dark:text-slate-200">${Number(item.factor_oro_fino || 0.41667).toFixed(5)} (${item.metal_tipo})</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[10px]">COSTO HECHURA M.O.:</span>
+            <span class="font-bold text-slate-900 dark:text-white">${money(item.costo_hechura_base || item.costo_mo_base)}</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-600 dark:text-slate-300 font-medium">${esc(item.descripcion)} · ${esc(item.medida || '')}</p>
+
+        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="MartelaCatalog.openProductModal('${esc(item.sku)}'); MartelaUI.closeModal();" class="btn btn-soft text-xs py-1.5 px-3">
+            ✏️ Editar Ficha del Modelo
+          </button>
+          <button type="button" onclick="MartelaUI.closeModal()" class="btn btn-gold text-xs py-1.5 px-4">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    `;
+    window.MartelaUI.openModal(`Visualizador Fotográfico: ${esc(item.modelo_martela)}`, modalHtml, 'max-w-lg');
+  }
+
   function getFlagEmoji(pais) {
     const p = String(pais || '').toUpperCase();
     if (p.includes('CHINA')) return '🇨🇳';
@@ -358,6 +438,7 @@ window.MartelaCatalog = (function() {
       <table class="w-full text-left text-xs">
         <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 uppercase tracking-wider font-bold font-mono text-[11px] border-b border-slate-200 dark:border-slate-700">
           <tr>
+            <th class="px-2 py-2.5 text-center">Foto</th>
             <th class="px-2.5 py-2.5">SKU / Modelo</th>
             <th class="px-2.5 py-2.5">Equiv. Proveedor</th>
             <th class="px-2.5 py-2.5">Descripción &amp; Medida</th>
@@ -371,6 +452,9 @@ window.MartelaCatalog = (function() {
         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
           ${prodPag.items.map(item => `
             <tr class="hover:bg-slate-100/80 dark:hover:bg-slate-800/50 transition cursor-pointer group h-10 border-b border-slate-200 dark:border-slate-800" onclick="MartelaCatalog.openProductModal('${esc(item.sku)}')">
+              <td class="px-2 py-1 text-center whitespace-nowrap" onclick="event.stopPropagation(); MartelaCatalog.openPhotoLightbox('${esc(item.sku)}')">
+                ${getJewelryPhoto(item)}
+              </td>
               <td class="px-2.5 py-2 whitespace-nowrap">
                 <div class="flex items-center gap-1.5 text-xs">
                   <span class="font-mono font-bold text-slate-800 dark:text-slate-100">${esc(item.sku_14 || item.sku)}</span>
@@ -643,10 +727,12 @@ window.MartelaCatalog = (function() {
           <div>
             <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Metal &amp; Ley</label>
             <select id="mf_metal_tipo" name="metal_tipo" class="w-full">
-              <option value="ORO_14K" ${defaultMetal === 'ORO_14K' ? 'selected' : ''}>Oro 14K (Factor 0.58333)</option>
-              <option value="ORO_10K" ${defaultMetal === 'ORO_10K' ? 'selected' : ''}>Oro 10K (Factor 0.41667)</option>
-              <option value="PLATA_925" ${defaultMetal === 'PLATA_925' ? 'selected' : ''}>Plata .925 (Factor 0.00000)</option>
+              <option value="ORO_14K" ${defaultMetal === 'ORO_14K' ? 'selected' : ''}>Oro 14K — Factor Ley: 0.5833 (14/24 = 58.33% Oro)</option>
+              <option value="ORO_10K" ${defaultMetal === 'ORO_10K' ? 'selected' : ''}>Oro 10K — Factor Ley: 0.4167 (10/24 = 41.67% Oro)</option>
+              <option value="ORO_18K" ${defaultMetal === 'ORO_18K' ? 'selected' : ''}>Oro 18K — Factor Ley: 0.7500 (18/24 = 75.00% Oro)</option>
+              <option value="PLATA_925" ${defaultMetal === 'PLATA_925' ? 'selected' : ''}>Plata .925 — Factor Ley: 0.9250 (92.50% Plata)</option>
             </select>
+            <span class="text-[10px] text-slate-500 font-mono block mt-1">Factor oficial de metrología: 10K = 0.41667 (10/24)</span>
           </div>
           <div>
             <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Tipo de Alhaja</label>
@@ -663,6 +749,18 @@ window.MartelaCatalog = (function() {
             <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Medida / Talla</label>
             <input id="mf_medida" name="medida" value="${esc(defaultMedida)}" placeholder="Ej. No. 7.5" required class="w-full" />
           </div>
+        </div>
+
+        <!-- Fila Adicional: Fotografía Técnica / Referencia Visual -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">URL Fotografía / Referencia Visual (Archivo Inicial con Fotos)</label>
+          <input
+            id="mf_imagen_url"
+            name="imagen_url"
+            value="${esc(item?.imagen_url || '')}"
+            placeholder="Ej. https://images.unsplash.com/... o dejar vacío para renderizado vectorial"
+            class="w-full font-mono text-xs"
+          />
         </div>
 
         <!-- Fila 5: Costo M.O. y Descuento Circonia CZ -->
@@ -765,6 +863,8 @@ window.MartelaCatalog = (function() {
     const submitBtn = document.getElementById('modalSaveProductBtn');
     window.MartelaUI.setButtonLoading(submitBtn, true, 'Guardando en Catálogo...');
 
+    const factorOro = form.metal_tipo.value === 'ORO_18K' ? 0.7500 : (form.metal_tipo.value === 'ORO_14K' ? 0.58333 : (form.metal_tipo.value === 'ORO_10K' ? 0.41667 : 0.0000));
+
     const data = {
       sku: form.modelo_martela.value.trim().toUpperCase(),
       sku_14: form.sku_14.value.trim(),
@@ -773,6 +873,8 @@ window.MartelaCatalog = (function() {
       id_proveedor: Number(form.id_proveedor.value),
       descripcion: form.descripcion.value.trim(),
       metal_tipo: form.metal_tipo.value,
+      factor_oro_fino: factorOro,
+      imagen_url: form.imagen_url ? form.imagen_url.value.trim() : '',
       tipo_alhaja: form.tipo_alhaja.value,
       medida: form.medida.value.trim(),
       costo_mo_base: parseFloat(form.costo_mo_base.value),
@@ -940,6 +1042,7 @@ window.MartelaCatalog = (function() {
     onFilterSupplier,
     resetFilters,
     openProductModal,
+    openPhotoLightbox,
     setQuickCz,
     generateRandomSku14,
     handleSaveProductFromModal,

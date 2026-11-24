@@ -183,14 +183,20 @@ window.MartelaReception = (function() {
           <div class="text-[11px] text-slate-500">Pasan a Pesaje (Módulo 3)</div>
         </div>
 
-        <div class="panel p-3.5 border-l-4 border-amber-600 bg-amber-50/20 dark:bg-amber-950/10">
-          <div class="text-[11px] font-bold uppercase text-amber-700 dark:text-amber-400">🟡 Taller Reparación</div>
+        <div class="panel p-3.5 border-l-4 border-amber-600 bg-amber-50/20 dark:bg-amber-950/10 cursor-pointer hover:ring-2 hover:ring-amber-500/40 transition" onclick="MartelaReception.openRepairMermaBreakdownModal(${activeRec?.id_recepcion})" title="Clic para ver desglose técnico de piezas en taller">
+          <div class="text-[11px] font-bold uppercase text-amber-700 dark:text-amber-400 flex items-center justify-between">
+            <span>🟡 Taller Reparación</span>
+            <span class="text-[10px] font-semibold underline">Ver Detalle ↗</span>
+          </div>
           <div class="text-xl font-black text-amber-700 dark:text-amber-400 mt-1">${totalReparacion} pzs</div>
           <div class="text-[11px] text-slate-500">Falta circonia o reasa</div>
         </div>
 
-        <div class="panel p-3.5 border-l-4 border-rose-600 bg-rose-50/20 dark:bg-rose-950/10">
-          <div class="text-[11px] font-bold uppercase text-rose-700 dark:text-rose-400">🔴 Merma Fundición</div>
+        <div class="panel p-3.5 border-l-4 border-rose-600 bg-rose-50/20 dark:bg-rose-950/10 cursor-pointer hover:ring-2 hover:ring-rose-500/40 transition" onclick="MartelaReception.openRepairMermaBreakdownModal(${activeRec?.id_recepcion})" title="Clic para ver desglose de mermas enviadas a fundición">
+          <div class="text-[11px] font-bold uppercase text-rose-700 dark:text-rose-400 flex items-center justify-between">
+            <span>🔴 Merma Fundición</span>
+            <span class="text-[10px] font-semibold underline">Ver Detalle ↗</span>
+          </div>
           <div class="text-xl font-black text-rose-700 dark:text-rose-400 mt-1">${totalMerma} pzs</div>
           <div class="text-[11px] text-slate-500">Crisol de fundición</div>
         </div>
@@ -205,7 +211,14 @@ window.MartelaReception = (function() {
             </h3>
             <p class="text-[11px] text-slate-400">Semáforo de Calidad (+1) para clasificar cada pieza física en tiempo real.</p>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              onclick="MartelaReception.openRepairMermaBreakdownModal(${activeRec?.id_recepcion})"
+              class="btn btn-soft text-xs py-1.5 px-3 flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700/50"
+              title="Ver bitácora técnica de piezas enviadas a taller o fundición"
+            >
+              <span>📋</span> Detalle Reparación (${totalReparacion}) &amp; Merma (${totalMerma})
+            </button>
             <button
               onclick="MartelaReception.openVideoModal('${esc(activeRec?.guia_tracking)}', '${esc(activeRec?.url_video_evidencia)}', '${esc(activeRec?.proveedor_nombre)}')"
               class="btn btn-soft text-xs py-1.5 px-3"
@@ -499,6 +512,113 @@ window.MartelaReception = (function() {
     window.MartelaUI.openModal(`Video-Evidencia de Recepción · ${guia}`, html, 'max-w-2xl');
   }
 
+  function openRepairMermaBreakdownModal(receptionId) {
+    const db = window.apiFacade._getDB();
+    const activeRec = db.receptions.find(r => r.id_recepcion === receptionId) || db.receptions[0];
+    const rows = (db.reception_items || []).filter(i => i.id_recepcion === activeRec.id_recepcion);
+    const { esc } = window.MartelaUI;
+
+    const itemsWithIssues = rows.filter(r => (r.piezas_reparacion_interna > 0 || r.piezas_merma_fundicion > 0));
+
+    const defectMap = {
+      '07502278209688': { motivo: 'Circonia central desalineada (requiere re-engaste fino)', destino: 'Taller Joyero Interno — David Morales' },
+      '07502278209695': { motivo: 'Broche perico flojo / resorte con fatiga', destino: 'Taller Joyero Interno — David Morales' },
+      '07502278209701': { motivo: 'Eslabón con torcedura visible en cierre', destino: 'Taller Joyero Interno — David Morales' },
+      '07502278209718': { motivo: 'Poro abierto en fundición de reasa / micro-fractura', destino: 'Charola de Fundición / Retorno Proveedor' },
+      '07502278209725': { motivo: 'Asimetría grave en bisel de corazón', destino: 'Charola de Fundición / Crisol' }
+    };
+
+    const modalHtml = `
+      <div class="space-y-4">
+        <div class="p-4 rounded-xl bg-slate-900 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <div class="text-xs text-amber-400 font-bold tracking-wider uppercase">Bitácora Técnica de Calidad y Rechazos</div>
+            <div class="text-base font-black">Valija: ${esc(activeRec.folio_recepcion)} · Guía ${esc(activeRec.guia_tracking)}</div>
+            <div class="text-[11px] text-slate-300">Proveedor: ${esc(activeRec.proveedor_nombre)} · Responsable: David Morales</div>
+          </div>
+          <div class="text-right font-mono">
+            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30">
+              ${activeRec.piezas_reparacion_interna || rows.reduce((s, r) => s + r.piezas_reparacion_interna, 0)} Reparación · ${activeRec.piezas_merma_fundicion || rows.reduce((s, r) => s + r.piezas_merma_fundicion, 0)} Merma
+            </span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto max-h-80 border border-slate-200 dark:border-slate-800 rounded-xl">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-mono text-[11px] uppercase font-bold sticky top-0">
+              <tr>
+                <th class="p-2.5">SKU / Modelo</th>
+                <th class="p-2.5 text-center">Clasificación</th>
+                <th class="p-2.5">Defecto Técnico Detectado</th>
+                <th class="p-2.5">Destino Físico</th>
+                <th class="p-2.5 text-center">Estatus</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              ${itemsWithIssues.length > 0 ? itemsWithIssues.map(item => {
+                const def = defectMap[item.sku_14] || { motivo: item.observaciones_tecnicas || 'Ajuste de broche / engaste', destino: item.piezas_reparacion_interna > 0 ? 'Taller Joyero Interno' : 'Charola Fundición' };
+                return `
+                  <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    <td class="p-2.5">
+                      <div class="font-mono font-bold text-slate-900 dark:text-white">${esc(item.sku_14 || item.sku)}</div>
+                      <div class="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">${esc(item.modelo_martela)}</div>
+                      <div class="text-[10px] text-slate-400">${esc(item.descripcion)}</div>
+                    </td>
+                    <td class="p-2.5 text-center font-mono">
+                      ${item.piezas_reparacion_interna > 0 ? `
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300 mb-1">
+                          🟡 ${item.piezas_reparacion_interna} pz Taller
+                        </span><br/>
+                      ` : ''}
+                      ${item.piezas_merma_fundicion > 0 ? `
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300">
+                          🔴 ${item.piezas_merma_fundicion} pz Merma
+                        </span>
+                      ` : ''}
+                    </td>
+                    <td class="p-2.5 text-slate-700 dark:text-slate-300 font-medium text-[11px]">
+                      ${esc(def.motivo)}
+                    </td>
+                    <td class="p-2.5 text-slate-600 dark:text-slate-400 text-[11px]">
+                      <span class="font-mono font-semibold">${esc(def.destino)}</span>
+                    </td>
+                    <td class="p-2.5 text-center">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.piezas_reparacion_interna > 0 ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-300/40' : 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-300/40'}">
+                        ${item.piezas_reparacion_interna > 0 ? 'EN ESPERA REPARACIÓN' : 'REGISTRADO MERMA'}
+                      </span>
+                    </td>
+                  </tr>
+                `;
+              }).join('') : `
+                <tr>
+                  <td colspan="5" class="p-6 text-center text-slate-400">
+                    No se han registrado rechazos o mermas en esta valija aún. Utiliza los botones +1 del semáforo para clasificar piezas.
+                  </td>
+                </tr>
+              `}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
+          <div class="text-slate-500 text-[11px]">
+            Bitácora formal de trazabilidad para Taller Joyero y solicitud de Nota de Crédito.
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="btn btn-soft text-xs py-1.5 px-3">
+              🖨️ Imprimir Hoja de Taller
+            </button>
+            <button onclick="MartelaUI.closeModal()" class="btn btn-gold text-xs py-1.5 px-4">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    window.MartelaUI.openModal(`Bitácora de Taller Reparación & Mermas · ${activeRec.guia_tracking}`, modalHtml, 'max-w-2xl');
+  }
+
   return {
     render,
     setStep,
@@ -510,7 +630,8 @@ window.MartelaReception = (function() {
     bumpSemaphore,
     resetRowForDemo,
     finalizeConciliation,
-    openVideoModal
+    openVideoModal,
+    openRepairMermaBreakdownModal
   };
 })();
 

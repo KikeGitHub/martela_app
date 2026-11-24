@@ -27,9 +27,9 @@ window.MartelaAuth = (function() {
     recepcion: {
       key: 'recepcion',
       name: 'David Morales',
-      role: 'Recepción, Video-Evidencia y Calidad',
+      role: 'Recepción, Calidad & Logística B2B',
       email: 'david.morales@martela.mx',
-      modules: ['reception', 'catalog', 'inventory', 'coppel']
+      modules: ['reception', 'catalog', 'inventory', 'coppel', 'logistics']
     },
     boveda: {
       key: 'boveda',

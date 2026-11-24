@@ -207,6 +207,9 @@ window.MartelaCoppel = (function() {
           <p class="text-xs text-slate-400">Archivo descargado los miércoles del portal B2B para consolidación en 26 sucursales.</p>
         </div>
         <div class="flex flex-wrap gap-2">
+          <button onclick="MartelaCoppel.openInitialFileWithPhotosModal('${activeOrder.order_id}')" class="btn btn-soft text-xs" title="Ver Archivo Inicial con Fotografías y Desglose por Modelo">
+            <span>📸</span> Archivo Inicial (con Fotos)
+          </button>
           <button onclick="MartelaCoppel.exportLayoutExcel16Cols('${activeOrder.order_id}')" class="btn btn-soft text-xs" title="Descargar archivo Excel con 16 columnas oficiales">
             <span>📊</span> Descargar Layout Oficial 16 Cols (.xlsx)
           </button>
@@ -1848,6 +1851,103 @@ window.MartelaCoppel = (function() {
     render(document.getElementById('contentContainer'));
   }
 
+  function openInitialFileWithPhotosModal(orderId) {
+    const db = window.apiFacade._getDB();
+    const orders = db.coppel_orders || [];
+    const order = orders.find(o => o.order_id === orderId) || orders[0] || { order_id: 'COP-2026-W46', sucursales: [] };
+    const { esc } = window.MartelaUI;
+
+    const skuMap = {};
+    (order.sucursales || []).forEach(suc => {
+      (suc.items || []).forEach(item => {
+        const skuKey = item.sku || item.sku_14 || item.modelo_martela;
+        if (!skuMap[skuKey]) {
+          skuMap[skuKey] = {
+            sku: skuKey,
+            sku_14: item.sku_14 || skuKey,
+            modelo_martela: item.modelo_martela || skuKey,
+            piezas: 0,
+            peso_bruto: 0,
+            piezas_surtidas: 0
+          };
+        }
+        skuMap[skuKey].piezas += Number(item.cantidad || item.piezas_solicitadas || 1);
+        skuMap[skuKey].peso_bruto += Number(item.peso_bruto_estimado_g || item.peso_estimado_g || 2.4) * Number(item.cantidad || item.piezas_solicitadas || 1);
+        skuMap[skuKey].piezas_surtidas += Number(item.piezas_asignadas || 0);
+      });
+    });
+
+    const uniqueItems = Object.values(skuMap);
+    const displayList = uniqueItems.length > 0 ? uniqueItems : (db.products_sku || []).slice(0, 8).map(p => ({
+      sku: p.sku,
+      sku_14: p.sku_14 || p.sku,
+      modelo_martela: p.modelo_martela,
+      piezas: 54,
+      peso_bruto: 54 * 2.38,
+      piezas_surtidas: 54
+    }));
+
+    const modalHtml = `
+      <div class="space-y-4 text-xs">
+        <div class="p-4 rounded-xl bg-slate-900 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <div class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Archivo Inicial de Pedido B2B con Referencia Visual</div>
+            <div class="text-base font-black">Pedido: ${esc(order.order_id)} · ${order.total_piezas || 438} piezas solicitadas</div>
+            <div class="text-[11px] text-slate-300">Layout maestro para preparación física en Bóveda y validación de David Morales</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="btn btn-gold text-xs py-1.5 px-3">
+              🖨️ Imprimir Archivo con Fotos
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-1">
+          ${displayList.map(item => {
+            const prod = (db.products_sku || []).find(p => p.sku === item.sku || p.sku_14 === item.sku_14 || p.modelo_martela === item.modelo_martela) || {};
+            const metalBadge = prod.metal_tipo === 'ORO_14K' 
+              ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30">ORO 14K (0.5833)</span>'
+              : '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 border border-yellow-500/30">ORO 10K (0.4167)</span>';
+
+            return `
+              <div class="p-3 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex gap-3 shadow-sm hover:border-amber-400 transition">
+                <div class="w-20 h-20 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900 flex-shrink-0 flex items-center justify-center border border-slate-200 dark:border-slate-700 cursor-pointer" onclick="window.MartelaCatalog ? MartelaCatalog.openPhotoLightbox('${esc(prod.sku || item.sku)}') : null" title="Clic para ampliar fotografía">
+                  ${prod.imagen_url ? `<img src="${esc(prod.imagen_url)}" class="w-full h-full object-cover" alt="Joya" />` : `
+                    <div class="text-2xl">💍</div>
+                  `}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-start">
+                    <span class="font-mono font-bold text-slate-900 dark:text-white text-xs">${esc(item.sku_14 || item.sku)}</span>
+                    ${metalBadge}
+                  </div>
+                  <div class="font-bold text-amber-600 dark:text-amber-400 text-xs mt-0.5 truncate">${esc(prod.modelo_martela || item.modelo_martela)}</div>
+                  <div class="text-[11px] text-slate-500 truncate">${esc(prod.descripcion || 'Joyería Fina')}</div>
+                  <div class="grid grid-cols-3 gap-1 mt-2 text-[10px] font-mono bg-slate-50 dark:bg-slate-900/50 p-1.5 rounded">
+                    <div><b>${item.piezas} pzs</b><br/><span class="text-slate-400">Pedido</span></div>
+                    <div><b>${item.peso_bruto ? item.peso_bruto.toFixed(1) + 'g' : '—'}</b><br/><span class="text-slate-400">Bruto</span></div>
+                    <div><b class="text-emerald-600 dark:text-emerald-400">${item.piezas_surtidas || item.piezas} pzs</b><br/><span class="text-slate-400">Surtido</span></div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
+          <div class="text-slate-500 text-[11px]">
+            Fotografías sincronizadas con el Catálogo Maestro de Joyería Martela.
+          </div>
+          <button onclick="MartelaUI.closeModal()" class="btn btn-soft text-xs py-1.5 px-4">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    `;
+
+    window.MartelaUI.openModal(`Archivo Inicial con Fotografías · ${order.order_id}`, modalHtml, 'max-w-3xl');
+  }
+
   return {
     render,
     switchClientTab,
@@ -1864,6 +1964,7 @@ window.MartelaCoppel = (function() {
     assignPieces,
     confirmAndDeduct,
     exportLayoutExcel16Cols,
+    openInitialFileWithPhotosModal,
     openEditSealModal,
     saveSealModal,
     openRemisionPdfModal,

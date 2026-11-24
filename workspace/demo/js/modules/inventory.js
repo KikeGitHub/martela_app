@@ -41,6 +41,10 @@ window.MartelaInventory = (function() {
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
             <span>Pesar Sub-pieza / Báscula Digital</span>
           </button>
+          <button onclick="MartelaInventory.openGavetasQrModal()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs font-semibold" title="Imprimir marbetes de gavetas con código QR">
+            <span>🏷️</span>
+            <span>Marbetes QR Gavetas</span>
+          </button>
           <button onclick="MartelaInventory.exportExcel()" class="btn btn-soft flex items-center gap-1.5 py-2 px-3 text-xs font-semibold">
             <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
             <span>Exportar Existencias (.xlsx)</span>
@@ -562,9 +566,98 @@ window.MartelaInventory = (function() {
     });
   }
 
+  async function openGavetasQrModal() {
+    const gavetas = await window.apiFacade.getGavetas();
+    const db = window.apiFacade._getDB();
+    const { esc } = window.MartelaUI;
+
+    const pieces = db.inventory_pieces || [];
+    const countsByGaveta = {};
+    pieces.forEach(p => {
+      const g = p.ubicacion_gaveta || 'BOVEDA-R1-N1-G01';
+      countsByGaveta[g] = (countsByGaveta[g] || 0) + 1;
+    });
+
+    const modalHtml = `
+      <div class="space-y-4">
+        <div class="p-3.5 rounded-xl bg-slate-900 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <div class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Estándar Físico de Bóveda Central</div>
+            <div class="text-sm font-black">Nomenclatura y Marbetes QR de Gavetas (Rack-Nivel-Gaveta)</div>
+            <div class="text-[11px] text-slate-400">Escaneo compatible con Handheld Zebra y smartphones PWA.</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="btn btn-gold text-xs py-1.5 px-3">
+              🖨️ Imprimir Marbetes
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-96 overflow-y-auto p-1">
+          ${gavetas.map(g => {
+            const count = countsByGaveta[g.id] || countsByGaveta[g.codigo] || (g.piezas_actuales ?? 28);
+            const shortCoord = (g.codigo || g.id).replace('BOVEDA-', '');
+            return `
+              <div class="p-3.5 rounded-xl bg-white dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 font-mono text-center flex flex-col justify-between shadow-sm">
+                <div class="flex justify-between items-center text-[10px] text-slate-500 border-b border-slate-200 dark:border-slate-700/60 pb-1.5 mb-2">
+                  <span class="font-bold text-slate-800 dark:text-slate-200">MARTELA BÓVEDA</span>
+                  <span class="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-bold text-[9px]">${esc(g.linea || 'ORO')}</span>
+                </div>
+
+                <div class="text-lg font-black text-slate-900 dark:text-white my-1 tracking-wider bg-slate-100 dark:bg-slate-900/60 py-1 rounded">
+                  ${esc(shortCoord)}
+                </div>
+
+                <div class="my-2 flex justify-center">
+                  <svg class="w-24 h-24 text-slate-900 dark:text-white" viewBox="0 0 100 100" fill="currentColor">
+                    <rect x="10" y="10" width="24" height="24" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <rect x="16" y="16" width="12" height="12"/>
+                    <rect x="66" y="10" width="24" height="24" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <rect x="72" y="16" width="12" height="12"/>
+                    <rect x="10" y="66" width="24" height="24" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <rect x="16" y="72" width="12" height="12"/>
+                    <rect x="42" y="10" width="6" height="16"/>
+                    <rect x="52" y="14" width="6" height="8"/>
+                    <rect x="42" y="34" width="16" height="6"/>
+                    <rect x="10" y="42" width="16" height="6"/>
+                    <rect x="34" y="42" width="8" height="16"/>
+                    <rect x="50" y="46" width="8" height="8"/>
+                    <rect x="66" y="42" width="24" height="6"/>
+                    <rect x="74" y="52" width="16" height="6"/>
+                    <rect x="42" y="66" width="6" height="24"/>
+                    <rect x="54" y="66" width="10" height="6"/>
+                    <rect x="54" y="78" width="16" height="12"/>
+                    <rect x="78" y="66" width="12" height="6"/>
+                  </svg>
+                </div>
+
+                <div class="text-[10px] text-slate-500 dark:text-slate-400">
+                  <div class="font-bold text-slate-800 dark:text-slate-200">${esc(g.nombre || shortCoord)}</div>
+                  <div class="text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">📦 ${count} piezas resguardadas</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
+          <div class="text-slate-500 text-[11px]">
+            Etiquetas marbete calibradas para formato Zebra ZT230 y hojas de stickers Avery 2x3.
+          </div>
+          <button onclick="MartelaUI.closeModal()" class="btn btn-soft text-xs py-1.5 px-4">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    `;
+
+    window.MartelaUI.openModal('Marbetes QR de Gavetas Físicas (Bóveda Central)', modalHtml, 'max-w-3xl');
+  }
+
   return {
     render,
     openWeighModal,
+    openGavetasQrModal,
     onScaleInputChanged,
     simulateRandomScaleReading,
     handleFastWeighSubmit,

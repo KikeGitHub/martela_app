@@ -259,11 +259,11 @@ async function runOracle() {
       '10. Control de Acceso por Roles (RBAC en Menú Lateral)',
       roleMenuCounts.admin.length === 7 &&
         roleMenuCounts.compras.length === 3 &&
-        roleMenuCounts.recepcion.length === 4 &&
+        roleMenuCounts.recepcion.length === 5 &&
         roleMenuCounts.boveda.length === 3 &&
         roleMenuCounts.finanzas.length === 5 &&
         roleMenuCounts.chofer.length === 1,
-      `Admin: ${roleMenuCounts.admin.length} | Karina (Compras): ${roleMenuCounts.compras.length} | David (Recepción): ${roleMenuCounts.recepcion.length} | Elisa (Bóveda): ${roleMenuCounts.boveda.length} | Adriana (Finanzas/PLD): ${roleMenuCounts.finanzas.length} | Miguel (Chofer PWA): ${roleMenuCounts.chofer.length}`
+      `Admin: ${roleMenuCounts.admin.length} | Karina (Compras): ${roleMenuCounts.compras.length} | David (Recepción & Logística): ${roleMenuCounts.recepcion.length} | Elisa (Bóveda): ${roleMenuCounts.boveda.length} | Adriana (Finanzas/PLD): ${roleMenuCounts.finanzas.length} | Miguel (Chofer PWA): ${roleMenuCounts.chofer.length}`
     );
 
     // 11. Validar Fachada de Tablas PostgreSQL (db-tables-facade.js)

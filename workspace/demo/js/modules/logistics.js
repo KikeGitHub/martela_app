@@ -29,6 +29,14 @@ window.MartelaLogistics = (function() {
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button
+            onclick="MartelaLogistics.optimizeByOpeningHours()"
+            class="btn btn-soft py-2 px-3 text-xs flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-400"
+            title="Ordenar paradas automáticamente según horario de apertura comercial"
+          >
+            <span>⚡</span>
+            <span>Optimizar por Horario</span>
+          </button>
+          <button
             onclick="MartelaLogistics.toggleOfflineMode()"
             class="btn ${isOfflineSimulated ? 'bg-slate-800 text-white' : 'btn-soft'}"
           >
@@ -89,11 +97,38 @@ window.MartelaLogistics = (function() {
                     ${idx + 1}
                   </div>
                   <div>
-                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${esc(parada.sucursal)}</h4>
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-bold text-sm text-slate-900 dark:text-white">${esc(parada.sucursal)}</h4>
+                      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300/40">
+                        🕒 Abre: ${esc(parada.horario_apertura || (idx === 0 ? '08:00 AM' : idx === 1 ? '09:00 AM' : idx === 2 ? '09:30 AM' : '11:00 AM'))}
+                      </span>
+                    </div>
                     <p class="text-xs text-slate-400">${esc(parada.direccion)}</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
+                  ${parada.estatus !== 'ENTREGADA' ? `
+                    <div class="inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 border border-slate-300 dark:border-slate-700 mr-1">
+                      <button
+                        type="button"
+                        onclick="MartelaLogistics.moveStopUp(${idx})"
+                        ${idx === 0 ? 'disabled class="opacity-25 cursor-not-allowed"' : 'class="hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"'}
+                        class="px-2 py-0.5 text-xs font-bold text-slate-700 dark:text-slate-300 rounded"
+                        title="Mover parada antes en la ruta"
+                      >
+                        ▲ Subir
+                      </button>
+                      <button
+                        type="button"
+                        onclick="MartelaLogistics.moveStopDown(${idx})"
+                        ${idx === route.paradas.length - 1 ? 'disabled class="opacity-25 cursor-not-allowed"' : 'class="hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer"'}
+                        class="px-2 py-0.5 text-xs font-bold text-slate-700 dark:text-slate-300 rounded"
+                        title="Mover parada después en la ruta"
+                      >
+                        ▼ Bajar
+                      </button>
+                    </div>
+                  ` : ''}
                   <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
                     🔒 SELLO: ${esc(parada.sello_seguridad_bolsa || 'Z008341')}
                   </span>
@@ -411,6 +446,58 @@ window.MartelaLogistics = (function() {
     window.MartelaUI.openModal(`Expediente de Auditoría PLD · ${stop.sucursal}`, html, 'max-w-lg');
   }
 
+  function moveStopUp(idx) {
+    if (idx <= 0) return;
+    const db = window.apiFacade._getDB();
+    const route = db.routes[0];
+    if (!route || !route.paradas) return;
+
+    const temp = route.paradas[idx];
+    route.paradas[idx] = route.paradas[idx - 1];
+    route.paradas[idx - 1] = temp;
+    window.apiFacade._saveDB(db);
+
+    window.MartelaUI.toast(`Parada "${temp.sucursal}" movida al turno #${idx}`, 'info');
+    render(document.getElementById('contentContainer'));
+  }
+
+  function moveStopDown(idx) {
+    const db = window.apiFacade._getDB();
+    const route = db.routes[0];
+    if (!route || !route.paradas || idx >= route.paradas.length - 1) return;
+
+    const temp = route.paradas[idx];
+    route.paradas[idx] = route.paradas[idx + 1];
+    route.paradas[idx + 1] = temp;
+    window.apiFacade._saveDB(db);
+
+    window.MartelaUI.toast(`Parada "${temp.sucursal}" movida al turno #${idx + 2}`, 'info');
+    render(document.getElementById('contentContainer'));
+  }
+
+  function optimizeByOpeningHours() {
+    const db = window.apiFacade._getDB();
+    const route = db.routes[0];
+    if (!route || !route.paradas) return;
+
+    const defaultHours = ['08:00 AM', '09:00 AM', '09:30 AM', '11:00 AM', '12:00 PM'];
+    route.paradas.forEach((p, i) => {
+      if (!p.horario_apertura) {
+        p.horario_apertura = defaultHours[i % defaultHours.length];
+      }
+    });
+
+    route.paradas.sort((a, b) => {
+      if (a.estatus === 'ENTREGADA' && b.estatus !== 'ENTREGADA') return -1;
+      if (a.estatus !== 'ENTREGADA' && b.estatus === 'ENTREGADA') return 1;
+      return (a.horario_apertura || '12:00').localeCompare(b.horario_apertura || '12:00');
+    });
+
+    window.apiFacade._saveDB(db);
+    window.MartelaUI.toast('⚡ Ruta optimizada según horarios de apertura comercial (08:00 AM → 11:00 AM)', 'success');
+    render(document.getElementById('contentContainer'));
+  }
+
   return {
     render,
     togglePhoneFrame,
@@ -421,6 +508,9 @@ window.MartelaLogistics = (function() {
     captureBrowserGPS,
     abrirModalEntregaPld,
     confirmarEntregaPld,
-    openPldDossierModal
+    openPldDossierModal,
+    moveStopUp,
+    moveStopDown,
+    optimizeByOpeningHours
   };
 })();
